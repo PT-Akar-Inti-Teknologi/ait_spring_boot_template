@@ -1,4 +1,4 @@
-package org.ait.project.template.modules.modul;
+package org.ait.project.template.modules.modula;
 
 /**
  * contoh package module
