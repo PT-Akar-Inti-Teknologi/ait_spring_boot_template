@@ -1,0 +1,49 @@
+#Default Properties
+server:
+  servlet:
+    context-path: /api
+
+spring:
+  #profile active
+  #example: using application-dev.yml => active: dev,using application-prod.yml => active: prod
+  profiles:
+    active: profile
+  #default value flyway set to false
+  flyway:
+    enabled: false
+  jackson:
+    time-zone: Asia/Jakarta
+
+#logbook style: https://github.com/zalando/logbook#configuration
+logbook:
+  format:
+    style: splunk
+
+logging:
+  level:
+    #set for openfeign write into log
+    org.ait.project.guideline.example.shared.openfeign: DEBUG
+    #set for logbook write into log
+    org.zalando.logbook: TRACE
+
+feign:
+  #active openfeign fallback set true on circuit breaker and hystrix
+  circuitbreaker:
+    enabled: true
+  hystrix:
+    enabled: true
+  #client openfeign log set
+  client:
+    config:
+      jsonplaceholder-client:
+        loggerLevel: full
+      reqres-client:
+        loggerLevel: full
+
+#turn off time out hystrix, because for default this config if true set timeout to 15 sec, and openfeign timeout unused
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
