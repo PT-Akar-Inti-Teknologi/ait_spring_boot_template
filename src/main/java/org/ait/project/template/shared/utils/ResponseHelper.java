@@ -3,6 +3,7 @@ package org.ait.project.template.shared.utils;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.ait.project.template.shared.enums.ResponseEnum;
+import org.ait.project.template.shared.template.ResponseCollection;
 import org.ait.project.template.shared.template.ResponseDetail;
 import org.ait.project.template.shared.template.ResponseError;
 import org.ait.project.template.shared.template.ResponseList;
@@ -38,7 +39,7 @@ public class ResponseHelper {
         );
   }
 
-  public <T> ResponseEntity<ResponseTemplate<ResponseList<T>>> createResponseCollection(
+  public <T> ResponseEntity<ResponseTemplate<ResponseCollection<T>>> createResponseCollection(
       ResponseEnum responseEnum, Page page,
       List<T> contents) {
     return ResponseEntity.status(responseEnum.getHttpStatus())
