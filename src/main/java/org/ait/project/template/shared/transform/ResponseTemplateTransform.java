@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import org.ait.project.template.shared.template.PaginationConfig;
 import org.ait.project.template.shared.template.ResponseCollection;
+import org.ait.project.template.shared.template.ResponseCollectionContent;
 import org.ait.project.template.shared.template.ResponseDetail;
-import org.ait.project.template.shared.template.ResponseList;
 import org.ait.project.template.shared.template.ResponseSchema;
 import org.ait.project.template.shared.template.ResponseTemplate;
 import org.mapstruct.Mapper;
@@ -31,8 +31,8 @@ public interface ResponseTemplateTransform {
   ResponseTemplate templateCollection(ResponseSchema responseSchema, Page page,
                                       List contents);
 
-  ResponseCollection createResponseCollection(PaginationConfig paginationConfig,
-                                              List content);
+  ResponseCollectionContent createResponseCollectionContent(PaginationConfig paginationConfig,
+                                                            List content);
 
   @Named("pageCollection")
   @Mapping(target = "page", source = "number")
@@ -40,11 +40,8 @@ public interface ResponseTemplateTransform {
   @Mapping(target = "total", source = "totalPage")
   PaginationConfig pageCollection(Integer number, Integer size, Long totalPage);
 
-  @Mapping(target = "list", source = "responseCollection")
-  ResponseList createResponseListFromCollection(ResponseCollection responseCollection);
-
-  default ResponseList createResponseList(Page page, List contents) {
-    return createResponseListFromCollection(createResponseCollection(
+  default ResponseCollection createResponseList(Page page, List contents) {
+    return new ResponseCollection(createResponseCollectionContent(
         Optional.ofNullable(page).map(
             pageableData -> pageCollection(page.getNumber(),
                 page.getSize(),

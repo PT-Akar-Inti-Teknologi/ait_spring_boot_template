@@ -1,19 +1,16 @@
 package org.ait.project.template.shared.template;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseCollection<T>{
-
-	@JsonProperty("pagination")
-	private PaginationConfig paginationConfig;
-
-	@JsonProperty("content")
-	private List<T> content;
+public class ResponseCollection<T> {
+  @JsonProperty("list")
+  private ResponseCollectionContent<T> list;
 }
