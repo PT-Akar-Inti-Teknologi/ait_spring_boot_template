@@ -1,0 +1,13 @@
+#Profile: prod
+restclient:
+  url:
+    jsonplaceholder-client: https://jsonplaceholder.typicode.com
+    reqres-client: https://reqres.in/api
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ait_guideline
+    username: postgres
+    password: postgres
+  flyway:
+    enabled: false

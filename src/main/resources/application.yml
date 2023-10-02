@@ -1,4 +1,5 @@
 #Default Properties
+
 server:
   servlet:
     context-path: /api
@@ -7,12 +8,14 @@ spring:
   #profile active
   #example: using application-dev.yml => active: dev,using application-prod.yml => active: prod
   profiles:
-    active: profile
+    active: dev
   #default value flyway set to false
   flyway:
     enabled: false
   jackson:
     time-zone: Asia/Jakarta
+  liquibase:
+    change-log: classpath:/db/changelog/changelog-master.yml
 
 #logbook style: https://github.com/zalando/logbook#configuration
 logbook:
@@ -47,3 +50,4 @@ hystrix:
       execution:
         timeout:
           enabled: false
+

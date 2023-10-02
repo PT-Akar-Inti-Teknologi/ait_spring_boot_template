@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_table_permission
+      author: vonray
+      changes:
+        - createTable:
+            tableName: permission
+            columns:
+              - column:
+                  name: menu_id
+                  type: integer
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: role_id
+                  type: integer
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: menu_name
+                  type: varchar(100)
+              - column:
+                  name: action
+                  type: varchar(100)
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+              - column:
+                  name: updated_at
+                  type: timestamp with time zone

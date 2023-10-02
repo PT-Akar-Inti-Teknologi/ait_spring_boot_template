@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_table_ait
+      author: vonray
+      changes:
+        - createSequence:
+            sequenceName: hibernate_sequence
+            startValue: 1
+            incrementBy: 1
+        - createTable:
+            tableName: user_ait
+            columns:
+              - column:
+                  name: id
+                  type: integer
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(100)
+              - column:
+                  name: email
+                  type: varchar(50)
+              - column:
+                  name: balance
+                  type: double
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+              - column:
+                  name: updated_at
+                  type: timestamp with time zone

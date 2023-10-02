@@ -1,0 +1,10 @@
+#Profile: dev
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ait
+    username: postgres
+    password: postgres
+
+restclient:
+  url:
+    reqres: https://reqres.in/api
