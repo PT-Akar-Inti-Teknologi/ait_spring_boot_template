@@ -1,7 +1,7 @@
 #Profile: dev
 spring:
   datasource:
-    url: jdbc:postgresql://ait-psql.akarinti.tech/ait_springboot_template_example
+    url: jdbc:postgresql://ait-psql.akarinti.tech:5432/ait_springboot_template_example
     username: postgres
     password: I7bcfi5aOC
 
