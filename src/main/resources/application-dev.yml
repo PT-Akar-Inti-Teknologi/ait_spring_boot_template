@@ -1,9 +1,9 @@
 #Profile: dev
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/ait
+    url: jdbc:postgresql://ait-psql.akarinti.tech/ait_springboot_template_example
     username: postgres
-    password: postgres
+    password: I7bcfi5aOC
 
 restclient:
   url:
