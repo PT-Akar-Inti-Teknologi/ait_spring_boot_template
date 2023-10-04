@@ -1,6 +1,7 @@
-package org.ait.project.guideline.example.shared.feignclient.reqres;
+package org.ait.project.guideline.example.shared.feignclient.reqres.facade.fallback;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ait.project.guideline.example.shared.feignclient.reqres.facade.ReqresClient;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
