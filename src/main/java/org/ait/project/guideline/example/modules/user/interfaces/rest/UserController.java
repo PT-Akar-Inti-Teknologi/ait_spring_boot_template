@@ -3,6 +3,7 @@ package org.ait.project.guideline.example.modules.user.interfaces.rest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.ait.project.guideline.example.config.properties.ApplicationProperties;
 import org.ait.project.guideline.example.modules.user.dto.request.UserReq;
 import org.ait.project.guideline.example.modules.user.dto.response.UserRes;
 import org.ait.project.guideline.example.modules.user.service.core.UserCore;
@@ -19,6 +20,8 @@ import javax.validation.Valid;
 @RequestMapping("/user")
 public class UserController {
     private final UserCore userCore;
+
+    private final ApplicationProperties properties;
 
     @Operation(summary = "API to Add User")
     @PostMapping
