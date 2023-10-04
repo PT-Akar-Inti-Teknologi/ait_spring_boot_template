@@ -11,3 +11,10 @@ spring:
     password: postgres
   flyway:
     enabled: false
+
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false

@@ -19,8 +19,17 @@ spring:
 
 #logbook style: https://github.com/zalando/logbook#configuration
 logbook:
+  exclude:
+    - /actuator/health
+    - /actuator/**
+    - /health
+    - /v3/api-docs
+    - /swagger-ui
+    - /swagger-ui.html
   format:
     style: splunk
+  filter:
+    form-request-mode: off
 
 logging:
   level:

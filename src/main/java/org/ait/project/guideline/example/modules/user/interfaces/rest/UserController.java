@@ -1,5 +1,7 @@
 package org.ait.project.guideline.example.modules.user.interfaces.rest;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.ait.project.guideline.example.modules.user.dto.request.UserReq;
 import org.ait.project.guideline.example.modules.user.dto.response.UserRes;
@@ -13,40 +15,47 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "API User CRUD")
 @RequestMapping("/user")
-public class UserController implements UserCore {
+public class UserController {
     private final UserCore userCore;
-    @Override
+
+    @Operation(summary = "API to Add User")
     @PostMapping
     public ResponseEntity<ResponseTemplate<ResponseDetail<UserRes>>> addUser(@Valid @RequestBody UserReq userReq) {
         return userCore.addUser(userReq);
     }
 
-    @Override
+
+    @Operation(summary = "API to get All Users")
     @GetMapping("/all")
     public ResponseEntity<ResponseTemplate<ResponseCollection<UserRes>>> getUsers() {
         return userCore.getUsers();
     }
 
-    @Override
+
+    @Operation(summary = "API to get Fetch users")
     @GetMapping("/fetch")
     public ResponseEntity<ResponseTemplate<ResponseDetail<String>>> fetchUser() {
         return userCore.fetchUser();
     }
 
-    @Override
+
+    @Operation(summary = "API to get detail user")
     @PutMapping("/{id}")
     public ResponseEntity<ResponseTemplate<ResponseDetail<UserRes>>> updateUser(@PathVariable("id") Integer id, @RequestBody UserReq userReq) {
         return userCore.updateUser(id, userReq);
     }
 
-    @Override
+
+    @Operation(summary = "API to add balance user")
     @PutMapping("/addBalance/{id}")
     public ResponseEntity<ResponseTemplate<ResponseDetail<UserRes>>> addBalance(@PathVariable("id") Integer id, @RequestBody UserReq userReq) {
         return userCore.addBalance(id, userReq);
     }
 
-    @Override
+
+    @Operation(summary = "API to delete user")
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseTemplate<ResponseDetail<String>>> deleteUser(@PathVariable("id") Integer id) {
         return userCore.deleteUser(id);

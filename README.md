@@ -18,7 +18,7 @@ Database Repository | Jpa Repository | &check;| [Link](https://docs.spring.io/sp
 Log Interceptor|Zalando | &check;|[Link](https://github.com/zalando/logbook)
 Validator|Spring validation| &check;|[Link](https://www.baeldung.com/spring-boot-bean-validation)
 Utility |Lombok , Mapstruct | &check;| [Lombok](https://projectlombok.org/) [MapStruct](https://stackabuse.com/guide-to-mapstruct-in-java-advanced-mapping-library/)
-Documentation|Swagger / Postman Documentation | &cross;|[Swagger](https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api) [Postman Docs](https://learning.postman.com/docs/publishing-your-api/documenting-your-api/)
+Documentation|Swagger / Postman Documentation | &cross;|[Swagger](https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui/1.7.0) [Postman Docs](https://learning.postman.com/docs/publishing-your-api/documenting-your-api/)
 Auditing Database|Envers | &cross;| [Link](https://hibernate.org/orm/envers/)
 
 ## `Package Structure`
