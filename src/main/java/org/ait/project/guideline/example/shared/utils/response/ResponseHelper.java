@@ -54,7 +54,8 @@ public class ResponseHelper {
                 new ResponseCollectionContent<>(Optional.ofNullable(page).map(
                         pageableData -> new PaginationConfig(page.getNumber(),
                                 page.getSize(),
-                                page.getTotalElements())).orElse(null), contents));
+                                page.getTotalElements(),
+                                page.getTotalPages())).orElse(null), contents));
     }
 
     public Object createResponseErrorTemplate(ResponseEnum invalidParam, ResponseError responseError) {

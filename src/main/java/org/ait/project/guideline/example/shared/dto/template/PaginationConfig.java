@@ -17,4 +17,7 @@ public class PaginationConfig {
 
 	@JsonProperty("total")
 	private long total;
+
+	@JsonProperty("total_pages")
+	private int totalPages;
 }
