@@ -9,9 +9,6 @@ spring:
   #example: using application-dev.yml => active: dev,using application-prod.yml => active: prod
   profiles:
     active: dev
-  #default value flyway set to false
-  flyway:
-    enabled: false
   jackson:
     time-zone: Asia/Jakarta
   liquibase:

@@ -21,7 +21,7 @@ import java.util.Arrays;
 @Slf4j
 @ControllerAdvice
 @RequiredArgsConstructor
-public class ControllerAdvisor extends ResponseEntityExceptionHandler {
+public class ControllerAdvisor {
 
     private final ResponseHelper responseHelper;
 
@@ -34,15 +34,17 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     public <T> ResponseEntity<ResponseTemplate<T>> handleException(Exception ex,
                                                                    HttpServletRequest request,
                                                                    HttpServletResponse response) {
-        Arrays.stream(ex.getStackTrace()).limit(5).forEach(logger::error);
-        logger.error(ex.getMessage());
+        Arrays.stream(ex.getStackTrace()).limit(5).forEach(stackTraceElement -> {
+            log.error(stackTraceElement.toString());
+        });
+        log.error(ex.getMessage());
         return responseHelper.createResponseError(ResponseEnum.INTERNAL_SERVER_ERROR, null);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ResponseTemplate<ResponseError>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                                                            HttpServletRequest request,
-                                                                                            HttpServletResponse response) {
+                                                                                        HttpServletRequest request,
+                                                                                        HttpServletResponse response) {
 
         ResponseError responseError = new ResponseError(new ArrayList<>());
 
@@ -52,8 +54,10 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
                                 .add(new ErrorDetail(fieldError.getField(), fieldError.getDefaultMessage()))
         );
 
-        Arrays.stream(ex.getStackTrace()).limit(5).forEach(logger::error);
-        logger.error(ex.getMessage());
+        Arrays.stream(ex.getStackTrace()).limit(5).forEach(stackTraceElement -> {
+            log.error(stackTraceElement.toString());
+        });
+        log.error(ex.getMessage());
         return responseHelper.createResponseError(ResponseEnum.INVALID_PARAM, responseError);
     }
 }
