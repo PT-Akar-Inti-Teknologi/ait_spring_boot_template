@@ -3,7 +3,7 @@ package org.ait.project.guideline.example.modules.permission.model.entity.key;
 import lombok.*;
 import org.ait.project.guideline.example.modules.role.model.entity.Role;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Getter
