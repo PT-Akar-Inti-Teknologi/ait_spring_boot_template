@@ -1,8 +1,8 @@
 package org.ait.project.guideline.example.modules.user.service.adapter.query.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.ait.project.guideline.example.modules.user.model.entity.UserAit;
-import org.ait.project.guideline.example.modules.user.model.repository.UserRepository;
+import org.ait.project.guideline.example.modules.user.model.jpa.entity.UserAit;
+import org.ait.project.guideline.example.modules.user.model.jpa.repository.UserRepository;
 import org.ait.project.guideline.example.modules.user.service.adapter.query.UserQueryAdapter;
 import org.springframework.stereotype.Service;
 

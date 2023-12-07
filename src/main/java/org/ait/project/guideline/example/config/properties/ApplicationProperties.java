@@ -1,10 +1,8 @@
 package org.ait.project.guideline.example.config.properties;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.ait.project.guideline.example.config.properties.part.RestClientProperties;
 import org.springframework.stereotype.Component;
 
 @Getter
@@ -14,16 +12,4 @@ public class ApplicationProperties {
 
     private final RestClientProperties restClient;
 
-    @Data
-    @Configuration
-    @ConfigurationProperties(prefix = "restclient")
-    public static class RestClientProperties {
-
-        private Url url;
-
-        @Data
-        public class Url{
-            private String reqres;
-        }
-    }
 }

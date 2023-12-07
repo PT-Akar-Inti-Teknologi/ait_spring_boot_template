@@ -4,10 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.ait.project.guideline.example.modules.role.model.entity.Role;
 import org.ait.project.guideline.example.modules.role.service.adapter.query.RoleQueryAdapter;
 import org.ait.project.guideline.example.modules.user.exception.UserNotFoundException;
-import org.ait.project.guideline.example.modules.user.model.entity.UserAit;
-import org.ait.project.guideline.example.modules.user.model.repository.UserRepository;
+import org.ait.project.guideline.example.modules.user.model.jpa.entity.UserAit;
+import org.ait.project.guideline.example.modules.user.model.jpa.repository.UserRepository;
 import org.ait.project.guideline.example.modules.user.service.adapter.command.UserCommandAdapter;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.List;
 

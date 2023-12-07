@@ -2,8 +2,8 @@ package org.ait.project.guideline.example.modules.user.transform;
 
 import org.ait.project.guideline.example.modules.user.dto.request.UserReq;
 import org.ait.project.guideline.example.modules.user.dto.response.UserRes;
-import org.ait.project.guideline.example.modules.user.model.entity.UserAit;
-import org.ait.project.guideline.example.shared.feignclient.reqres.response.DataItem;
+import org.ait.project.guideline.example.modules.user.model.jpa.entity.UserAit;
+import org.ait.project.guideline.example.shared.feignclient.reqres.dto.response.DataItem;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

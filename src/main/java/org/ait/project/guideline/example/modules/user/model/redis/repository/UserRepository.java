@@ -1,6 +1,6 @@
-package org.ait.project.guideline.example.modules.user.model.repository;
+package org.ait.project.guideline.example.modules.user.model.redis.repository;
 
-import org.ait.project.guideline.example.modules.user.model.entity.UserAit;
+import org.ait.project.guideline.example.modules.user.model.redis.entity.UserAit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

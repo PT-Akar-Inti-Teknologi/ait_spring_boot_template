@@ -1,4 +1,4 @@
-package org.ait.project.guideline.example.shared.feignclient.reqres.request;
+package org.ait.project.guideline.example.shared.feignclient.reqres.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

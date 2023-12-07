@@ -1,35 +1,40 @@
-package org.ait.project.guideline.example.modules.role.model.entity;
+package org.ait.project.guideline.example.modules.user.model.jpa.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.ait.project.guideline.example.modules.permission.model.entity.Permission;
+import org.ait.project.guideline.example.modules.role.model.entity.Role;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
-@AllArgsConstructor
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Role implements Serializable {
-
+public class UserAit {
     @Id
     @GeneratedValue
     private Integer id;
 
     private String name;
 
-    @OneToMany(mappedBy = "id.role", cascade = { CascadeType.ALL })
-    private List<Permission> permissionList;
+    private String email;
+
+    private BigDecimal balance;
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles;
 
     @CreatedDate
     private LocalDateTime createdAt;

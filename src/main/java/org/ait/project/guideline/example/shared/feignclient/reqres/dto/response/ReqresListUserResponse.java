@@ -1,8 +1,9 @@
-package org.ait.project.guideline.example.shared.feignclient.reqres.response;
+package org.ait.project.guideline.example.shared.feignclient.reqres.dto.response;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class ReqresListUserResponse{

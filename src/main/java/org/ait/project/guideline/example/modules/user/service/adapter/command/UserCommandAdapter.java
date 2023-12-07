@@ -1,6 +1,6 @@
 package org.ait.project.guideline.example.modules.user.service.adapter.command;
 
-import org.ait.project.guideline.example.modules.user.model.entity.UserAit;
+import org.ait.project.guideline.example.modules.user.model.jpa.entity.UserAit;
 
 import java.math.BigDecimal;
 import java.util.List;

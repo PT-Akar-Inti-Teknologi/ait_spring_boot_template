@@ -2,6 +2,7 @@ package org.ait.project.guideline.example.modules.user.interfaces.rest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ait.project.guideline.example.config.properties.ApplicationProperties;
 import org.ait.project.guideline.example.modules.user.dto.request.UserReq;
@@ -12,7 +13,6 @@ import org.ait.project.guideline.example.shared.dto.template.ResponseDetail;
 import org.ait.project.guideline.example.shared.dto.template.ResponseTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
