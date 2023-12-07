@@ -1,4 +1,4 @@
-package org.ait.project.guideline.example.config.properties;
+package org.ait.project.guideline.example.config.properties.part;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
