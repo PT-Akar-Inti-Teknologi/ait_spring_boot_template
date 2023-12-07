@@ -1,7 +1,7 @@
 databaseChangeLog:
-  - include:
-      file: db/changelog/changelog-00001-InitTable.yml
-  - include:
-      file: db/changelog/changelog-00002-addTableRole.yml
-  - include:
-      file: db/changelog/changelog-00003-addTable.yml
+  - includeAll:
+      path: src/main/resources/db/changelog/schema/
+#
+#  - includeAll:
+#      path: src/main/resources/db/changelog/seeder/
+#
