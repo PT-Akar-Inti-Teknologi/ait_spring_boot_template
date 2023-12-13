@@ -13,6 +13,23 @@ spring:
     time-zone: Asia/Jakarta
   liquibase:
     change-log: classpath:/db/changelog/changelog-master.yml
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+      #client openfeign log set
+      client:
+        config:
+          default:
+            loggerLevel: full
+          jsonplaceholder-client:
+            connectTimeout: 15000
+            readTimeout: 15000
+          reqres-client:
+            requestInterceptors:
+              - org.ait.project.guideline.example.shared.feignclient.reqres.interceptor.ReqresInterceptor
+            connectTimeout: 15000
+            readTimeout: 15000
 
 #logbook style: https://github.com/zalando/logbook#configuration
 logbook:
@@ -37,20 +54,6 @@ logging:
     org.ait.project.guideline.example.shared.openfeign: DEBUG
     #set for logbook write into log
     org.zalando.logbook: TRACE
-
-feign:
-  #active openfeign fallback set true on circuit breaker and hystrix
-  circuitbreaker:
-    enabled: true
-  hystrix:
-    enabled: true
-  #client openfeign log set
-  client:
-    config:
-      jsonplaceholder-client:
-        loggerLevel: full
-      reqres-client:
-        loggerLevel: full
 
 #turn off time out hystrix, because for default this config if true set timeout to 15 sec, and openfeign timeout unused
 hystrix:
