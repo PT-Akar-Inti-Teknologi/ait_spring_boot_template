@@ -21,8 +21,11 @@ logbook:
     - /actuator/**
     - /health
     - /v3/api-docs
-    - /swagger-ui
-    - /swagger-ui.html
+    - /api/v3/api-docs
+    - /api/v3/api-docs/**
+    - /api/swagger-ui
+    - /api/swagger-ui/**
+    - /api/swagger-ui.html
   format:
     style: splunk
   filter:
