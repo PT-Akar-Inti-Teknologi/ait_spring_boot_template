@@ -31,6 +31,12 @@ spring:
             connectTimeout: 15000
             readTimeout: 15000
 
+resilience4j:
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 60s
+
 #logbook style: https://github.com/zalando/logbook#configuration
 logbook:
   exclude:
