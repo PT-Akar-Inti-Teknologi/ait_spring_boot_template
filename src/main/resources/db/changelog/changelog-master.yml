@@ -1,6 +1,6 @@
 databaseChangeLog:
   - includeAll:
-      path: src/main/resources/db/changelog/schema/
+      path: classpath:/db/changelog/schema/
 #
 #  - includeAll:
 #      path: src/main/resources/db/changelog/seeder/
