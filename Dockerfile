@@ -1,13 +1,12 @@
-FROM maven:alpine as build
-ENV HOME=/usr/app
-RUN mkdir -p $HOME
-WORKDIR $HOME
-ADD pom.xml $HOME
-RUN mvn verify --fail-never -DskipTests
-ADD . $HOME
-RUN mvn package -DskipTests
+#build maven
+FROM maven:3.8.5-openjdk-17-slim AS build_maven
+WORKDIR /app
+COPY . .
+RUN mvn clean compile
+RUN mvn install -DskipTests
 
-FROM openjdk:8-jdk
-COPY --from=build /usr/app/target/*.jar /app/example.jar
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/app/example.jar"]
+#deploy to java17
+FROM openjdk:17-alpine
+VOLUME /tmp
+COPY --from=build_maven /app/target/*.jar app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
