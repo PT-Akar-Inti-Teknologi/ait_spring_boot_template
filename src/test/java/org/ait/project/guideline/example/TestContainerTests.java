@@ -2,6 +2,9 @@ package org.ait.project.guideline.example;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import org.ait.project.guideline.example.modules.product.dto.request.ProductRequestDto;
+import org.ait.project.guideline.example.modules.product.model.jpa.entity.Product;
+import org.ait.project.guideline.example.modules.product.service.core.ProductCore;
 import org.ait.project.guideline.example.modules.user.dto.request.UserReq;
 import org.ait.project.guideline.example.modules.user.service.core.UserCore;
 import org.junit.jupiter.api.Test;
@@ -39,6 +42,9 @@ class TestContainerTests extends AbstractClass{
 
     @Autowired
     UserCore userCore;
+
+    @Autowired
+    ProductCore productCore;
 
     @Test
     void getAllUsers() throws Exception{
@@ -91,5 +97,81 @@ class TestContainerTests extends AbstractClass{
 
         System.out.print(response);
         mockServerClient.verify(request().withMethod("GET").withPath("/api/user/all"), VerificationTimes.atLeast(1));
+    }
+
+    @Test
+    void getProductTest() throws Exception{
+        ProductRequestDto product = new ProductRequestDto();
+        product.setProductName("test");
+        product.setQty(1);
+        product.setPrice(BigDecimal.TEN);
+
+        productCore.insertProduct(product);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/api/product/all")
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        ResultActions result = mockMvc.perform(requestBuilder).andDo(print()).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void mockServerDeleteProduct() throws Exception {
+        mockServerClient.when(
+                request().withMethod("DELETE").withPath("/api/product/1")
+        ).respond(response().withStatusCode(200).withHeader(new Header("Content-Type", "application/json;charset=utf-8"))
+                .withBody(json("""
+                        {
+                             "response_schema": {
+                                 "response_code": "PMRK-200",
+                                 "response_message": "Success"
+                             },
+                             "response_output": {
+                                 "detail": "Success"
+                             }
+                         }
+                        """)));
+
+        restTemplate.delete("http://localhost:" + mockServerClient.getPort() + "/api/product/1", String.class);
+
+        mockServerClient.verify(request().withMethod("DELETE").withPath("/api/product/1"), VerificationTimes.atLeast(1));
+    }
+
+    @Test
+    void mockServerProduct() {
+        mockServerClient.when(
+                request().withMethod("GET").withPath("/api/product/all")
+        ).respond(response().withStatusCode(200).withHeader(new Header("Content-Type", "application/json;charset=utf-8"))
+                .withBody(json("""
+                        {
+                            "response_schema": {
+                                "response_code": "PMRK-200",
+                                "response_message": "Success"
+                            },
+                            "response_output": {
+                                "list": {
+                                    "pagination": {
+                                        "page": 0,
+                                        "size": 0,
+                                        "total": 0,
+                                        "total_pages": 1
+                                    },
+                                    "content": [
+                                        {
+                                            "name": "product test",
+                                            "qty": 20,
+                                            "price": 10000.00
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                        """)));
+
+        String response = restTemplate.getForObject("http://localhost:" + mockServerClient.getPort() + "/api/product/all", String.class);
+
+        System.out.print(response);
+        mockServerClient.verify(request().withMethod("GET").withPath("/api/product/all"), VerificationTimes.atLeast(1));
     }
 }

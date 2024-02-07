@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_table_role
+      author: albert
+      changes:
+        - createTable:
+            tableName: product
+            columns:
+              - column:
+                  name: id
+                  type: integer
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(100)
+              - column:
+                  name: price
+                  type: double
+              - column:
+                  name: qty
+                  type: integer
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+              - column:
+                  name: updated_at
+                  type: timestamp with time zone
