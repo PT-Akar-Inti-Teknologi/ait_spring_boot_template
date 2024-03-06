@@ -2,7 +2,6 @@ package org.ait.project.guideline.example.modules.user.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import org.ait.project.guideline.example.modules.role.dto.response.RoleRes;
 
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class UserRes {
     @JsonProperty("email")
     private String email;
 
-    @JsonProperty("roles")
-    private List<RoleRes> roles;
+  /*  @JsonProperty("roles")
+    private List<RoleRes> roles;*/
 
 }

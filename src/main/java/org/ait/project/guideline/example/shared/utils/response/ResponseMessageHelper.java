@@ -20,6 +20,7 @@ public class ResponseMessageHelper {
   }
 
   private String getMessage(String code) {
-    return responseMessageSource.getMessage(code, null, Locale.getDefault());
+    //return responseMessageSource.getMessage(code, null, Locale.getDefault());
+	  return code;
   }
 }

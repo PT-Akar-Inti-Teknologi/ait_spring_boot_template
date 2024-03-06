@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.ait.project.guideline.example.modules.role.model.entity.Role;
+/*import org.ait.project.guideline.example.modules.role.model.entity.Role;*/
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -30,12 +30,12 @@ public class UserAit {
     private String email;
 
     private BigDecimal balance;
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+   /* @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
-
+*/
     @CreatedDate
     private LocalDateTime createdAt;
 
