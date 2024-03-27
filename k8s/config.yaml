@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: ConfigMap
 data:
-  spring.datasource.password: AIT121218@atria
-  spring.datasource.url: jdbc:sqlserver://dbs.sandbait.work:30050;database=mantapdb_dev;trustServerCertificate=false;encrypt=false;hostNameInCertificate=any;trustStore=any;trustStorePassword=any;
-  spring.datasource.username: SA
-  spring.data.redis.host: "redis.akarinti.tech"
-  spring.data.redis.port: "30709"
-  spring.data.redis.password: "AIT121218@atria"
+  spring.datasource.password: "" 
+  spring.datasource.url: "" 
+  spring.datasource.username: "" 
+  spring.data.redis.host: "" 
+  spring.data.redis.port: ""
+  spring.data.redis.password: "" 
 metadata:
   name: ${AITPROJNAME}-config
   labels:
