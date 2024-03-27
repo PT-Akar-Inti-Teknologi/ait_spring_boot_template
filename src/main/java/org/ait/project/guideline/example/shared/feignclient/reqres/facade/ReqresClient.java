@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
 
-@FeignClient(
+/*@FeignClient(
         value = "reqres-client",
         url = "${restclient.url.reqres}",
         fallbackFactory = ReqresClientFallback.class
-)
+)*/
 public interface ReqresClient {
 
     @GetMapping("/users")

@@ -10,16 +10,6 @@ import org.springframework.http.ResponseEntity;
 
 public interface UserCore {
 
-    ResponseEntity<ResponseTemplate<ResponseDetail<UserRes>>> addUser(UserReq userReq);
-
-    ResponseEntity<ResponseTemplate<ResponseCollection<UserRes>>> getUsers();
-
-    ResponseEntity<ResponseTemplate<ResponseDetail<String>>> fetchUser();
-
-    ResponseEntity<ResponseTemplate<ResponseDetail<UserRes>>> updateUser(Integer id, UserReq userReq);
-
-    ResponseEntity<ResponseTemplate<ResponseDetail<UserRes>>> addBalance(Integer id, UserReq userReq);
-
-    ResponseEntity<ResponseTemplate<ResponseDetail<String>>> deleteUser(Integer id);
+    ResponseEntity<ResponseTemplate<ResponseCollection<UserRes>>> getUsers(String searchBy, String sortBy, String sortField, Integer pageNumber, Integer pageSize, UserReq userReq);
 
 }

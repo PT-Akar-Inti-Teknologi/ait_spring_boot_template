@@ -13,9 +13,11 @@ public class ReqresClientFallback implements FallbackFactory<ReqresClient> {
 
   @Override
   public ReqresClient create(Throwable cause) {
-    return request -> {
+    /*return request -> {
       log.error(cause.getMessage());
       return Optional.empty();
     };
+  }*/
+	  return null;
   }
 }

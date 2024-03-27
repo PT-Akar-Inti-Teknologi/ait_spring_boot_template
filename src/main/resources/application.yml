@@ -7,12 +7,14 @@ server:
 spring:
   #profile active
   #example: using application-dev.yml => active: dev,using application-prod.yml => active: prod
+  application:
+     name: example
   profiles:
     active: dev
   jackson:
     time-zone: Asia/Jakarta
-  liquibase:
-    change-log: classpath:/db/changelog/changelog-master.yml
+  #liquibase:
+    #change-log: classpath:/db/changelog/changelog-master.yml
   cloud:
     openfeign:
       circuitbreaker:

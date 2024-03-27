@@ -1,19 +1,24 @@
 package org.ait.project.guideline.example.modules.role.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-import org.ait.project.guideline.example.modules.permission.dto.response.PermissionRes;
 
 import java.util.List;
+
+import org.ait.project.guideline.example.modules.permission.dto.response.PermissionRes;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+
 
 @Data
 public class RoleRes {
 
-    @JsonProperty("roleId")
-    private Integer id;
+    @JsonProperty("id")
+    private String id;
 
-    @JsonProperty("roleName")
+    @JsonProperty("name")
     private String name;
-
-    private List<PermissionRes> permission;
+    
+    @JsonProperty("permissions")
+    private List<PermissionRes> permissions;
+    
 }

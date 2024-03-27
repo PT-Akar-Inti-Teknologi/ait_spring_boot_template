@@ -1,5 +1,6 @@
 package org.ait.project.guideline.example.modules.permission.dto.response;
 
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -7,12 +8,9 @@ import lombok.Data;
 @Data
 public class PermissionRes {
 
-    private Integer id;
-    @JsonProperty("role_id")
-    private Integer roleId;
+    private String id;
 
-    @JsonProperty("menu_name")
-    private String menuName;
+    @JsonProperty("menu")
+    private String menu;
 
-    private String action;
 }

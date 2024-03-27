@@ -1,9 +1,9 @@
 #Profile: dev
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/test_database
+    url: jdbc:postgresql://localhost:5432/test
     username: postgres
-    password: postgres
+    password: admin
 
 restclient:
   url:
