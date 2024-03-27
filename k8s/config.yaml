@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 data:
-  spring.datasource.password: "" 
-  spring.datasource.url: "" 
-  spring.datasource.username: "" 
+  spring.datasource.password: "I7bcfi5aOC"
+  spring.datasource.url: "jdbc:postgresql://dbs.sandbait.work:30034/ait_springboot_template_example" 
+  spring.datasource.username: "postgres"
   spring.data.redis.host: "" 
   spring.data.redis.port: ""
   spring.data.redis.password: "" 
