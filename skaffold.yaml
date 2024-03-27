@@ -1,0 +1,14 @@
+apiVersion: skaffold/v2beta8
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - "./k8s/*"
+build:
+  tagPolicy:
+    gitCommit:
+      prefix: ${AITGITBRANCH}-
+  artifacts:
+    - image: aitops/${AITGITNAME}
+      docker:
+        dockerfile: Dockerfile

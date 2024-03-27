@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${AITPROJNAME}-svc
+  labels:
+    app: ${AITGITCLIENT}
+    service: ${AITGITSERVICE}
+    ait.tech/${AITGITNAME}: ${AITGITBRANCH}
+spec:
+  selector:
+    app: ${AITGITCLIENT}
+    service: ${AITGITSERVICE}
+  ports:
+    - name: http-port
+      port: 3000
+      protocol: TCP
+      targetPort: ${AITTARGETPORT}

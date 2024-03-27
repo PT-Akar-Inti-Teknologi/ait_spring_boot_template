@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${AITPROJNAME}-depl
+  labels:
+    app: ${AITGITCLIENT}
+    service: ${AITGITSERVICE}
+    ait.tech/${AITGITNAME}: ${AITGITBRANCH}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: ${AITGITCLIENT}
+      service: ${AITGITSERVICE}
+  template:
+    metadata:
+      labels:
+        app: ${AITGITCLIENT}
+        service: ${AITGITSERVICE}
+      annotations:
+        co.elastic.logs/enabled: "true"
+        co.elastic.logs.json-logging/json.keys_under_root: "true"
+        co.elastic.logs.json-logging/json.add_error_key: "true"
+        co.elastic.logs.json-logging/json.message_key: "message"
+    spec:
+      imagePullSecrets:
+        - name: ait-registry-secret
+      containers:
+        - name: ${AITPROJNAME}
+          image: aitops/${AITGITNAME}
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "50m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+          envFrom:
+            - configMapRef:
+                name: ${AITPROJNAME}-config
