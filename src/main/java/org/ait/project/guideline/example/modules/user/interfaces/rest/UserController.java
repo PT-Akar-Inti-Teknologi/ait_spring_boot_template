@@ -22,14 +22,13 @@ public class UserController {
     @Operation(summary = "API to get All Users")
     @GetMapping("/all")
     public ResponseEntity<ResponseTemplate<ResponseCollection<UserRes>>> getUsers (
-    		@RequestParam(required = false, value = "searchBy") String searchBy,
-    		 @RequestParam(required = false, value = "sortBy") String sortBy,
-    		 @RequestParam(required = false, value = "sortField") String sortField,
-    		 @RequestParam(required = false, value = "pageNumber") Integer pageNumber,
-    		 @RequestParam(required = false, value = "pageSize") Integer pageSize,
+    		@RequestParam(required = false, value = "search") String search,
+    		 @RequestParam(required = false, value = "sort") String sort,
+    		 @RequestParam(required = false, value = "page") Integer page,
+    		 @RequestParam(required = false, value = "size") Integer size,
     		 @RequestBody (required=false) UserReq userReq){
     		
-        return userCore.getUsers( searchBy,  sortBy,  sortField,  pageNumber,  pageSize, userReq);
+        return userCore.getUsers( search,  sort,  page,  size, userReq);
     }
 
 }

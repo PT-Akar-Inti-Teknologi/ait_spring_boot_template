@@ -31,5 +31,15 @@ public class ProductController {
     public ResponseEntity<ResponseTemplate<ResponseDetail<ProductRes>>> updateUser(@PathVariable("id") String id) {
         return productCore.updateQuantity(id);
     }
-
+    
+    @Operation(summary = "API to get All Product")
+    @GetMapping("/all")
+    public ResponseEntity<ResponseTemplate<ResponseCollection<ProductRes>>> getUsers (
+    		@RequestParam(required = false, value = "search") String search,
+    		 @RequestParam(required = false, value = "sort") String sort,
+    		 @RequestParam(required = false, value = "page") Integer page,
+    		 @RequestParam(required = false, value = "size") Integer size){
+    		
+        return productCore.getProducts( search,  sort,  page,  size);
+    }
 }
