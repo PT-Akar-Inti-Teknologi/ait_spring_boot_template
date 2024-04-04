@@ -63,3 +63,53 @@ Optionally also describe how to setup a staging or production environment.
 - Developer 1 - [developer1@akarinti.tech](mailto:developer1@akarinti.tech)
 - Developer 2 - [developer2@akarinti.tech](mailto:developer2@akarinti.tech)
 
+## Use BaseSpesification
+
+
+1. in pom.xml add dependency
+
+	 <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>33.0.0-jre</version>
+        </dependency>
+
+2. create child class of BaseSpecification and must be extends from super class
+	example: UserSpecification extends BaseSpecification
+
+3. create fileter searching like below
+	 @Override
+  	 protected List<String> getDefaultSearchField() {
+    		return List.of("username","email","phoneNumber","firstName","lastName");
+  	}
+
+4. complete code
+
+	
+
+@Component
+public class UserSpecification extends BaseSpecification {
+
+  @Override
+  protected List<String> getDefaultSearchField() {
+    return List.of("username","email","phoneNumber","firstName","lastName");
+  }
+
+  public Specification<User> predicate(UserParam param) {
+    return (root, query, builder) -> {
+      List<Predicate> predicates = new ArrayList<>();
+      List<Predicate> customSearchPredicate = new ArrayList<>();
+      Join<Role, User> userJoin = root.join(StaticConstant.ROLE_ID); 
+      customSearchPredicate.add(builder.like(builder.lower(userJoin.get("name").as(String.class)),
+				("%" + param.getSearch() + "%").toLowerCase()));
+
+      filterSearch(root, predicates, builder, param.getSearch(), customSearchPredicate);
+
+      return builder.and(predicates.toArray(new Predicate[] {}));
+    };
+  }
+ 
+}
+
+
+

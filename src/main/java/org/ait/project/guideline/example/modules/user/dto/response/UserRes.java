@@ -19,13 +19,13 @@ public class UserRes {
     @JsonProperty("email")
     private String email;
     
-    @JsonProperty("firstName")
+    @JsonProperty("first_name")
     private String firstName;
     
-    @JsonProperty("lastName")
+    @JsonProperty("last_name")
     private String lastName;
     
-    @JsonProperty("birthDate")
+    @JsonProperty("birth_date")
     private String birthDate;
 
     @JsonProperty("roles")
