@@ -13,16 +13,16 @@ Java | Recommended using java 17
 Spring Boot | 3.x.x (Stable Version)
 
 ### `Standard Dependency:`
-Standard | Recommended                        | Mandatory | Reference
----|------------------------------------| --- | ---
-HTTP Client | Open Feign                         | &check;| [Link1](https://cloud.spring.io/spring-cloud-openfeign) [Link2](https://www.baeldung.com/spring-cloud-openfeign)
-Database Repository | Jpa Repository                     | &check;| [Link](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.repositories)
-Log Interceptor| Zalando                            | &check;|[Link](https://github.com/zalando/logbook)
-Validator| Spring validation                  | &check;|[Link](https://www.baeldung.com/spring-boot-bean-validation)
-Utility | Lombok , Mapstruct                 | &check;| [Lombok](https://projectlombok.org/) [MapStruct](https://stackabuse.com/guide-to-mapstruct-in-java-advanced-mapping-library/)
-Documentation| Spring doc                         | &cross;|[Springdoc](https://springdoc.org)
-Auditing Database| Envers                             | &cross;| [Link](https://hibernate.org/orm/envers/)
-Test Containers| Postgres Container, Redis, MongoDB | &check; | [Link](https://mvnrepository.com/artifact/org.testcontainers/postgresql)
+Standard | Recommended                                                                  | Mandatory | Reference
+---|------------------------------------------------------------------------------| --- | ---
+HTTP Client | Open Feign                                                                   | &check;| [Link1](https://cloud.spring.io/spring-cloud-openfeign) [Link2](https://www.baeldung.com/spring-cloud-openfeign)
+Database Repository | Jpa Repository                                                               | &check;| [Link](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.repositories)
+Log Interceptor| Zalando                                                                      | &check;|[Link](https://github.com/zalando/logbook)
+Validator| Spring validation                                                            | &check;|[Link](https://www.baeldung.com/spring-boot-bean-validation)
+Utility | Lombok , Mapstruct                                                           | &check;| [Lombok](https://projectlombok.org/) [MapStruct](https://stackabuse.com/guide-to-mapstruct-in-java-advanced-mapping-library/)
+Documentation| Spring doc                                                                   | &cross;|[Springdoc](https://springdoc.org)
+Auditing Database| Envers                                                                       | &cross;| [Link](https://hibernate.org/orm/envers/)
+Test Containers| Postgres Container, Redis Container, MongoDB Container | &check; | [Postgres](https://mvnrepository.com/artifact/org.testcontainers/postgresql) [Redis](https://mvnrepository.com/artifact/com.redis/testcontainers-redis) [MongoDB](https://mvnrepository.com/artifact/org.testcontainers/mongodb)
 
 [//]: # (DELETE WHEN CREATE PROJECT ==============)
 
@@ -80,7 +80,16 @@ Then we will test this API using the Testcontainers Postgres module.
 
 ### Add Testcontainers dependencies
 Before writing Testcontainers based tests. Let’s add Testcontainers dependencies in <B>pom.xml</B> as follows:
+Firstly, we’ll need to include the spring-boot-testcontainers dependency in our pom.xml:
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-testcontainers</artifactId>
+    <scope>test</scope>
+</dependency>
 ```
+After that, we can add other depedencies to write test container in our project:
+```xml
 <!-- https://mvnrepository.com/artifact/org.testcontainers/testcontainers -->
 <dependency>
 	<groupId>org.testcontainers</groupId>
@@ -100,7 +109,7 @@ Before writing Testcontainers based tests. Let’s add Testcontainers dependenci
 For what the repository you used. Choose alternative dependency which following the project:
 
 a. Testcontainers PostgreSQL :
-```
+```xml
 <!-- https://mvnrepository.com/artifact/org.testcontainers/postgresql -->
 <dependency>
     <groupId>org.testcontainers</groupId>
@@ -110,7 +119,7 @@ a. Testcontainers PostgreSQL :
 </dependency>
 ```
 b. Testcontainers Redis
-```
+```xml
 <!-- https://mvnrepository.com/artifact/com.redis/testcontainers-redis -->
 <dependency>
 	<groupId>com.redis</groupId>
@@ -119,7 +128,7 @@ b. Testcontainers Redis
 </dependency>
 ```
 c. Testcontainers MongoDB
-```
+```xml
 <!-- https://mvnrepository.com/artifact/org.testcontainers/mongodb -->
 <dependency>
 	<groupId>org.testcontainers</groupId>
@@ -129,7 +138,7 @@ c. Testcontainers MongoDB
 </dependency>
 ```
 d. Testcontainers MSSQL Server
-```
+```xml
 <!-- https://mvnrepository.com/artifact/org.testcontainers/mssqlserver -->
 <dependency>
 	<groupId>org.testcontainers</groupId>
@@ -140,12 +149,10 @@ d. Testcontainers MSSQL Server
 ```
 In this guideline, we will use the postgres container for the sample. We can use the Testcontainers library to spin up a Postgres database instance as a Docker container and configure the application to talk to that database as follows:
 
-```
+```java
 @SpringBootTest
 @AutoConfigureMockMvc
 public abstract class BaseIntegrationTest {
-
-    ...
 
     // PostgreSQL
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
@@ -153,14 +160,14 @@ public abstract class BaseIntegrationTest {
     @DynamicPropertySource
     static void properties(DynamicPropertyRegistry registry) {
         Startables.deepStart(postgres).join();
-        
+      
         // PostgreSQL
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);
+
+        //TODO can use the other containers such as redis, mongodb etc
     }
-	
-    ...
 }
 ```
 
@@ -170,6 +177,16 @@ Let us understand what is going on in this test.
 - We have created an instance of PostgreSQLContainer using the postgres:latest Docker image.
 - The Postgres database runs on port 5432 inside the container and maps to a random available port on the host.
 - We have registered the database connection properties dynamically obtained from the Postgres container using Spring Boot’s DynamicPropertyRegistry.
+
+If you create a new integration test, use **extends** to take class BaseIntegrationTest like sample in bellow :
+```java
+class UserControllerTest extends BaseIntegrationTest {
+    @Test
+    void getUser() {
+        //TODO create a scenario test
+    }
+}
+```
 
 ## Developers
 

@@ -31,6 +31,7 @@ import org.testcontainers.lifecycle.Startables;
 @AutoConfigureMockMvc
 public abstract class BaseIntegrationTest {
 
+    //TODO this header will change depends the project like base
     private static final String HEADER_AUTHORIZATION = "Authorization";
 
     // Redis
@@ -69,6 +70,10 @@ public abstract class BaseIntegrationTest {
 
     protected ObjectMapper objectMapper = new ObjectMapper();
 
+    /**
+     * Generate a token with user access login
+     * The result to get access token and can access permission
+     */
     public void fetchAccessToken() throws Exception {
 
         // WHEN
