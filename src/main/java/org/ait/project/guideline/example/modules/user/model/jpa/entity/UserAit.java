@@ -29,6 +29,9 @@ public class UserAit {
 
     private String email;
 
+    private String username;
+    private String password;
+
     private BigDecimal balance;
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "user_roles",
