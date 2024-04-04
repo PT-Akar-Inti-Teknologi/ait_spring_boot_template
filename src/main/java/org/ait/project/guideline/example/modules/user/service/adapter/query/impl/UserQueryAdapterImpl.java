@@ -17,11 +17,16 @@ public class UserQueryAdapterImpl implements UserQueryAdapter {
 
     @Override
     public List<UserAit> findAllUser() {
-        return userRepository.findAll();
+        return (List<UserAit>) userRepository.findAll();
     }
 
     @Override
     public Optional<UserAit> findUserById(Integer id) {
         return userRepository.findById(id);
+    }
+
+    @Override
+    public Optional<UserAit> findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }

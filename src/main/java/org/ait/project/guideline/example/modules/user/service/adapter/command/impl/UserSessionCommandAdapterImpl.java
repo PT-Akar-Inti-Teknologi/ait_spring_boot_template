@@ -2,7 +2,7 @@ package org.ait.project.guideline.example.modules.user.service.adapter.command.i
 
 import lombok.RequiredArgsConstructor;
 import org.ait.project.guideline.example.modules.user.model.redis.entity.UserSession;
-import org.ait.project.guideline.example.modules.user.model.redis.repository.UserRepository;
+import org.ait.project.guideline.example.modules.user.model.redis.repository.UserSessionRepository;
 import org.ait.project.guideline.example.modules.user.service.adapter.command.UserSessionCommandAdapter;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class UserSessionCommandAdapterImpl implements UserSessionCommandAdapter {
 
-    private final UserRepository userSessionRepository;
+    private final UserSessionRepository userSessionRepository;
 
     @Override
     public void upsertUserSession(Integer userId, Long timeToLive) {

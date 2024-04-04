@@ -9,7 +9,7 @@ import org.ait.project.guideline.example.modules.user.model.jpa.repository.UserR
 import org.ait.project.guideline.example.shared.dto.template.ResponseCollection;
 import org.ait.project.guideline.example.shared.dto.template.ResponseDetail;
 import org.ait.project.guideline.example.shared.dto.template.ResponseTemplate;
-import org.ait.project.guideline.example.shared.exception.UserNofFoundException;
+import org.ait.project.guideline.example.shared.exception.UserNotFoundException;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,7 +92,7 @@ class UserControllerTest extends BaseIntegrationTest {
                 .andExpect(content().string(Matchers.containsString("response_message")))
                 .andReturn();
 
-        UserAit expectedUser = userRepository.findById(id).orElseThrow(UserNofFoundException::new);
+        UserAit expectedUser = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         assertEquals(expectedUser.getId(), id);
         assertEquals(expectedUser.getName(), name);
     }
@@ -134,7 +134,7 @@ class UserControllerTest extends BaseIntegrationTest {
                 .andExpect(content().string(Matchers.containsString("response_message")))
                 .andReturn();
 
-        UserAit expectedUser = userRepository.findById(id).orElseThrow(UserNofFoundException::new);
+        UserAit expectedUser = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         assertEquals(expectedUser.getId(), id);
         assertEquals(expectedUser.getName(), name);
     }

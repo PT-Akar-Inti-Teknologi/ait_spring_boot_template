@@ -15,6 +15,7 @@ public enum ResponseEnum {
   INVALID_JWT("PMRK-0005", "jwt.invalid", HttpStatus.BAD_REQUEST),
   EXPIRED_JWT("PMRK-0006", "jwt.expired", HttpStatus.NOT_ACCEPTABLE),
   INVALID_PARAM("PMRK-0009", "invalid.param", HttpStatus.BAD_REQUEST),
+  INVALID_USER_PASSWORD("PMRK-0010", "invalid.usernamepassword", HttpStatus.BAD_REQUEST),
   INTERNAL_SERVER_ERROR("PMRK-9999", "internal.server.error", HttpStatus.INTERNAL_SERVER_ERROR);
 
 

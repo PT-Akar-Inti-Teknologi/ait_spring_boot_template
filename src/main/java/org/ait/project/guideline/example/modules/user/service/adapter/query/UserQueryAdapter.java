@@ -11,5 +11,5 @@ public interface UserQueryAdapter {
 
     Optional<UserAit> findUserById(Integer id);
 
-
+    Optional<UserAit> findByUsername(String username);
 }

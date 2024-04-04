@@ -10,7 +10,6 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 @EnableFeignClients
 @SpringBootApplication
 @EnableJpaAuditing
-@EnableJpaRepositories
 @EnableRedisRepositories
 public class Application {
 

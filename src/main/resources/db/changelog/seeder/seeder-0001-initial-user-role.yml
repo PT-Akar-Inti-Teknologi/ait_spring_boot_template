@@ -9,4 +9,4 @@ databaseChangeLog:
               dbms: h2, mysql, postgresql, mssql
               sql: |
                 INSERT INTO role (id, name, created_at, updated_at)
-                VALUES ('spr_admin', 'Super Admin', GETDATE(), GETDATE());
+                VALUES (1, 'Super Admin', NOW(), NOW());

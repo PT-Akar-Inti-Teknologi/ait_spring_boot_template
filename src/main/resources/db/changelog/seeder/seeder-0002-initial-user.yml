@@ -9,6 +9,6 @@ databaseChangeLog:
               dbms: h2, mysql, postgresql, mssql
               sql: |
                 INSERT INTO user_ait (id, name, email, username, password, balance, created_at, updated_at)
-                VALUES (1,'Super Admin', 'admin@akarinti.tech', 'ADMIN',  '$2a$10$AbgEqos1fGuFdrD.FChgouVuEwFmJ80u8f1nQng90Nli/Vgehcka2', 100000, GETDATE(), GETDATE());
+                VALUES (1,'Super Admin', 'admin@akarinti.tech', 'ADMIN',  '$2a$10$AbgEqos1fGuFdrD.FChgouVuEwFmJ80u8f1nQng90Nli/Vgehcka2', 100000, NOW(), NOW());
                 
-                INSERT INTO user_roles VALUES ('1','spr_admin');
+                INSERT INTO user_roles VALUES (1,1);
