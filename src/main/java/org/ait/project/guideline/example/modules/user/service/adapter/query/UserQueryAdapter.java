@@ -1,13 +1,14 @@
 package org.ait.project.guideline.example.modules.user.service.adapter.query;
 
-import java.util.List;
 
-import org.ait.project.guideline.example.modules.user.dto.request.UserReq;
+import org.ait.project.guideline.example.modules.masterdata.dto.param.UserParam;
 import org.ait.project.guideline.example.modules.user.model.jpa.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface UserQueryAdapter {
 
-    List<User> findUser(String searchBy, String sortBy, Integer pageNumber, Integer pageSize, UserReq userReq);
+	Page<User> getPage(Pageable pageable, UserParam userParam);
 
 
 }
