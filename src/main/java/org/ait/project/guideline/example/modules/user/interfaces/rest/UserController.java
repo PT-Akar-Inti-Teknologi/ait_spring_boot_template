@@ -36,6 +36,13 @@ public class UserController {
         return userCore.getUsers();
     }
 
+    @Operation(summary = "API to get Detail User")
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseTemplate<ResponseDetail<UserRes>>> getDetailUser(
+            @PathVariable(name = "id") Integer id) {
+        return userCore.getDetailUser(id);
+    }
+
 
     @Operation(summary = "API to get Fetch users")
     @GetMapping("/fetch")

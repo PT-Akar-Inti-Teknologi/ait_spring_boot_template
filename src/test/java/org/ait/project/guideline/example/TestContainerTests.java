@@ -3,7 +3,6 @@ package org.ait.project.guideline.example;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.ait.project.guideline.example.modules.product.dto.request.ProductRequestDto;
-import org.ait.project.guideline.example.modules.product.model.jpa.entity.Product;
 import org.ait.project.guideline.example.modules.product.service.core.ProductCore;
 import org.ait.project.guideline.example.modules.user.dto.request.UserReq;
 import org.ait.project.guideline.example.modules.user.service.core.UserCore;

@@ -135,20 +135,11 @@ public abstract class BaseIntegrationTest {
      * @throws Exception if an error occurs while serializing the content object to JSON
      */
     protected MockHttpServletRequestBuilder buildPutRequest(String url, String contentObject, String token) {
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+        return MockMvcRequestBuilders
                 .put(url)
                 .contentType(MediaType.APPLICATION_JSON)
-                .header(HEADER_AUTHORIZATION, token);
-
-        // Check if contentObject is not null and not empty
-        if (contentObject != null && !contentObject.isEmpty()) {
-            requestBuilder.content(contentObject);
-        } else {
-            // If contentObject is null or empty, set an empty content body
-            requestBuilder.content("");
-        }
-
-        return requestBuilder;
+                .header(HEADER_AUTHORIZATION, token)
+                .content(contentObject);
     }
 
     /**

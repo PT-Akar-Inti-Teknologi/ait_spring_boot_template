@@ -14,6 +14,8 @@ public interface UserCore {
 
     ResponseEntity<ResponseTemplate<ResponseCollection<UserRes>>> getUsers();
 
+    ResponseEntity<ResponseTemplate<ResponseDetail<UserRes>>> getDetailUser(Integer id);
+
     ResponseEntity<ResponseTemplate<ResponseDetail<String>>> fetchUser();
 
     ResponseEntity<ResponseTemplate<ResponseDetail<UserRes>>> updateUser(Integer id, UserReq userReq);
