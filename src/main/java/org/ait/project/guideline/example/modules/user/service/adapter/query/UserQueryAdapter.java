@@ -7,7 +7,7 @@ import org.ait.project.guideline.example.modules.user.model.jpa.entity.User;
 
 public interface UserQueryAdapter {
 
-    List<User> findUser(String searchBy, String sortBy, String sortField, Integer pageNumber, Integer pageSize, UserReq userReq);
+    List<User> findUser(String searchBy, String sortBy, Integer pageNumber, Integer pageSize, UserReq userReq);
 
 
 }

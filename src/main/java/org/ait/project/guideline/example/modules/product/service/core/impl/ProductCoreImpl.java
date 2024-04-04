@@ -14,6 +14,9 @@ import org.ait.project.guideline.example.shared.dto.template.ResponseDetail;
 import org.ait.project.guideline.example.shared.dto.template.ResponseTemplate;
 import org.ait.project.guideline.example.shared.utils.response.ResponseHelper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,5 +48,13 @@ public class ProductCoreImpl implements ProductCore {
         return responseHelper.createResponseDetail(ResponseEnum.SUCCESS, productTransform.createProductResponse(updatedQuantity));
     
     }
+
+	@Override
+	public ResponseEntity<ResponseTemplate<ResponseCollection<ProductRes>>> getProducts(String search, String sort, Integer pageNumber, Integer pageSize) {
+		Sort sortBy = Sort.by(sort).ascending();
+		Pageable pageable = PageRequest.of(pageNumber,pageSize,sortBy);
+        return responseHelper.createResponseCollection(ResponseEnum.SUCCESS,Page.empty(pageable),
+        		productTransform.createProductResponseList( productQueryAdapter.findProducts(search,  sort,  pageNumber,  pageSize)));
+	}
     
 }

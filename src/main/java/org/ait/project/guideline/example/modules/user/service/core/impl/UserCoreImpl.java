@@ -31,11 +31,11 @@ public class UserCoreImpl implements UserCore {
     private final UserQueryAdapter userQueryAdapter;
 
     @Override
-    public ResponseEntity<ResponseTemplate<ResponseCollection<UserRes>>> getUsers(String searchBy, String sortBy, String sortField, Integer pageNumber, Integer pageSize, UserReq userReq) {
-    	Sort sort = sortBy.equalsIgnoreCase(Sort.Direction.ASC.name())?Sort.by(sortField).ascending():Sort.by(sortField).descending();
+    public ResponseEntity<ResponseTemplate<ResponseCollection<UserRes>>> getUsers(String searchBy, String sortBy, Integer pageNumber, Integer pageSize, UserReq userReq) {
+    	Sort sort = Sort.by(sortBy).ascending();
 		Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
         return responseHelper.createResponseCollection(ResponseEnum.SUCCESS,Page.empty(pageable),
-                userTransform.createUserResponseList( userQueryAdapter.findUser(searchBy,  sortBy,  sortField,  pageNumber,  pageSize, userReq)));
+                userTransform.createUserResponseList( userQueryAdapter.findUser(searchBy,  sortBy,  pageNumber,  pageSize, userReq)));
     }
 
 }

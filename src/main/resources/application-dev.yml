@@ -4,6 +4,10 @@ spring:
     url: jdbc:postgresql://localhost:5432/test
     username: postgres
     password: admin
+    #url: jdbc:postgresql://dbs.sandbait.work:30034/test
+    #username: postgres
+    #password: I7bcfi5aOC
+    
 
 restclient:
   url:
