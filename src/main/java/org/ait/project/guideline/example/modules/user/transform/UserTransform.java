@@ -5,6 +5,7 @@ import org.ait.project.guideline.example.modules.user.model.jpa.entity.User;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface UserTransform {
 
     @IterableMapping(qualifiedByName = "createUserResponse")
     @Named("createUserResponseList")
-    List<UserRes> createUserResponseList(List<User> user);
+    List<UserRes> createUserResponseList(Page<User> page);
 
   
 
