@@ -31,7 +31,7 @@ import org.testcontainers.lifecycle.Startables;
 @AutoConfigureMockMvc
 public abstract class BaseIntegrationTest {
 
-    //TODO this header will change depends the project like base
+    //TODO this header will change depends the project like basic auth, jwt etc
     private static final String HEADER_AUTHORIZATION = "Authorization";
 
     // Redis
