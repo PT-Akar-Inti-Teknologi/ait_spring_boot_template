@@ -10,8 +10,6 @@ import lombok.Data;
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class LoginRes {
-    private int id;
-    private String name;
     private String accessToken;
     private String refreshToken;
     private String tokenType;

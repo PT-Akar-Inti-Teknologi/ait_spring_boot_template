@@ -36,8 +36,8 @@ public class SecurityConfig {
             registry -> registry.dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR)
                 .permitAll()
                 .requestMatchers(
-                    "/api/auth/login",
-                    "/api/auth/refresh-token",
+                    "/auth/login",
+                    "/auth/refresh-token",
                     "/swagger-ui/**",
                     "/v3/api-docs/**"
                 )

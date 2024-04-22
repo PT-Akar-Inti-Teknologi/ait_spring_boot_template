@@ -5,6 +5,7 @@ import org.ait.project.guideline.example.config.properties.ApplicationProperties
 import org.ait.project.guideline.example.modules.permission.dto.request.LoginReq;
 import org.ait.project.guideline.example.modules.permission.dto.response.LoginRes;
 import org.ait.project.guideline.example.modules.permission.service.core.PermissionCore;
+import org.ait.project.guideline.example.modules.role.model.entity.Role;
 import org.ait.project.guideline.example.modules.user.model.jpa.entity.UserAit;
 import org.ait.project.guideline.example.modules.user.service.adapter.query.UserQueryAdapter;
 import org.ait.project.guideline.example.modules.user.transform.UserTransform;
@@ -35,11 +36,11 @@ public class PermissionCoreImpl implements PermissionCore {
     public ResponseEntity<ResponseTemplate<ResponseDetail<LoginRes>>> login(LoginReq request) {
         UserAit user = validateUser(request.getUsername());
         validatePassword(user, request.getPassword());
-        String accessToken = jwtUtils.createAccessToken(user.getId(), null, null, null);
-        String refreshToken = jwtUtils.createRefreshToken(user.getId(), null, null);
+        String accessToken = jwtUtils.createAccessToken(user.getId(), user.getName(), user.getEmail(),
+                user.getRoles().stream().map(Role::getName).toList());
+        String refreshToken = jwtUtils.createRefreshToken(user.getId(), user.getName(), user.getEmail());
         return responseHelper.createResponseDetail(ResponseEnum.SUCCESS,
-                userTransform.createLoginResponse(
-                        user, accessToken, refreshToken, TokenTypeEnum.ACCESS_TOKEN.name(),
+                userTransform.createLoginResponse(accessToken, refreshToken, TokenTypeEnum.ACCESS_TOKEN.name(),
                         properties.getJwtProperties().getAccessTokenExpirationTime()));
     }
 

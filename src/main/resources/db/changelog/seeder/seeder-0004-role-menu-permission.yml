@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: role-menu-permission
+      author: ait
+      changes:
+        - loadUpdateData:
+            file: classpath:/db/changelog/seeder/data/role-menu-permission.csv
+            primaryKey: menu_id,role_id
+            separator: ';'
+            tableName: permission
+            columns:
+              - column:
+                  name: menu_id
+                  type: int
+              - column:
+                  name: role_id
+                  type: int
+              - column:
+                  name: menu_name
+                  type: string
+              - column:
+                  name: action
+                  type: string
+              - column:
+                  name: created_at
+                  type: timestamp
+              - column:
+                  name: updated_at
+                  type: timestamp

@@ -13,8 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class JwtData {
   private Integer userId;
-  private String type;
   private String name;
   private String email;
+  private String type;
   private List<String> authorities;
 }

@@ -1,0 +1,5 @@
+menu_id;role_id;menu_name;action
+1;1;User;"CREATE,READ,UPDATE,DELETE"
+2;1;Product;"CREATE,READ,UPDATE,DELETE"
+1;2;User;"READ"
+2;2;Product;"READ"
