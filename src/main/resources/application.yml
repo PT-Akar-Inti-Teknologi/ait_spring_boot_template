@@ -13,8 +13,8 @@ spring:
     active: dev
   jackson:
     time-zone: Asia/Jakarta
-  #liquibase:
-    #change-log: classpath:/db/changelog/changelog-master.yml
+  liquibase:
+    change-log: classpath:/db/changelog/changelog-master.yml
   cloud:
     openfeign:
       circuitbreaker:

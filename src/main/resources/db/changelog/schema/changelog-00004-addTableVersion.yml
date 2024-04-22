@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_table_app_version
+      author: fajar
+      changes:
+        - createSequence:
+            sequenceName: app_version_seq
+            startValue: 1
+            incrementBy: 1
+        - createTable:
+            tableName: app_version
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: version
+                  type: varchar(100)
+              - column:
+                  name: platform
+                  type: varchar(50)
+              - column:
+                  name: type
+                  type: varchar(20)
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+              - column:
+                  name: updated_at
+                  type: timestamp with time zone
