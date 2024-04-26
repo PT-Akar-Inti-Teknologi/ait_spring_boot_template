@@ -8,6 +8,7 @@ databaseChangeLog:
             startValue: 1
             incrementBy: 1
         - createTable:
+            schemaName: ait
             tableName: app_version
             columns:
               - column:
@@ -30,3 +31,8 @@ databaseChangeLog:
               - column:
                   name: updated_at
                   type: timestamp with time zone
+        - addUniqueConstraint:
+            columnNames: version, platform
+            constraintName: app_version_unique
+            schemaName: ait
+            tableName: app_version

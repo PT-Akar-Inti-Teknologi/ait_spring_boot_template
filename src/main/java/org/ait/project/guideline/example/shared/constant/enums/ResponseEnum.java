@@ -15,7 +15,8 @@ public enum ResponseEnum {
   INTERNAL_SERVER_ERROR("PMRK-9999", "internal.server.error", HttpStatus.INTERNAL_SERVER_ERROR),
 
   //App-Version
-  APP_VERSION_NOT_FOUND("TEST-0002","app-version.not.found", HttpStatus.NOT_FOUND);
+  APP_VERSION_NOT_FOUND("APPV-0002","app-version.not.found", HttpStatus.NOT_FOUND),
+  APP_VERSION_DUPLICATE_KEY("APPV-0003","app-version.duplicate.key", HttpStatus.CONFLICT);
 
 
 
