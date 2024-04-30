@@ -17,7 +17,7 @@ import java.util.List;
 public interface UserTransform {
 
     @Named("createLoginResponse")
-    LoginRes createLoginResponse(String accessToken, String refreshToken, String tokenType, Long expiresIn);
+    LoginRes createLoginResponse(String accessToken, String refreshToken, String tokenType, Long expiresIn, Integer id, String name);
 
     @Named("createUserResponse")
     @Mapping(target = "roles", source = "roles", qualifiedByName = "createRoleResList")
@@ -28,6 +28,7 @@ public interface UserTransform {
     List<UserRes> createUserResponseList(List<UserAit> userAits);
 
     @Named("mappingUserAit")
+    @Mapping(target = "balance", source = "amount")
     UserAit mappingUserAitFromUserReq(UserReq userReq);
 
     @Mapping(target = "id", ignore = true)

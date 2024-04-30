@@ -41,7 +41,7 @@ public class PermissionCoreImpl implements PermissionCore {
         String refreshToken = jwtUtils.createRefreshToken(user.getId(), user.getName(), user.getEmail());
         return responseHelper.createResponseDetail(ResponseEnum.SUCCESS,
                 userTransform.createLoginResponse(accessToken, refreshToken, TokenTypeEnum.ACCESS_TOKEN.name(),
-                        properties.getJwtProperties().getAccessTokenExpirationTime()));
+                        properties.getJwtProperties().getAccessTokenExpirationTime(), user.getId(), user.getName()));
     }
 
     private UserAit validateUser(String username) {

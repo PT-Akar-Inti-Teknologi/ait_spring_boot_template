@@ -23,6 +23,9 @@ import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.lifecycle.Startables;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 /**
  * @author febrihasan
  */
@@ -77,15 +80,18 @@ public abstract class BaseIntegrationTest {
     public void fetchAccessToken() throws Exception {
 
         // WHEN
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/auth/login")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{" +
-                            "\"username\":\"admin\",\n" +
-                            "\"password\":\"password\""
-                        + "}");
+                .content("{\n" +
+                        "    \"username\": \"ADMIN\",\n" +
+                        "    \"password\": \"password\"\n" +
+                        "}");
 
         // GIVEN
-        MvcResult mvcResult = getMockMvc().perform(requestBuilder).andReturn();
+        MvcResult mvcResult = getMockMvc().perform(requestBuilder)
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
 
         String content = mvcResult.getResponse().getContentAsString();
 

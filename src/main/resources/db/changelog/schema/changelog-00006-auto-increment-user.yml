@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: auto_increment_user
+      author: ait
+      changes:
+        - createSequence:
+            sequenceName: user_ait_seq
+            startValue: 2
+            incrementBy: 1
