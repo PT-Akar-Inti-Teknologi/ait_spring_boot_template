@@ -7,7 +7,7 @@ import org.ait.project.guideline.example.modules.appversion.exception.AppVersion
 import org.ait.project.guideline.example.modules.appversion.module.jpa.entity.AppVersion;
 import org.ait.project.guideline.example.modules.appversion.module.jpa.entity.ProjectionsVersion;
 import org.ait.project.guideline.example.modules.appversion.module.jpa.repository.AppVersionRepository;
-import org.ait.project.guideline.example.modules.appversion.service.adapter.query.AppVersionAdapter;
+import org.ait.project.guideline.example.modules.appversion.service.adapter.query.AppVersionQueryAdapter;
 import org.ait.project.guideline.example.modules.masterdata.dto.param.AppVersionParam;
 import org.ait.project.guideline.example.modules.masterdata.model.specification.AppVersionSpecification;
 import org.ait.project.guideline.example.shared.constant.enums.TypeAppVersion;
@@ -23,7 +23,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class AppVersionAdapterImpl implements AppVersionAdapter {
+public class AppVersionQueryAdapterImpl implements AppVersionQueryAdapter {
 
     private final AppVersionRepository appVersionRepository;
 

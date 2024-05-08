@@ -6,7 +6,7 @@ import org.ait.project.guideline.example.modules.appversion.dto.response.AppVers
 import org.ait.project.guideline.example.modules.appversion.dto.response.AppVersionTypeResponse;
 import org.ait.project.guideline.example.modules.appversion.exception.AppVersionNotFoundException;
 import org.ait.project.guideline.example.modules.appversion.module.jpa.entity.AppVersion;
-import org.ait.project.guideline.example.modules.appversion.service.adapter.query.AppVersionAdapter;
+import org.ait.project.guideline.example.modules.appversion.service.adapter.query.AppVersionQueryAdapter;
 import org.ait.project.guideline.example.modules.appversion.service.core.AppVersionCore;
 import org.ait.project.guideline.example.modules.appversion.transform.AppVersionTransform;
 import org.ait.project.guideline.example.modules.masterdata.dto.param.AppVersionParam;
@@ -34,16 +34,16 @@ public class AppVersionCoreImpl implements AppVersionCore {
 
     private final ResponseHelper responseHelper;
 
-    private final AppVersionAdapter appVersionAdapter;
+    private final AppVersionQueryAdapter appVersionQueryAdapter;
 
     private final AppVersionTransform appVersionTransform;
 
     @Override
     public ResponseEntity<ResponseTemplate<ResponseDetail<AppVersionTypeResponse>>> getAppVersion(String version, String platform) {
-        AppVersion appVersion = appVersionAdapter.getAppVersion(version, platform);
+        AppVersion appVersion = appVersionQueryAdapter.getAppVersion(version, platform);
 
         if(appVersion.getVersion() == null){
-            AppVersion appVersionCondition = appVersionAdapter.getLastVersion(platform);
+            AppVersion appVersionCondition = appVersionQueryAdapter.getLastVersion(platform);
             DefaultArtifactVersion currentVersion = new DefaultArtifactVersion(version);
             DefaultArtifactVersion lastVersion = new DefaultArtifactVersion(appVersionCondition.getVersion());
             if(currentVersion.compareTo(lastVersion) < 0){
@@ -58,7 +58,7 @@ public class AppVersionCoreImpl implements AppVersionCore {
 
     @Override
     public ResponseEntity<ResponseTemplate<ResponseCollection<AppVersionDetailResponse>>> getAllAppVersion(Pageable pageable, AppVersionParam appVersionParam) {
-        Page<AppVersionDetailResponse> appVersionRequests = appVersionAdapter.getPage(pageable, appVersionParam)
+        Page<AppVersionDetailResponse> appVersionRequests = appVersionQueryAdapter.getPage(pageable, appVersionParam)
                 .map(appVersionTransform::createResponse);
         return responseHelper.createResponseCollection(ResponseEnum.SUCCESS, appVersionRequests, appVersionRequests.getContent());
     }
@@ -66,10 +66,10 @@ public class AppVersionCoreImpl implements AppVersionCore {
     @Override
     @Transactional
     public ResponseEntity<ResponseTemplate<ResponseCollection<AppVersionDetailResponse>>> saveAppVersions(List<AppVersionDetailResponse> appVersionRequests) {
-        List<AppVersion> appVersionList = appVersionAdapter.saveAllVersion(appVersionTransform.mapListRequestToAppVersion(appVersionRequests));
+        List<AppVersion> appVersionList = appVersionQueryAdapter.saveAllVersion(appVersionTransform.mapListRequestToAppVersion(appVersionRequests));
 
         if(appVersionRequests.size() == 1 && appVersionRequests.get(0).getType().equals(TypeAppVersion.FORCE_UPDATE)){
-            List<AppVersion> versionList = appVersionAdapter.getAllByPlatformAndType(appVersionRequests.get(0).getPlatform(), TypeAppVersion.SOFT_UPDATE);
+            List<AppVersion> versionList = appVersionQueryAdapter.getAllByPlatformAndType(appVersionRequests.get(0).getPlatform(), TypeAppVersion.SOFT_UPDATE);
             DefaultArtifactVersion currentVersion = new DefaultArtifactVersion(appVersionRequests.get(0).getVersion());
             List<AppVersion> listToUpdate = new ArrayList<>();
             for(AppVersion version : versionList){
@@ -82,7 +82,7 @@ public class AppVersionCoreImpl implements AppVersionCore {
             }
 
             if(!listToUpdate.isEmpty()){
-                appVersionAdapter.saveAllVersion(listToUpdate);
+                appVersionQueryAdapter.saveAllVersion(listToUpdate);
             }
         }
 
@@ -91,7 +91,7 @@ public class AppVersionCoreImpl implements AppVersionCore {
 
     @Override
     public ResponseEntity<ResponseTemplate<ResponseDetail<Boolean>>> deleteAppVersion(List<BigInteger> ids) {
-            appVersionAdapter.deleteAppVersion(ids);
+            appVersionQueryAdapter.deleteAppVersion(ids);
         return responseHelper.createResponseDetail(ResponseEnum.SUCCESS, true);
     }
 }

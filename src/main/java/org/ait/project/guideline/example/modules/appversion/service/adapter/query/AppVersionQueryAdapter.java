@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import java.math.BigInteger;
 import java.util.List;
 
-public interface AppVersionAdapter {
+public interface AppVersionQueryAdapter {
 
     AppVersion getAppVersion(String version, String platform);
 
