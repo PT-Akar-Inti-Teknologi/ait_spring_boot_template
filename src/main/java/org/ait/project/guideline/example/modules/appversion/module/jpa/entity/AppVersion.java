@@ -39,4 +39,16 @@ public class AppVersion {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @Override
+    public String toString() {
+        return "AppVersion{" +
+                "id=" + id +
+                ", version='" + version + '\'' +
+                ", platform='" + platform + '\'' +
+                ", type=" + type +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }

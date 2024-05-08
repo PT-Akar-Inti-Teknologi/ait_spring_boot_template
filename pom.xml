@@ -107,7 +107,13 @@
             <scope>runtime</scope>
         </dependency>
         <!--   additional     -->
-
+        <!-- apache artifact -->
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-artifact</artifactId>
+            <version>3.0.3</version>
+        </dependency>
+        <!-- apache artifact -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
