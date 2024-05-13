@@ -1,6 +1,7 @@
 package org.ait.project.guideline.example.modules.banner.service.core.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.ait.library.blob.modules.storageengine.localstorage.service.LocalStorageService;
 import org.ait.project.guideline.example.modules.banner.dto.param.BannerParam;
 import org.ait.project.guideline.example.modules.banner.dto.response.BannerRes;
 import org.ait.project.guideline.example.modules.banner.exception.BannerNotFoundException;
@@ -13,6 +14,7 @@ import org.ait.project.guideline.example.shared.constant.enums.ResponseEnum;
 import org.ait.project.guideline.example.shared.dto.template.ResponseDetail;
 import org.ait.project.guideline.example.shared.dto.template.ResponseTemplate;
 import org.ait.project.guideline.example.shared.utils.response.ResponseHelper;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ public class BannerCoreImpl implements BannerCore {
     private final BannerQueryAdapter bannerQueryAdapter;
 
     private final BannerCommandAdapter bannerCommandAdapter;
+
+    private final LocalStorageService localStorageService;
 
     private final BannerMapper bannerMapper;
 
@@ -45,11 +49,20 @@ public class BannerCoreImpl implements BannerCore {
     }
 
     @Override
-    public ResponseEntity<ResponseTemplate<ResponseDetail<BannerRes>>> getBanner(String id) {
+    public ResponseEntity<Resource> download(String id) {
         Banner banner = bannerQueryAdapter.getById(id).orElseThrow(BannerNotFoundException::new);
-        return responseHelper.createResponseDetail(
-                ResponseEnum.SUCCESS,
-                bannerMapper.convertToRes(banner)
+        return responseHelper.createResponseOctet(
+                banner.getTitle(),
+                localStorageService.downloadFile(banner.getId(), banner.getImageFile())
+        );
+    }
+
+    @Override
+    public ResponseEntity<Resource> downloadThumbnail(String id) {
+        Banner banner = bannerQueryAdapter.getById(id).orElseThrow(BannerNotFoundException::new);
+        return responseHelper.createResponseOctet(
+                banner.getTitle(),
+                localStorageService.downloadFile(banner.getId(), banner.getThumbnailFile())
         );
     }
 

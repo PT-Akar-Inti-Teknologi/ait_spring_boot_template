@@ -3,7 +3,12 @@ package org.ait.project.guideline.example.shared.utils.response;
 import lombok.RequiredArgsConstructor;
 import org.ait.project.guideline.example.shared.constant.enums.ResponseEnum;
 import org.ait.project.guideline.example.shared.dto.template.*;
+import org.springframework.core.io.AbstractResource;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -56,6 +61,24 @@ public class ResponseHelper {
                                 page.getSize(),
                                 page.getTotalElements(),
                                 page.getTotalPages())).orElse(null), contents));
+    }
+
+    public ResponseEntity<Resource> createResponseOctet(String fileId, AbstractResource resource){
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate");
+        headers.add(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION);
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileId+ "\"");
+        headers.add(HttpHeaders.PRAGMA, "no-cache");
+        headers.add(HttpHeaders.EXPIRES, "0");
+
+        ResponseEntity.BodyBuilder body= ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM);
+
+        if(resource instanceof ByteArrayResource arrayResource) {
+            body.contentLength(arrayResource.contentLength());
+        }
+        return body.body(resource);
     }
 
     public Object createResponseErrorTemplate(ResponseEnum invalidParam, ResponseError responseError) {
