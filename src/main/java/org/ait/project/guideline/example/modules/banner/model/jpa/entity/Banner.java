@@ -32,6 +32,9 @@ public class Banner {
     @Column(name = "image_file")
     private String imageFile;
 
+    @Column(name = "thumbnail_file")
+    private String thumbnailFile;
+
     @CreatedDate
     @Column(name = "created_at")
     private ZonedDateTime createdAt;
