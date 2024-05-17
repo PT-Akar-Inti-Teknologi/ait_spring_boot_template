@@ -52,7 +52,7 @@ public class BannerCoreImpl implements BannerCore {
 
         // Create logic to resize file to create thumbnail and upload it
         MultipartFile file = resizeImage(param.getFile());
-        String imageThumbnail = file.getOriginalFilename();
+        String imageThumbnail = file != null ? file.getOriginalFilename() : null ;
         Banner banner = bannerCommandAdapter.save(bannerMapper.convertToEntity(
                 param,
                 null,
