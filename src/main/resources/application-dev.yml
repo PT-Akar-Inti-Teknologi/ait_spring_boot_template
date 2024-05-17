@@ -24,7 +24,5 @@ localstorage:
 thumbnail:
   target-width: 300
   target-height: 300
-  #JPG, BMP, JPEG, WBMP, PNG, and GIF
   format: "JPG"
   quality: 1
-
