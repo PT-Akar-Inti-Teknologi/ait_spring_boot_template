@@ -3,8 +3,6 @@ package org.ait.project.guideline.example.modules.banner.service.core.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
-import org.ait.library.blob.modules.selector.service.FileStorageService;
-import org.ait.library.blob.modules.storageengine.localstorage.service.LocalStorageService;
 import org.ait.project.guideline.example.config.properties.ThumbnailsConfigProperties;
 import org.ait.project.guideline.example.modules.banner.dto.param.BannerParam;
 import org.ait.project.guideline.example.modules.banner.dto.response.BannerRes;
@@ -19,6 +17,7 @@ import org.ait.project.guideline.example.shared.dto.template.MultipartImage;
 import org.ait.project.guideline.example.shared.dto.template.ResponseDetail;
 import org.ait.project.guideline.example.shared.dto.template.ResponseTemplate;
 import org.ait.project.guideline.example.shared.utils.response.ResponseHelper;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -29,6 +28,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +41,6 @@ public class BannerCoreImpl implements BannerCore {
 
     private final BannerCommandAdapter bannerCommandAdapter;
 
-//    private final LocalStorageService localStorageService;
 
     private final BannerMapper bannerMapper;
 
@@ -50,15 +49,14 @@ public class BannerCoreImpl implements BannerCore {
     @Override
     public ResponseEntity<ResponseTemplate<ResponseDetail<BannerRes>>> upload(BannerParam param) {
         // Create logic to upload file
-//        String imageFile = localStorageService.uploadFile(null, param.getFile(), "");
 
         // Create logic to resize file to create thumbnail and upload it
-//        MultipartFile file = resizeImage(imageFile, param.getFile());
-//        String imageThumbnail = localStorageService.uploadFile(null, file, null);
+        MultipartFile file = resizeImage(param.getFile());
+        String imageThumbnail = file.getOriginalFilename();
         Banner banner = bannerCommandAdapter.save(bannerMapper.convertToEntity(
                 param,
                 null,
-                null)
+                imageThumbnail)
         );
 
         return responseHelper.createResponseDetail(
@@ -80,7 +78,7 @@ public class BannerCoreImpl implements BannerCore {
     public ResponseEntity<Resource> downloadThumbnail(String id) {
         Banner banner = bannerQueryAdapter.getById(id).orElseThrow(BannerNotFoundException::new);
         return responseHelper.createResponseOctet(
-                banner.getTitle(), null
+                banner.getTitle(), new ByteArrayResource(banner.getThumbnailFile().getBytes(StandardCharsets.UTF_8))
 //                localStorageService.downloadFile(banner.getId(), banner.getThumbnailFile())
         );
     }
@@ -114,12 +112,12 @@ public class BannerCoreImpl implements BannerCore {
         return responseHelper.createResponseDetail(ResponseEnum.SUCCESS, null);
     }
 
-    private MultipartFile resizeImage(String pathFile, MultipartFile file) {
+    private MultipartFile resizeImage(MultipartFile file) {
         MultipartImage multipartImage = null;
-        BufferedImage originalImage = null;
+        BufferedImage originalImage;
 
         try {
-            File img = new File(pathFile);
+            File img = new File("pathFile");
             originalImage = ImageIO.read(img );
             log.info("Image : "+ originalImage);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
