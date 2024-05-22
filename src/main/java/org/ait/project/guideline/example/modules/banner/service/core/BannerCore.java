@@ -2,9 +2,12 @@ package org.ait.project.guideline.example.modules.banner.service.core;
 
 import org.ait.project.guideline.example.modules.banner.dto.param.BannerParam;
 import org.ait.project.guideline.example.modules.banner.dto.response.BannerRes;
+import org.ait.project.guideline.example.modules.masterdata.dto.param.BannerSpecParam;
+import org.ait.project.guideline.example.shared.dto.template.ResponseCollection;
 import org.ait.project.guideline.example.shared.dto.template.ResponseDetail;
 import org.ait.project.guideline.example.shared.dto.template.ResponseTemplate;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 public interface BannerCore {
@@ -18,5 +21,7 @@ public interface BannerCore {
     ResponseEntity<ResponseTemplate<ResponseDetail<BannerRes>>> update(String id, BannerParam param);
 
     ResponseEntity<ResponseTemplate<ResponseDetail<Object>>> delete(String id);
+
+    ResponseEntity<ResponseTemplate<ResponseCollection<BannerRes>>> getAllBanner(Pageable pageable, BannerSpecParam bannerSpecParam);
 
 }

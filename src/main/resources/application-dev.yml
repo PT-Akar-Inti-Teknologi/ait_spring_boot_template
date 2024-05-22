@@ -26,3 +26,4 @@ thumbnail:
   target-height: 300
   format: "JPG"
   quality: 1
+  directory: /test

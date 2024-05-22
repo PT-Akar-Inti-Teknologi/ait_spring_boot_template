@@ -18,4 +18,6 @@ public class ThumbnailsConfigProperties {
     private String format;
 
     private int quality;
+
+    private String directory;
 }

@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_table_app_banner
+      author: fajar
+      changes:
+        - createTable:
+            schemaName: ait
+            tableName: banner
+            columns:
+              - column:
+                  name: id
+                  type: varchar(255)
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: title
+                  type: varchar(255)
+              - column:
+                  name: description
+                  type: varchar(255)
+              - column:
+                  name: image_file
+                  type: varchar(255)
+              - column:
+                  name: thumbnail_file
+                  type: varchar(255)
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+              - column:
+                  name: updated_at
+                  type: timestamp with time zone
