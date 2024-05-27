@@ -6,6 +6,8 @@ import org.ait.project.guideline.example.modules.banner.model.jpa.repository.Ban
 import org.ait.project.guideline.example.modules.banner.service.adapter.command.BannerCommandAdapter;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class BannerCommandAdapterImpl implements BannerCommandAdapter {
@@ -14,6 +16,9 @@ public class BannerCommandAdapterImpl implements BannerCommandAdapter {
 
     @Override
     public Banner save(Banner banner) {
+        if(banner.getId() == null){
+            banner.setId(UUID.randomUUID().toString());
+        }
         return bannerRepository.save(banner);
     }
 

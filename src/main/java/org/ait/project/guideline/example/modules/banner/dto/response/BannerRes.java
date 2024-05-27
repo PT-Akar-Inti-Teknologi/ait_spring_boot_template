@@ -3,7 +3,7 @@ package org.ait.project.guideline.example.modules.banner.dto.response;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Data
 public class BannerRes {
@@ -24,9 +24,9 @@ public class BannerRes {
     private String thumbnailFile;
 
     @JsonProperty("created_at")
-    private ZonedDateTime createdAt;
+    private LocalDateTime createdAt;
 
     @JsonProperty("updated_at")
-    private ZonedDateTime updatedAt;
+    private LocalDateTime updatedAt;
 
 }

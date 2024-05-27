@@ -12,3 +12,18 @@ spring:
 restclient:
   url:
     reqres: https://reqres.in/api
+
+filestorage:
+  platform: local
+
+localstorage:
+  file-path: C:\Users\devop\Downloads\AIT - Project - Lib\image
+  access-public: false
+  public-base-url: http://localhost/
+
+thumbnail:
+  target-width: 300
+  target-height: 300
+  format: "JPG"
+  quality: 1
+  directory: /test
