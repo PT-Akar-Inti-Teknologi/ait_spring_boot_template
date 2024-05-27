@@ -14,7 +14,7 @@ pipeline {
       RUN_BUILD= sh script: "git log -1 | grep -E -- '--run-build'", returnStatus: true
       MERGE_ID= sh script: "git log -1 | grep '^    Merge pull request' | cut -d# -f2 | cut -d' ' -f1", returnStdout: true
       PROJECT_ID = sh(script: "echo ${env.GIT_URL} | cut -d/ -f5 | cut -d. -f1", returnStdout: true).trim()
-      VOLUME_MOUNT_PATH = "/srv/ait_spring_boot_template"
+      VOLUME_MOUNT_PATH = "/srv/ait-spring-boot-template"
       VOLUME_SUB_PATH = "ait_spring_boot_template-dev/"
     }
 
