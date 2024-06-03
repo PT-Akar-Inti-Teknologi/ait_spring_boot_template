@@ -11,7 +11,6 @@ import org.ait.project.guideline.example.modules.appversion.service.core.AppVers
 import org.ait.project.guideline.example.modules.appversion.transform.AppVersionTransform;
 import org.ait.project.guideline.example.modules.masterdata.dto.param.AppVersionParam;
 import org.ait.project.guideline.example.shared.constant.enums.ResponseEnum;
-import org.ait.project.guideline.example.shared.constant.enums.TypeAppVersion;
 import org.ait.project.guideline.example.shared.dto.template.ResponseCollection;
 import org.ait.project.guideline.example.shared.dto.template.ResponseDetail;
 import org.ait.project.guideline.example.shared.dto.template.ResponseTemplate;
@@ -24,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,18 +38,16 @@ public class AppVersionCoreImpl implements AppVersionCore {
 
     @Override
     public ResponseEntity<ResponseTemplate<ResponseDetail<AppVersionTypeResponse>>> getAppVersion(String version, String platform) {
-        AppVersion appVersion = appVersionQueryAdapter.getAppVersion(version, platform);
-
-        if(appVersion.getVersion() == null){
-            AppVersion appVersionCondition = appVersionQueryAdapter.getLastVersion(platform);
-            DefaultArtifactVersion currentVersion = new DefaultArtifactVersion(version);
-            DefaultArtifactVersion lastVersion = new DefaultArtifactVersion(appVersionCondition.getVersion());
-            if(currentVersion.compareTo(lastVersion) < 0){
-                appVersion.setType(appVersionCondition.getType());
-            }else{
-                throw new AppVersionNotFoundException();
-            }
+        AppVersion appVersion = new AppVersion();
+        AppVersion appVersionCondition = appVersionQueryAdapter.getLastVersion(platform);
+        DefaultArtifactVersion currentVersion = new DefaultArtifactVersion(version);
+        DefaultArtifactVersion lastVersion = new DefaultArtifactVersion(appVersionCondition.getVersion());
+        if(currentVersion.compareTo(lastVersion) < 0){
+            appVersion.setType(appVersionCondition.getType());
+        }else{
+            throw new AppVersionNotFoundException();
         }
+
 
         return responseHelper.createResponseDetail(ResponseEnum.SUCCESS, appVersionTransform.createResponseAppVersion(appVersion));
     }
@@ -67,24 +63,7 @@ public class AppVersionCoreImpl implements AppVersionCore {
     @Transactional
     public ResponseEntity<ResponseTemplate<ResponseCollection<AppVersionDetailResponse>>> saveAppVersions(List<AppVersionDetailResponse> appVersionRequests) {
         List<AppVersion> appVersionList = appVersionQueryAdapter.saveAllVersion(appVersionTransform.mapListRequestToAppVersion(appVersionRequests));
-
-        if(appVersionRequests.size() == 1 && appVersionRequests.get(0).getType().equals(TypeAppVersion.FORCE_UPDATE)){
-            List<AppVersion> versionList = appVersionQueryAdapter.getAllByPlatformAndType(appVersionRequests.get(0).getPlatform(), TypeAppVersion.SOFT_UPDATE);
-            DefaultArtifactVersion currentVersion = new DefaultArtifactVersion(appVersionRequests.get(0).getVersion());
-            List<AppVersion> listToUpdate = new ArrayList<>();
-            for(AppVersion version : versionList){
-                DefaultArtifactVersion dataVersion = new DefaultArtifactVersion(version.getVersion());
-                if(dataVersion.compareTo(currentVersion) < 0){
-                    log.info("id : "+ version.getId() + " and version : "+ version.getVersion() );
-                    version.setType(TypeAppVersion.FORCE_UPDATE);
-                    listToUpdate.add(version);
-                }
-            }
-
-            if(!listToUpdate.isEmpty()){
-                appVersionQueryAdapter.saveAllVersion(listToUpdate);
-            }
-        }
+        appVersionQueryAdapter.saveAllVersion(appVersionList);
 
         return responseHelper.createResponseCollection(ResponseEnum.SUCCESS, null, appVersionTransform.mapListAppVersionToResponse(appVersionList));
     }
