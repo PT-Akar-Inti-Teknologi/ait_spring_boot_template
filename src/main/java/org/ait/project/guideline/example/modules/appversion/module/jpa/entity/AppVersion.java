@@ -35,6 +35,7 @@ public class AppVersion {
     private TypeAppVersion type;
 
     @CreationTimestamp
+    @Column(name= "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
