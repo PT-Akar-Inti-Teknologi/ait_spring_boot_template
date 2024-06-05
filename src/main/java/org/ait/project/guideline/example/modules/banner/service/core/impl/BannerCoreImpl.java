@@ -82,7 +82,7 @@ public class BannerCoreImpl implements BannerCore {
         Banner banner = bannerQueryAdapter.getById(id).orElseThrow(BannerNotFoundException::new);
         return responseHelper.createResponseOctet(
                 banner.getTitle(),
-                storageService.downloadFile(banner.getId(), banner.getThumbnailFile())
+                storageService.downloadFile(banner.getThumbnailFile(), thumbnailsProperties.getDirectory())
         );
     }
 
