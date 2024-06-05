@@ -17,7 +17,7 @@ filestorage:
   platform: local
 
 localstorage:
-  file-path: C:\Users\devop\Downloads\AIT - Project - Lib\image
+  file-path: /srv/ait_spring_boot_template
   access-public: false
   public-base-url: http://localhost/
 
