@@ -144,7 +144,6 @@ public class BannerCoreImpl implements BannerCore {
         }
         return multipartImage;
     }
-
     private void deleteFileBanner(Banner existingData){
         storageService.deleteFile(existingData.getImageFile(), thumbnailsProperties.getDirectory());
         storageService.deleteFile(existingData.getThumbnailFile(), thumbnailsProperties.getDirectory());
