@@ -90,8 +90,11 @@ public class BannerCoreImpl implements BannerCore {
     @Transactional
     public ResponseEntity<ResponseTemplate<ResponseDetail<BannerRes>>> update(String id, BannerParam param) {
         Banner existingData = bannerQueryAdapter.getById(id).orElseThrow(BannerNotFoundException::new);
-        String imageFile = storageService.uploadFile(null, param.getFile(), thumbnailsProperties.getDirectory());
-        String thumbnailFile = storageService.uploadFile(null, resizeImage(param.getFile()), thumbnailsProperties.getDirectory());
+
+        String fileName = System.currentTimeMillis()+"_"+param.getFile().getOriginalFilename();
+        String imageFile = storageService.uploadFile(fileName, param.getFile(), thumbnailsProperties.getDirectory());
+        String thumbnailFile = storageService.uploadFile("Thumbnail_"+fileName, resizeImage(param.getFile()), thumbnailsProperties.getDirectory());
+
         Banner updatedData = bannerCommandAdapter.save(bannerMapper.update(
                 existingData,
                 param,
