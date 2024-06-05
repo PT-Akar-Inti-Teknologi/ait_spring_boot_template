@@ -53,8 +53,9 @@ public class BannerCoreImpl implements BannerCore {
 
     @Override
     public ResponseEntity<ResponseTemplate<ResponseDetail<BannerRes>>> upload(BannerParam param) {
-        String imageFile = storageService.uploadFile(null, param.getFile(), thumbnailsProperties.getDirectory());
-        String thumbnailFile = storageService.uploadFile(null, resizeImage(param.getFile()), thumbnailsProperties.getDirectory());
+        String fileName = System.currentTimeMillis()+"_"+param.getFile().getOriginalFilename();
+        String imageFile = storageService.uploadFile(fileName, param.getFile(), thumbnailsProperties.getDirectory());
+        String thumbnailFile = storageService.uploadFile("Thumbnail_"+fileName, resizeImage(param.getFile()), thumbnailsProperties.getDirectory());
         Banner banner = bannerCommandAdapter.save(bannerMapper.convertToEntity(
                 param,
                 imageFile,
@@ -139,7 +140,7 @@ public class BannerCoreImpl implements BannerCore {
                     file.getOriginalFilename(), file.getContentType(), outputStream.size());
 
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Failed to resize image", e);
         }
         return multipartImage;
     }
