@@ -33,7 +33,7 @@ public class ControllerAdvisor {
     public <T> ResponseEntity<ResponseTemplate<T>> handleException(Exception ex,
                                                                    HttpServletRequest request,
                                                                    HttpServletResponse response) {
-        Arrays.stream(ex.getStackTrace()).limit(5).forEach(stackTraceElement -> {
+        Arrays.stream(ex.getStackTrace()).limit(20).forEach(stackTraceElement -> {
             log.error(stackTraceElement.toString());
         });
         log.error(ex.getMessage());
