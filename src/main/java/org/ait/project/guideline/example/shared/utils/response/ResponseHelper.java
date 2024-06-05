@@ -63,22 +63,39 @@ public class ResponseHelper {
                                 page.getTotalPages())).orElse(null), contents));
     }
 
-    public ResponseEntity<Resource> createResponseOctet(String fileId, AbstractResource resource){
+    public ResponseEntity<Resource> createResponseOctet(String fileName, AbstractResource resource) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate");
         headers.add(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION);
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileId+ "\"");
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName+ "\"");
         headers.add(HttpHeaders.PRAGMA, "no-cache");
         headers.add(HttpHeaders.EXPIRES, "0");
 
+        MediaType mediaType = getMediaType(fileName);
         ResponseEntity.BodyBuilder body= ResponseEntity.ok()
                 .headers(headers)
-                .contentType(MediaType.APPLICATION_OCTET_STREAM);
+                .contentType(mediaType);
 
         if(resource instanceof ByteArrayResource arrayResource) {
             body.contentLength(arrayResource.contentLength());
         }
         return body.body(resource);
+    }
+
+    private MediaType getMediaType(String fileName) {
+        String type = fileName.split("\\.")[1];
+        switch (type) {
+            case "png":
+                return MediaType.IMAGE_PNG;
+            case "jpg":
+                return MediaType.IMAGE_JPEG;
+            case "jpeg":
+                return MediaType.IMAGE_JPEG;
+            case "gif":
+                return MediaType.IMAGE_GIF;
+            default:
+                return MediaType.APPLICATION_OCTET_STREAM;
+        }
     }
 
     public Object createResponseErrorTemplate(ResponseEnum invalidParam, ResponseError responseError) {
