@@ -87,6 +87,7 @@ public class StorageService extends EngineStorageAbstract {
     }
   }
 
+
   @Override
   public String getPublicUrl(String fileId, String fileDir) {
     log.info("Local Storage Get Public URL");
