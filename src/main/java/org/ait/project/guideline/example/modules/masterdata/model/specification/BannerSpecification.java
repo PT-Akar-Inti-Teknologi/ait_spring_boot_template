@@ -15,20 +15,14 @@ import java.util.List;
 public class BannerSpecification  extends BaseSpecification {
     @Override
     protected List<String> getDefaultSearchField() {
-        return List.of("id","title","description","image_file","thumbnail_file");
+        return List.of("title","description");
     }
 
     public Specification<Banner> predicate(BannerSpecParam param) {
         return (root, query, builder) -> {
             List<Predicate> predicates = new ArrayList<>();
-            List<Predicate> customSearchPredicate = new ArrayList<>();
-            customSearchPredicate.add(builder.like(builder.lower(root.get("title").as(String.class)),
-                    ("%" + param.getSearch() + "%").toLowerCase()));
 
-            filterSearch(root, predicates, builder, param.getSearch(), customSearchPredicate);
-
-            Order order = builder.asc(root.get("id"));
-            query.orderBy(order);
+            filterSearch(root, predicates, builder, param.getSearch(), new ArrayList<>());
 
             return builder.and(predicates.toArray(new Predicate[] {}));
         };
