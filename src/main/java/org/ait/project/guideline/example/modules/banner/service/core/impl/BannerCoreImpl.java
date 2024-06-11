@@ -78,6 +78,7 @@ public class BannerCoreImpl implements BannerCore {
     }
   }
 
+
   private void validateParamImage(MultipartFile file){
     if(file == null){
       throw new BannerFileEmptyException();
