@@ -82,7 +82,7 @@ public class BannerCoreImpl implements BannerCore {
     if(file == null){
       throw new BannerFileEmptyException();
     }else {
-      if(Objects.requireNonNull(file.getContentType()).startsWith("image/")){
+      if(!Objects.requireNonNull(file.getContentType()).startsWith("image/")){
         throw new FileNotImageException();
       }
     }
