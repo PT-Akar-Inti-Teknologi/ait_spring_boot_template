@@ -14,6 +14,8 @@ public class BannerParam {
 
     private String description;
 
+
+
     @ConstructorProperties({"file", "title", "description"})
     public BannerParam(MultipartFile file, String title, String description) {
         this.file = file;

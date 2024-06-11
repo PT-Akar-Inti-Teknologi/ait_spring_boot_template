@@ -80,7 +80,7 @@ public class BannerCoreImpl implements BannerCore {
 
 
   private void validateParamImage(MultipartFile file){
-    if(file == null){
+    if(file == null || file.isEmpty()){
       throw new BannerFileEmptyException();
     }else {
       if(!Objects.requireNonNull(file.getContentType()).startsWith("image/")){
