@@ -3,6 +3,7 @@ package org.ait.project.guideline.example.modules.banner.service.core.impl;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 import javax.imageio.ImageIO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,12 @@ import org.ait.project.guideline.example.blob.modules.storageengine.localstorage
 import org.ait.project.guideline.example.config.properties.ThumbnailsConfigProperties;
 import org.ait.project.guideline.example.modules.banner.dto.param.BannerParam;
 import org.ait.project.guideline.example.modules.banner.dto.response.BannerRes;
+import org.ait.project.guideline.example.modules.banner.exception.BannerFileEmptyException;
 import org.ait.project.guideline.example.modules.banner.exception.BannerNotFoundException;
+import org.ait.project.guideline.example.modules.banner.exception.DescriptionEmptyException;
+import org.ait.project.guideline.example.modules.banner.exception.FileNotImageException;
+import org.ait.project.guideline.example.modules.banner.exception.TitleEmptyException;
+import org.ait.project.guideline.example.modules.banner.exception.TitleLargerThanException;
 import org.ait.project.guideline.example.modules.banner.model.jpa.entity.Banner;
 import org.ait.project.guideline.example.modules.banner.service.adapter.command.BannerCommandAdapter;
 import org.ait.project.guideline.example.modules.banner.service.adapter.query.BannerQueryAdapter;
@@ -50,8 +56,41 @@ public class BannerCoreImpl implements BannerCore {
 
   private final ThumbnailsConfigProperties thumbnailsProperties;
 
+  private void validateUploadParam(BannerParam bannerParam){
+    validateTitle(bannerParam.getTitle());
+    validateDescription(bannerParam.getDescription());
+    validateParamImage(bannerParam.getFile());
+  }
+
+  private void validateDescription(String description) {
+    if(description == null || description.isEmpty()){
+      throw new DescriptionEmptyException();
+    }
+  }
+
+  private void validateTitle(String title) {
+    if(title == null || title.isEmpty()){
+      throw new TitleEmptyException();
+    }else {
+      if(title.length() > 255){
+        throw new TitleLargerThanException();
+      }
+    }
+  }
+
+  private void validateParamImage(MultipartFile file){
+    if(file == null){
+      throw new BannerFileEmptyException();
+    }else {
+      if(Objects.requireNonNull(file.getContentType()).startsWith("image/")){
+        throw new FileNotImageException();
+      }
+    }
+  }
+
   @Override
   public ResponseEntity<ResponseTemplate<ResponseDetail<BannerRes>>> upload(BannerParam param) {
+    validateUploadParam(param);
     String fileName = System.currentTimeMillis() + "_" + param.getFile().getOriginalFilename();
     String imageFile =
         storageService.uploadFile(fileName, param.getFile(), thumbnailsProperties.getDirectory());
@@ -85,8 +124,8 @@ public class BannerCoreImpl implements BannerCore {
   @Transactional
   public ResponseEntity<ResponseTemplate<ResponseDetail<BannerRes>>> update(String id,
                                                                             BannerParam param) {
+    validateUploadParam(param);
     Banner existingData = bannerQueryAdapter.getById(id).orElseThrow(BannerNotFoundException::new);
-
     String fileName = System.currentTimeMillis() + "_" + param.getFile().getOriginalFilename();
     String imageFile =
         storageService.uploadFile(fileName, param.getFile(), thumbnailsProperties.getDirectory());
