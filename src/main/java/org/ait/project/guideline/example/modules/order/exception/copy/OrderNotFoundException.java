@@ -7,10 +7,10 @@ import org.ait.project.guideline.example.shared.constant.enums.ResponseEnum;
 @Slf4j
 public class OrderNotFoundException extends ModuleException {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	public OrderNotFoundException() {
-        super(ResponseEnum.USER_NOT_FOUND);
-        log.error("User not found");
-    }
+  public OrderNotFoundException() {
+    super(ResponseEnum.USER_NOT_FOUND);
+    log.error("User not found");
+  }
 }

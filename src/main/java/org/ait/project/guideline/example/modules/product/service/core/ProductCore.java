@@ -8,11 +8,14 @@ import org.springframework.http.ResponseEntity;
 
 
 public interface ProductCore {
-	
-    ResponseEntity<ResponseTemplate<ResponseCollection<ProductRes>>> getProduct();
-    
-    ResponseEntity<ResponseTemplate<ResponseDetail<ProductRes>>> updateQuantity(String id);
-    
-    ResponseEntity<ResponseTemplate<ResponseCollection<ProductRes>>> getProducts(String search, String sort, Integer pageNumber, Integer pageSize);
+
+  ResponseEntity<ResponseTemplate<ResponseCollection<ProductRes>>> getProduct();
+
+  ResponseEntity<ResponseTemplate<ResponseDetail<ProductRes>>> updateQuantity(String id);
+
+  ResponseEntity<ResponseTemplate<ResponseCollection<ProductRes>>> getProducts(String search,
+                                                                               String sort,
+                                                                               Integer pageNumber,
+                                                                               Integer pageSize);
 
 }

@@ -56,34 +56,34 @@ public class BannerCoreImpl implements BannerCore {
 
   private final ThumbnailsConfigProperties thumbnailsProperties;
 
-  private void validateUploadParam(BannerParam bannerParam){
+  private void validateUploadParam(BannerParam bannerParam) {
     validateTitle(bannerParam.getTitle());
     validateDescription(bannerParam.getDescription());
     validateParamImage(bannerParam.getFile());
   }
 
   private void validateDescription(String description) {
-    if(description == null || description.isEmpty()){
+    if (description == null || description.isEmpty()) {
       throw new DescriptionEmptyException();
     }
   }
 
   private void validateTitle(String title) {
-    if(title == null || title.isEmpty()){
+    if (title == null || title.isEmpty()) {
       throw new TitleEmptyException();
-    }else {
-      if(title.length() > 255){
+    } else {
+      if (title.length() > 255) {
         throw new TitleLargerThanException();
       }
     }
   }
 
 
-  private void validateParamImage(MultipartFile file){
-    if(file == null || file.isEmpty()){
+  private void validateParamImage(MultipartFile file) {
+    if (file == null || file.isEmpty()) {
       throw new BannerFileEmptyException();
-    }else {
-      if(!Objects.requireNonNull(file.getContentType()).startsWith("image/")){
+    } else {
+      if (!Objects.requireNonNull(file.getContentType()).startsWith("image/")) {
         throw new FileNotImageException();
       }
     }
@@ -182,6 +182,7 @@ public class BannerCoreImpl implements BannerCore {
     }
     return multipartImage;
   }
+
   private void deleteFileBanner(Banner existingData) {
     storageService.deleteFile(existingData.getImageFile(), thumbnailsProperties.getDirectory());
     storageService.deleteFile(existingData.getThumbnailFile(), thumbnailsProperties.getDirectory());

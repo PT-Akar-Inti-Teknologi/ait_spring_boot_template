@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ReqresInterceptor implements RequestInterceptor {
 
-    // get data intercept from applicationProperties
-    private final ApplicationProperties applicationProperties;
+  // get data intercept from applicationProperties
+  private final ApplicationProperties applicationProperties;
 
-    @Override
-    public void apply(RequestTemplate requestTemplate) {
-        //TODO set your intercept request here
-        requestTemplate.header("set-your-header","your-value");
-    }
+  @Override
+  public void apply(RequestTemplate requestTemplate) {
+    //TODO set your intercept request here
+    requestTemplate.header("set-your-header", "your-value");
+  }
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class ProductReq {
-    
-    @JsonProperty("quantity")
-    private Integer quantity;
+
+  @JsonProperty("quantity")
+  private Integer quantity;
 }

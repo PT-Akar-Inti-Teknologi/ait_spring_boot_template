@@ -8,9 +8,9 @@ import lombok.Data;
 @Data
 public class PermissionRes {
 
-    private String id;
+  private String id;
 
-    @JsonProperty("menu")
-    private String menu;
+  @JsonProperty("menu")
+  private String menu;
 
 }

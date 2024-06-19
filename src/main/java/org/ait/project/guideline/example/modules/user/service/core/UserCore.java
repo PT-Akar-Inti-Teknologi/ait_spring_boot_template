@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface UserCore {
 
-    ResponseEntity<ResponseTemplate<ResponseCollection<UserRes>>> getUsers(Pageable pageable, UserParam userParam);
+  ResponseEntity<ResponseTemplate<ResponseCollection<UserRes>>> getUsers(Pageable pageable,
+                                                                         UserParam userParam);
 
 }

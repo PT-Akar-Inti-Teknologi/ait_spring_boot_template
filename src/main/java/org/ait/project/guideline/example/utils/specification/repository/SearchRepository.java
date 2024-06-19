@@ -7,7 +7,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SearchRepository extends JpaRepository<Search, String>, JpaSpecificationExecutor<Search> {
+public interface SearchRepository
+    extends JpaRepository<Search, String>, JpaSpecificationExecutor<Search> {
 
-	Search findByClassName(String className);
+  Search findByClassName(String className);
 }

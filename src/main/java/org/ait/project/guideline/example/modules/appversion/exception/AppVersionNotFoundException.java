@@ -7,8 +7,8 @@ import org.ait.project.guideline.example.shared.constant.enums.ResponseEnum;
 @Slf4j
 public class AppVersionNotFoundException extends ModuleException {
 
-    public AppVersionNotFoundException() {
-        super(ResponseEnum.APP_VERSION_NOT_FOUND);
-        log.error("Version not found");
-    }
+  public AppVersionNotFoundException() {
+    super(ResponseEnum.APP_VERSION_NOT_FOUND);
+    log.error("Version not found");
+  }
 }

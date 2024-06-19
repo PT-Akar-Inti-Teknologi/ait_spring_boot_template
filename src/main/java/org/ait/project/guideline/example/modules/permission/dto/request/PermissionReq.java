@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class PermissionReq {
 
-    private Integer menuId;
+  private Integer menuId;
 
-    private String menuName;
+  private String menuName;
 
-    private String action;
+  private String action;
 }

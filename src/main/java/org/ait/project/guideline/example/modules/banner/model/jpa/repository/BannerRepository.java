@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BannerRepository extends JpaRepository<Banner, String>, JpaSpecificationExecutor<Banner> {
+public interface BannerRepository
+    extends JpaRepository<Banner, String>, JpaSpecificationExecutor<Banner> {
 }

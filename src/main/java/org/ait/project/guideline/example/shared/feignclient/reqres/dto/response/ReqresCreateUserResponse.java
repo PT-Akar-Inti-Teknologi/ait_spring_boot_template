@@ -4,17 +4,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class ReqresCreateUserResponse{
+public class ReqresCreateUserResponse {
 
-	@JsonProperty("createdAt")
-	private String createdAt;
+  @JsonProperty("createdAt")
+  private String createdAt;
 
-	@JsonProperty("name")
-	private String name;
+  @JsonProperty("name")
+  private String name;
 
-	@JsonProperty("id")
-	private String id;
+  @JsonProperty("id")
+  private String id;
 
-	@JsonProperty("job")
-	private String job;
+  @JsonProperty("job")
+  private String job;
 }

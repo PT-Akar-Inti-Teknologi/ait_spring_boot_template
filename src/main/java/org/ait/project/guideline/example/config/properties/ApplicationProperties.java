@@ -10,6 +10,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ApplicationProperties {
 
-    private final RestClientProperties restClient;
+  private final RestClientProperties restClient;
 
 }

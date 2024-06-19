@@ -4,8 +4,8 @@ import org.ait.project.guideline.example.modules.product.model.jpa.entity.Produc
 
 
 public interface ProductCommandAdapter {
-	
-	 Product updateQuantity(String id);
 
-   
+  Product updateQuantity(String id);
+
+
 }

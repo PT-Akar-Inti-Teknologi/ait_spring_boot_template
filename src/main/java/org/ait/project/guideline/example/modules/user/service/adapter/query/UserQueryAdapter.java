@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface UserQueryAdapter {
 
-	Page<User> getPage(Pageable pageable, UserParam userParam);
+  Page<User> getPage(Pageable pageable, UserParam userParam);
 
 
 }

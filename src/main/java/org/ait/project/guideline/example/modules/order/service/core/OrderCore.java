@@ -8,12 +8,13 @@ import org.springframework.http.ResponseEntity;
 
 
 public interface OrderCore {
-	
-    ResponseEntity<ResponseTemplate<ResponseDetail<OrderRes>>> addOrder(OrderReq orderReq);
-    
-    ResponseEntity<ResponseTemplate<ResponseDetail<OrderRes>>> submitOrder(String id, OrderReq orderReq) ;
-    
-    ResponseEntity<ResponseTemplate<ResponseDetail<String>>> payOrder(String id, OrderReq orderReq) ;
+
+  ResponseEntity<ResponseTemplate<ResponseDetail<OrderRes>>> addOrder(OrderReq orderReq);
+
+  ResponseEntity<ResponseTemplate<ResponseDetail<OrderRes>>> submitOrder(String id,
+                                                                         OrderReq orderReq);
+
+  ResponseEntity<ResponseTemplate<ResponseDetail<String>>> payOrder(String id, OrderReq orderReq);
 
 
 }
