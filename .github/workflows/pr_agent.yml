@@ -18,6 +18,5 @@ jobs:
         env:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CONFIG.MODEL: "gpt-3.5-turbo-16k"
-          CONFIG.MODEL_TURBO: "gpt-3.5-turbo-16k"
+          CONFIG.MAX_MODEL_TOKENS : "200000"
           
