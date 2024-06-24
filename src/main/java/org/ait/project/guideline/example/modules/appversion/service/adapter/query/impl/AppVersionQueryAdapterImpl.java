@@ -37,7 +37,7 @@ public class AppVersionQueryAdapterImpl implements AppVersionQueryAdapter {
     @Override
     public Page<AppVersion> getPage(Pageable pageable, AppVersionParam appVersionParam) {
         return appVersionRepository.findAll(appVersionSpecification.predicate(appVersionParam),
-                appVersionSpecification.buildPageRequest(pageable));
+                appVersionSpecification.defaultPageSort(pageable));
     }
 
     @Override
