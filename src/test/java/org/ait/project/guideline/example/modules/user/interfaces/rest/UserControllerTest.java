@@ -31,10 +31,14 @@ class UserControllerTest extends BaseIntegrationTest {
     private UserRepository userRepository;
 
     @Test
-    void addUser() throws Exception {
-        // WHEN
+    void testFlowUser_Success() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        /** User Access Token **/
         fetchAccessToken();
-        MockHttpServletRequestBuilder requestBuilder =
+
+        /** Endpoint Add User **/
+        MockHttpServletRequestBuilder requestAddUser =
                 buildPostRequest("/user","{\n" +
                         "    \"name\":\"TESTING\",\n" +
                         "    \"email\":\"test@integration.org\",\n" +
@@ -42,7 +46,72 @@ class UserControllerTest extends BaseIntegrationTest {
                         "    \"rolesId\":[2]\n" +
                         "}", getAccessToken());
 
-        // THEN
+        getMockMvc().perform(requestAddUser)
+                // print response
+                .andDo(print())
+                // status response
+                .andExpect(status().isOk())
+                // content type
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().string(Matchers.containsString("response_schema")))
+                .andExpect(content().string(Matchers.containsString("response_code")))
+                .andExpect(content().string(Matchers.containsString("response_message")))
+                // response body / output
+                .andExpect(jsonPath("$.response_output.detail.id").exists())
+                .andExpect(jsonPath("$.response_output.detail.name").exists())
+                .andReturn();
+
+        /** Endpoint Get All Users **/
+        MockHttpServletRequestBuilder requestAllUsers =
+                buildGetRequest("/user/all", getAccessToken());
+
+        MvcResult mvcResultAll = getMockMvc().perform(requestAllUsers)
+                // print response
+                .andDo(print())
+                // status response
+                .andExpect(status().isOk())
+                // content type
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().string(Matchers.containsString("response_schema")))
+                .andExpect(content().string(Matchers.containsString("response_code")))
+                .andExpect(content().string(Matchers.containsString("response_message")))
+                // response body / output
+                .andExpect(jsonPath("$.response_output.list.content[0].id").exists())
+                .andExpect(jsonPath("$.response_output.list.content[0].name").exists())
+                .andReturn();
+
+        String content = mvcResultAll.getResponse().getContentAsString();
+        ResponseTemplate<ResponseCollection<UserRes>> responseTemplate = objectMapper.readValue(content, new TypeReference<>() {});
+        String id = responseTemplate.getResponseOutput().getList().getContent().get(0).getId();
+
+        /** Endpoint Detail User **/
+        MockHttpServletRequestBuilder requestDetailUser =
+                buildGetRequest("/user/" + id, getAccessToken());
+
+        MvcResult mvcResultDetail = getMockMvc().perform(requestDetailUser)
+                // print response
+                .andDo(print())
+                // status response
+                .andExpect(status().isOk())
+                // content type
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().string(Matchers.containsString("response_schema")))
+                .andExpect(content().string(Matchers.containsString("response_code")))
+                .andExpect(content().string(Matchers.containsString("response_message")))
+                // response body / output
+                .andExpect(jsonPath("$.response_output.detail.id").exists())
+                .andExpect(jsonPath("$.response_output.detail.name").exists())
+                .andReturn();
+
+        /** Endpoint Update User **/
+        MockHttpServletRequestBuilder requestBuilder =
+                buildPutRequest("/user/" + id,"{\n" +
+                        "    \"name\":\"TESTING\",\n" +
+                        "    \"email\":\"test@integration.org\",\n" +
+                        "    \"amount\":11500,\n" +
+                        "    \"rolesId\":[2]\n" +
+                        "}", getAccessToken());
+
         getMockMvc().perform(requestBuilder)
                 // print response
                 .andDo(print())
@@ -57,71 +126,36 @@ class UserControllerTest extends BaseIntegrationTest {
                 .andExpect(jsonPath("$.response_output.detail.id").exists())
                 .andExpect(jsonPath("$.response_output.detail.name").exists())
                 .andReturn();
-    }
 
-    @Test
-    void getUsers() throws Exception {
-        //WHEN
-        fetchAccessToken();
-        MockHttpServletRequestBuilder requestBuilder =
-                buildGetRequest("/user/all", getAccessToken());
-
-        // THEN
-        MvcResult mvcResult = getMockMvc().perform(requestBuilder)
-                // print response
-                .andDo(print())
-                // status response
-                .andExpect(status().isOk())
-                // content type
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().string(Matchers.containsString("response_schema")))
-                .andExpect(content().string(Matchers.containsString("response_code")))
-                .andExpect(content().string(Matchers.containsString("response_message")))
-                .andReturn();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String content = mvcResult.getResponse().getContentAsString();
-        ResponseTemplate<ResponseCollection<UserRes>> responseTemplate = objectMapper.readValue(content, new TypeReference<>() {});
-        String id = responseTemplate.getResponseOutput().getList().getContent().get(0).getId();
-        String name = responseTemplate.getResponseOutput().getList().getContent().get(0).getName();
-
-        UserAit expectedUser = userRepository.findById(Integer.parseInt(id)).orElseThrow(UserNotFoundException::new);
-        assertEquals(expectedUser.getId(), Integer.parseInt(id));
-        assertEquals(expectedUser.getName(), name);
-    }
-
-    @Test
-    void getDetailUser() throws Exception {
-        // WHEN
-        fetchAccessToken();
-        MockHttpServletRequestBuilder requestBuilder =
-                buildPostRequest("/user","{\n" +
+        /** Endpoint Add Balance **/
+        MockHttpServletRequestBuilder requestBalance =
+                buildPutRequest("/user/addBalance/" + id, "{\n" +
                         "    \"name\":\"TESTING\",\n" +
                         "    \"email\":\"test@integration.org\",\n" +
-                        "    \"amount\":100,\n" +
+                        "    \"amount\":13000,\n" +
                         "    \"rolesId\":[2]\n" +
                         "}", getAccessToken());
 
-        // THEN
-        MvcResult mvcResult = getMockMvc().perform(requestBuilder)
+        getMockMvc().perform(requestBalance)
                 // print response
                 .andDo(print())
                 // status response
                 .andExpect(status().isOk())
+                // content type
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().string(Matchers.containsString("response_schema")))
+                .andExpect(content().string(Matchers.containsString("response_code")))
+                .andExpect(content().string(Matchers.containsString("response_message")))
+                // response body / output
+                .andExpect(jsonPath("$.response_output.detail.id").exists())
+                .andExpect(jsonPath("$.response_output.detail.name").exists())
                 .andReturn();
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String content = mvcResult.getResponse().getContentAsString();
-        ResponseTemplate<ResponseDetail<UserRes>> responseTemplate = objectMapper.readValue(content, new TypeReference<>() {});
-        String id = responseTemplate.getResponseOutput().getDetail().getId();
-        String name = responseTemplate.getResponseOutput().getDetail().getName();
+        /** Endpoint Delete User **/
+        MockHttpServletRequestBuilder requestDelete =
+                buildDeleteRequest("/user/" + id, getAccessToken());
 
-        // WHEN
-        MockHttpServletRequestBuilder requestBuilder2 =
-                buildGetRequest("/user/" + id, getAccessToken());
-
-        // THEN
-        getMockMvc().perform(requestBuilder2)
+        getMockMvc().perform(requestDelete)
                 // print response
                 .andDo(print())
                 // status response
@@ -132,192 +166,14 @@ class UserControllerTest extends BaseIntegrationTest {
                 .andExpect(content().string(Matchers.containsString("response_code")))
                 .andExpect(content().string(Matchers.containsString("response_message")))
                 .andReturn();
+
+        content = mvcResultDetail.getResponse().getContentAsString();
+        ResponseTemplate<ResponseDetail<UserRes>> responseTemplate2 = objectMapper.readValue(content, new TypeReference<>() {});
+        id = responseTemplate2.getResponseOutput().getDetail().getId();
+        String name = responseTemplate2.getResponseOutput().getDetail().getName();
 
         UserAit expectedUser = userRepository.findById(Integer.parseInt(id)).orElseThrow(UserNotFoundException::new);
         assertEquals(expectedUser.getId(), Integer.parseInt(id));
         assertEquals(expectedUser.getName(), name);
-    }
-
-    @Test
-    void fetchUser() throws Exception {
-        // WHEN
-        fetchAccessToken();
-        MockHttpServletRequestBuilder requestBuilder =
-                buildGetRequest("/user/fetch", getAccessToken());
-    }
-
-    @Test
-    void updateUser() throws Exception {
-        // WHEN
-        fetchAccessToken();
-        MockHttpServletRequestBuilder requestBuilder =
-                buildPostRequest("/user","{\n" +
-                        "    \"name\":\"TESTING\",\n" +
-                        "    \"email\":\"test@integration.org\",\n" +
-                        "    \"amount\":100,\n" +
-                        "    \"rolesId\":[1]\n" +
-                        "}", getAccessToken());
-
-        // THEN
-        MvcResult mvcResult = getMockMvc().perform(requestBuilder)
-                // print response
-                .andDo(print())
-                // status response
-                .andExpect(status().isOk())
-                .andReturn();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String content = mvcResult.getResponse().getContentAsString();
-        ResponseTemplate<ResponseDetail<UserRes>> responseTemplate = objectMapper.readValue(content, new TypeReference<>() {});
-        String id = responseTemplate.getResponseOutput().getDetail().getId();
-
-        MockHttpServletRequestBuilder requestBuilder2 =
-                buildPutRequest("/user/" + id,"{\n" +
-                        "    \"name\":\"TESTING2\",\n" +
-                        "    \"email\":\"test2@integration.org\",\n" +
-                        "    \"amount\":200,\n" +
-                        "    \"rolesId\":[1,2]\n" +
-                        "}", getAccessToken());
-
-        // THEN
-        MvcResult mvcResult2 = getMockMvc().perform(requestBuilder2)
-                // print response
-                .andDo(print())
-                // status response
-                .andExpect(status().isOk())
-                // content type
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().string(Matchers.containsString("response_schema")))
-                .andExpect(content().string(Matchers.containsString("response_code")))
-                .andExpect(content().string(Matchers.containsString("response_message")))
-                .andReturn();
-
-        String content2 = mvcResult2.getResponse().getContentAsString();
-        ResponseTemplate<ResponseDetail<UserRes>> responseTemplate2 = objectMapper.readValue(content2, new TypeReference<>() {});
-        String id2 = responseTemplate2.getResponseOutput().getDetail().getId();
-
-        UserAit expectedUser = userRepository.findById(Integer.parseInt(id)).orElseThrow(UserNotFoundException::new);
-        assertEquals(expectedUser.getId(), Integer.parseInt(id2));
-    }
-
-    @Test
-    void addBalance() throws Exception {
-        // WHEN
-        fetchAccessToken();
-        MockHttpServletRequestBuilder requestBuilder =
-                buildPostRequest("/user","{\n" +
-                        "    \"name\":\"TESTING3\",\n" +
-                        "    \"email\":\"test3@integration.org\",\n" +
-                        "    \"amount\":300,\n" +
-                        "    \"rolesId\":[1]\n" +
-                        "}", getAccessToken());
-
-        // THEN
-        MvcResult mvcResult = getMockMvc().perform(requestBuilder)
-                // print response
-                .andDo(print())
-                // status response
-                .andExpect(status().isOk())
-                .andReturn();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String content = mvcResult.getResponse().getContentAsString();
-        ResponseTemplate<ResponseDetail<UserRes>> responseTemplate = objectMapper.readValue(content, new TypeReference<>() {});
-        String id = responseTemplate.getResponseOutput().getDetail().getId();
-
-        // WHEN
-        MockHttpServletRequestBuilder requestBuilder2 =
-                buildGetRequest("/user/" + id, getAccessToken());
-
-        // THEN
-        getMockMvc().perform(requestBuilder2)
-                // print response
-                .andDo(print())
-                // status response
-                .andExpect(status().isOk())
-                // content type
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().string(Matchers.containsString("response_schema")))
-                .andExpect(content().string(Matchers.containsString("response_code")))
-                .andExpect(content().string(Matchers.containsString("response_message")))
-                .andReturn();
-
-        // WHEN
-        MockHttpServletRequestBuilder requestBuilder3 =
-                buildPutRequest("/user/addBalance/" + id, "{\n" +
-                        "    \"name\":\"TESTING3\",\n" +
-                        "    \"email\":\"test3@integration.org\",\n" +
-                        "    \"amount\":13000,\n" +
-                        "    \"rolesId\":[1]\n" +
-                        "}", getAccessToken());
-
-        MvcResult mvcResult3 = getMockMvc().perform(requestBuilder3)
-                // print response
-                .andDo(print())
-                // status response
-                .andExpect(status().isOk())
-                .andReturn();
-
-        String content2 = mvcResult3.getResponse().getContentAsString();
-        ResponseTemplate<ResponseDetail<UserRes>> responseTemplate2 = objectMapper.readValue(content2, new TypeReference<>() {});
-        String id2 = responseTemplate2.getResponseOutput().getDetail().getId();
-
-        UserAit expectedUser = userRepository.findById(Integer.parseInt(id2)).orElseThrow(UserNotFoundException::new);
-        assertEquals(expectedUser.getId(), Integer.parseInt(id2));
-    }
-
-    @Test
-    void deleteUser() throws Exception {
-        // WHEN
-        fetchAccessToken();
-        MockHttpServletRequestBuilder requestBuilder =
-                buildPostRequest("/user","{\n" +
-                        "    \"name\":\"TESTING4\",\n" +
-                        "    \"email\":\"test4@integration.org\",\n" +
-                        "    \"amount\":400,\n" +
-                        "    \"rolesId\":[2,1]\n" +
-                        "}", getAccessToken());
-
-        // THEN
-        MvcResult mvcResult = getMockMvc().perform(requestBuilder)
-                // print response
-                .andDo(print())
-                // status response
-                .andExpect(status().isOk())
-                .andReturn();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String content = mvcResult.getResponse().getContentAsString();
-        ResponseTemplate<ResponseDetail<UserRes>> responseTemplate = objectMapper.readValue(content, new TypeReference<>() {});
-        String id = responseTemplate.getResponseOutput().getDetail().getId();
-
-        // WHEN
-        MockHttpServletRequestBuilder requestBuilder2 =
-                buildGetRequest("/user/" + id, getAccessToken());
-
-        // THEN
-        getMockMvc().perform(requestBuilder2)
-                // print response
-                .andDo(print())
-                // status response
-                .andExpect(status().isOk())
-                .andReturn();
-
-        // WHEN
-        MockHttpServletRequestBuilder requestBuilder3 =
-                buildDeleteRequest("/user/" + id, getAccessToken());
-
-        // THEN
-        getMockMvc().perform(requestBuilder3)
-                // print response
-                .andDo(print())
-                // status response
-                .andExpect(status().isOk())
-                // content type
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().string(Matchers.containsString("response_schema")))
-                .andExpect(content().string(Matchers.containsString("response_code")))
-                .andExpect(content().string(Matchers.containsString("response_message")))
-                .andReturn();
     }
 }
