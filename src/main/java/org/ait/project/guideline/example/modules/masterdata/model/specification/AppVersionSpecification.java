@@ -2,34 +2,35 @@ package org.ait.project.guideline.example.modules.masterdata.model.specification
 
 import jakarta.persistence.criteria.Order;
 import jakarta.persistence.criteria.Predicate;
-import java.util.ArrayList;
-import java.util.List;
 import org.ait.project.guideline.example.modules.appversion.module.jpa.entity.AppVersion;
 import org.ait.project.guideline.example.modules.masterdata.dto.param.AppVersionParam;
 import org.ait.project.guideline.example.shared.utils.specification.BaseSpecification;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
-public class AppVersionSpecification extends BaseSpecification {
-  @Override
-  protected List<String> getDefaultSearchField() {
-    return List.of("id", "version", "platform", "force_update", "soft_update");
-  }
+public class AppVersionSpecification  extends BaseSpecification {
+    @Override
+    protected List<String> getDefaultSearchField() {
+        return List.of("id","version","platform","type");
+    }
 
-  public Specification<AppVersion> predicate(AppVersionParam param) {
-    return (root, query, builder) -> {
-      List<Predicate> predicates = new ArrayList<>();
-      List<Predicate> customSearchPredicate = new ArrayList<>();
-      customSearchPredicate.add(builder.like(builder.lower(root.get("version").as(String.class)),
-          ("%" + param.getSearch() + "%").toLowerCase()));
+    public Specification<AppVersion> predicate(AppVersionParam param) {
+        return (root, query, builder) -> {
+            List<Predicate> predicates = new ArrayList<>();
 
-      filterSearch(root, predicates, builder, param.getSearch(), customSearchPredicate);
+            filterSearch(root, predicates, builder, param.getSearch(), new ArrayList<>());
 
-      Order order = builder.asc(root.get("id"));
-      query.orderBy(order);
+            return builder.and(predicates.toArray(new Predicate[] {}));
+        };
+    }
 
-      return builder.and(predicates.toArray(new Predicate[] {}));
-    };
-  }
+    public PageRequest defaultPageSort(Pageable pageable) {
+        return buildPageRequest(pageable, "created_at");
+    }
 }
