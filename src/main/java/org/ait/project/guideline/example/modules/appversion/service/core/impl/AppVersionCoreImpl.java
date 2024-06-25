@@ -63,8 +63,6 @@ public class AppVersionCoreImpl implements AppVersionCore {
     @Transactional
     public ResponseEntity<ResponseTemplate<ResponseCollection<AppVersionDetailResponse>>> saveAppVersions(List<AppVersionDetailResponse> appVersionRequests) {
         List<AppVersion> appVersionList = appVersionQueryAdapter.saveAllVersion(appVersionTransform.mapListRequestToAppVersion(appVersionRequests));
-        appVersionQueryAdapter.saveAllVersion(appVersionList);
-
         return responseHelper.createResponseCollection(ResponseEnum.SUCCESS, null, appVersionTransform.mapListAppVersionToResponse(appVersionList));
     }
 
