@@ -10,7 +10,6 @@ COPY src/main/resources /app/src/main/resources
 # Download dependencies (cache step)
 RUN mvn dependency:go-offline
 
-
 COPY . .
 
 RUN mvn clean compile
