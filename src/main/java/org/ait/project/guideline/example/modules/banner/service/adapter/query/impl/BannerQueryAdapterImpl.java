@@ -27,7 +27,7 @@ public class BannerQueryAdapterImpl implements BannerQueryAdapter {
   @Override
   public Page<Banner> getPage(Pageable pageable, BannerSpecParam bannerSpecParam) {
     return bannerRepository.findAll(bannerSpecification.predicate(bannerSpecParam),
-        bannerSpecification.buildPageRequest(pageable));
+        bannerSpecification.defaultPageSort(pageable));
   }
 
 }

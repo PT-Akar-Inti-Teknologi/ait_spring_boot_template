@@ -1,13 +1,15 @@
 package org.ait.project.guideline.example.config;
 
 import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
 @Configuration
 public class MessageConfig {
 
-  // @Bean
+  @Bean(name = "messageSource")
   public MessageSource messageSource() {
     ReloadableResourceBundleMessageSource messageSource =
         new ReloadableResourceBundleMessageSource();
@@ -16,7 +18,8 @@ public class MessageConfig {
     return messageSource;
   }
 
-  //@Bean(name = "responseMessageSource")
+  @Primary
+  @Bean(name = "responseMessageSource")
   public MessageSource responseMessageSource() {
     ReloadableResourceBundleMessageSource messageSource =
         new ReloadableResourceBundleMessageSource();

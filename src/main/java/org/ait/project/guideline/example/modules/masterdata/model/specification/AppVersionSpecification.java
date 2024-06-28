@@ -1,12 +1,12 @@
 package org.ait.project.guideline.example.modules.masterdata.model.specification;
 
-import jakarta.persistence.criteria.Order;
 import jakarta.persistence.criteria.Predicate;
 import org.ait.project.guideline.example.modules.appversion.module.jpa.entity.AppVersion;
 import org.ait.project.guideline.example.modules.masterdata.dto.param.AppVersionParam;
 import org.ait.project.guideline.example.shared.utils.specification.BaseSpecification;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +31,6 @@ public class AppVersionSpecification  extends BaseSpecification {
     }
 
     public PageRequest defaultPageSort(Pageable pageable) {
-        return buildPageRequest(pageable, "created_at");
+        return buildPageRequest(pageable, "created_at", Sort.Direction.DESC);
     }
 }

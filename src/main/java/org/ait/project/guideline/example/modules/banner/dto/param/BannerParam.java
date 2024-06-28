@@ -12,10 +12,17 @@ public class BannerParam {
 
   private String description;
 
-  public BannerParam(MultipartFile file, String title, String description) {
+  private String deeplink;
+
+  private Integer index;
+
+  public BannerParam(MultipartFile file, String title, String description, String deeplink, Integer index) {
     this.file = file;
     this.title = title;
     this.description = description;
+    this.deeplink = deeplink;
+    this.index = index;
+
   }
 
 }

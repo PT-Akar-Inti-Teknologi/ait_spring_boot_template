@@ -47,4 +47,10 @@ public class Banner {
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 
+  @Column(name = "deeplink")
+  private String deeplink;
+
+  @Column(name = "index")
+  private Integer index;
+
 }

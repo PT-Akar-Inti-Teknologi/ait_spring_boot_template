@@ -12,12 +12,7 @@ import org.ait.project.guideline.example.blob.modules.storageengine.localstorage
 import org.ait.project.guideline.example.config.properties.ThumbnailsConfigProperties;
 import org.ait.project.guideline.example.modules.banner.dto.param.BannerParam;
 import org.ait.project.guideline.example.modules.banner.dto.response.BannerRes;
-import org.ait.project.guideline.example.modules.banner.exception.BannerFileEmptyException;
-import org.ait.project.guideline.example.modules.banner.exception.BannerNotFoundException;
-import org.ait.project.guideline.example.modules.banner.exception.DescriptionEmptyException;
-import org.ait.project.guideline.example.modules.banner.exception.FileNotImageException;
-import org.ait.project.guideline.example.modules.banner.exception.TitleEmptyException;
-import org.ait.project.guideline.example.modules.banner.exception.TitleLargerThanException;
+import org.ait.project.guideline.example.modules.banner.exception.*;
 import org.ait.project.guideline.example.modules.banner.model.jpa.entity.Banner;
 import org.ait.project.guideline.example.modules.banner.service.adapter.command.BannerCommandAdapter;
 import org.ait.project.guideline.example.modules.banner.service.adapter.query.BannerQueryAdapter;
@@ -57,9 +52,11 @@ public class BannerCoreImpl implements BannerCore {
   private final ThumbnailsConfigProperties thumbnailsProperties;
 
   private void validateUploadParam(BannerParam bannerParam) {
+    validateParamImage(bannerParam.getFile());
     validateTitle(bannerParam.getTitle());
     validateDescription(bannerParam.getDescription());
-    validateParamImage(bannerParam.getFile());
+    validateDeeplink(bannerParam.getDeeplink());
+    validateIndex(bannerParam.getIndex());
   }
 
   private void validateDescription(String description) {
@@ -78,6 +75,17 @@ public class BannerCoreImpl implements BannerCore {
     }
   }
 
+  private void validateDeeplink(String deeplink) {
+    if (deeplink == null || deeplink.isEmpty()) {
+      throw new DeeplinkEmptyException();
+    }
+  }
+
+  private void validateIndex(Integer index) {
+    if (index == null) {
+      throw new IndexEmptyException();
+    }
+  }
 
   private void validateParamImage(MultipartFile file) {
     if (file == null || file.isEmpty()) {
@@ -86,6 +94,19 @@ public class BannerCoreImpl implements BannerCore {
       if (!Objects.requireNonNull(file.getContentType()).startsWith("image/")) {
         throw new FileNotImageException();
       }
+    }
+
+    checkContentFile(file);
+  }
+
+  private void checkContentFile(MultipartFile file) {
+    try {
+      BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
+      if (bufferedImage == null) {
+        throw new FileContentNotImageException();
+      }
+    } catch (IOException e) {
+      throw new BannerFileEmptyException();
     }
   }
 

@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: change_table_banner_add_deeplink_and_index
+      author: ait
+      changes:
+        - addColumn:
+            schemaName: ait
+            tableName: banner
+            columns:
+              - column:
+                  name: deeplink
+                  type: varchar(255)
+        - addColumn:
+            schemaName: ait
+            tableName: banner
+            columns:
+              - column:
+                  name: index
+                  type: integer
