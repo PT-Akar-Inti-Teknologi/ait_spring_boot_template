@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.lang.module.ModuleDescriptor.Version;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +34,8 @@ public class AppVersionQueryAdapterImpl implements AppVersionQueryAdapter {
     public AppVersion getAppVersion(String version, String platform) {
         return appVersionRepository.findByVersionAndPlatformIgnoreCase(version, platform).orElse(new AppVersion());
     }
+
+
 
     @Override
     public Page<AppVersion> getPage(Pageable pageable, AppVersionParam appVersionParam) {
@@ -82,5 +85,10 @@ public class AppVersionQueryAdapterImpl implements AppVersionQueryAdapter {
     @Override
     public List<AppVersion> getAllByPlatformAndType(String platform, TypeAppVersion typeAppVersion) {
         return appVersionRepository.findAllByPlatformIgnoreCaseAndType(platform, typeAppVersion);
+    }
+
+    @Override
+    public Optional<AppVersion> findById(BigInteger id) {
+        return appVersionRepository.findById(id);
     }
 }

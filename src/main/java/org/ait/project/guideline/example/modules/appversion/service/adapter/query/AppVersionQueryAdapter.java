@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 
 public interface AppVersionQueryAdapter {
 
@@ -22,4 +23,6 @@ public interface AppVersionQueryAdapter {
     AppVersion getLastVersion(String platform);
 
     List<AppVersion> getAllByPlatformAndType(String platform, TypeAppVersion typeAppVersion);
+
+    Optional<AppVersion> findById(BigInteger id);
 }

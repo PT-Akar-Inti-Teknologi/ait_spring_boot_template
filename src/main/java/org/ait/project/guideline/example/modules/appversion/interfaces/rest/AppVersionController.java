@@ -34,6 +34,20 @@ public class AppVersionController {
         return appVersionCore.getAppVersion(version, platform);
     }
 
+    @Operation(summary = "API to Check Version")
+    @GetMapping("/check")
+    public ResponseEntity<ResponseTemplate<ResponseDetail<AppVersionTypeResponse>>> checkVersion(
+            @RequestParam("version") String version,
+            @RequestParam("platform") String platform){
+        return appVersionCore.getAppVersion(version, platform);
+    }
+
+    @Operation(summary = "API to get Detail by ID")
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseTemplate<ResponseDetail<AppVersionDetailResponse>>> getDetail(
+            @PathVariable("id") BigInteger id) {
+        return appVersionCore.getDetail(id);
+    }
 
     @Operation(summary = "API to get All Version")
     @GetMapping("/all")

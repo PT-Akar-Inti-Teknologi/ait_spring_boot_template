@@ -15,6 +15,7 @@ import java.util.List;
 public interface AppVersionCore {
 
     ResponseEntity<ResponseTemplate<ResponseDetail<AppVersionTypeResponse>>> getAppVersion(String version, String platform);
+    ResponseEntity<ResponseTemplate<ResponseDetail<AppVersionDetailResponse>>> getDetail(BigInteger id);
 
     ResponseEntity<ResponseTemplate<ResponseCollection<AppVersionDetailResponse>>> getAllAppVersion(Pageable pageable, AppVersionParam appVersionParam);
 
