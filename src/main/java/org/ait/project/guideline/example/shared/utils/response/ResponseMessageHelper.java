@@ -6,8 +6,6 @@ import org.ait.project.guideline.example.shared.dto.template.ResponseSchema;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
-import java.util.Locale;
-
 @Service
 @RequiredArgsConstructor
 public class ResponseMessageHelper {
@@ -21,6 +19,6 @@ public class ResponseMessageHelper {
 
   private String getMessage(String code) {
     //return responseMessageSource.getMessage(code, null, Locale.getDefault());
-	  return code;
+    return code;
   }
 }

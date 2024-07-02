@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "restclient")
 public class RestClientProperties {
 
-    private Url url;
+  private Url url;
 
-    @Data
-    public class Url{
-        private String reqres;
-    }
+  @Data
+  public class Url {
+    private String reqres;
+  }
 }

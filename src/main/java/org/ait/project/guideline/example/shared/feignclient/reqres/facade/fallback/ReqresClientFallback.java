@@ -5,8 +5,6 @@ import org.ait.project.guideline.example.shared.feignclient.reqres.facade.Reqres
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
 @Slf4j
 public class ReqresClientFallback implements FallbackFactory<ReqresClient> {
@@ -18,6 +16,6 @@ public class ReqresClientFallback implements FallbackFactory<ReqresClient> {
       return Optional.empty();
     };
   }*/
-	  return null;
+    return null;
   }
 }

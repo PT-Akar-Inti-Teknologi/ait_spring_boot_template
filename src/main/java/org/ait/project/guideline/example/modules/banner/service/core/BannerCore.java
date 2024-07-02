@@ -12,16 +12,17 @@ import org.springframework.http.ResponseEntity;
 
 public interface BannerCore {
 
-    ResponseEntity<ResponseTemplate<ResponseDetail<BannerRes>>> upload(BannerParam param);
+  ResponseEntity<ResponseTemplate<ResponseDetail<BannerRes>>> upload(BannerParam param);
 
-    ResponseEntity<Resource> download(String id);
+  ResponseEntity<Resource> download(String id);
 
-    ResponseEntity<Resource> downloadThumbnail(String id);
+  ResponseEntity<Resource> downloadThumbnail(String id);
 
-    ResponseEntity<ResponseTemplate<ResponseDetail<BannerRes>>> update(String id, BannerParam param);
+  ResponseEntity<ResponseTemplate<ResponseDetail<BannerRes>>> update(String id, BannerParam param);
 
-    ResponseEntity<ResponseTemplate<ResponseDetail<Object>>> delete(String id);
+  ResponseEntity<ResponseTemplate<ResponseDetail<Object>>> delete(String id);
 
-    ResponseEntity<ResponseTemplate<ResponseCollection<BannerRes>>> getAllBanner(Pageable pageable, BannerSpecParam bannerSpecParam);
+  ResponseEntity<ResponseTemplate<ResponseCollection<BannerRes>>> getAllBanner(Pageable pageable,
+                                                                               BannerSpecParam bannerSpecParam);
 
 }

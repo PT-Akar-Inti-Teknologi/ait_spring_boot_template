@@ -1,15 +1,17 @@
 package org.ait.project.guideline.example.modules.product.model.jpa.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 
 
 @Getter
@@ -20,15 +22,15 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "product", schema = "ait")
 public class Product {
-    @Id
-    @GeneratedValue
-    private String id;
+  @Id
+  @GeneratedValue
+  private String id;
 
-    private String name;
+  private String name;
 
-    private Integer quantity;
-    
-    @CreatedDate
-    private LocalDateTime createdAt;
+  private Integer quantity;
+
+  @CreatedDate
+  private LocalDateTime createdAt;
 
 }

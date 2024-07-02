@@ -4,8 +4,8 @@ import org.ait.project.guideline.example.modules.banner.model.jpa.entity.Banner;
 
 public interface BannerCommandAdapter {
 
-    Banner save(Banner banner);
+  Banner save(Banner banner);
 
-    void delete(Banner banner);
+  void delete(Banner banner);
 
 }

@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseCollection<T>{
+public class ResponseCollection<T> {
 
-	@JsonProperty("list")
-	private ResponseCollectionContent<T> list;
+  @JsonProperty("list")
+  private ResponseCollectionContent<T> list;
 }

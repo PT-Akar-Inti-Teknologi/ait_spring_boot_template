@@ -8,8 +8,8 @@ import org.ait.project.guideline.example.shared.constant.enums.TypeAppVersion;
 @Data
 public class AppVersionTypeResponse {
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("type")
-    private TypeAppVersion type;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  @JsonProperty("type")
+  private TypeAppVersion type;
 
 }

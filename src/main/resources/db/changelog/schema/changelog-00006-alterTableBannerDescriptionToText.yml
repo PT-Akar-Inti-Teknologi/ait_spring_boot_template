@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: init_table_app_banner
+      author: fajar
+      changes:
+        - modifyDataType:
+            schemaName: ait
+            tableName: banner
+            columnName: description
+            newDataType: text

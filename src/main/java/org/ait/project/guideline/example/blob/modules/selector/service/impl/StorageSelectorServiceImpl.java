@@ -1,13 +1,12 @@
 package org.ait.project.guideline.example.blob.modules.selector.service.impl;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.ait.project.guideline.example.blob.modules.selector.config.FilestorageProp;
 import org.ait.project.guideline.example.blob.modules.selector.service.StorageSelectorService;
 import org.ait.project.guideline.example.blob.shared.enums.PlatformEnum;
 import org.ait.project.guideline.example.blob.shared.exception.PlatformNotFoundException;
 import org.ait.project.guideline.example.blob.shared.serviceskelenton.EngineStorageService;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 public class StorageSelectorServiceImpl implements StorageSelectorService {

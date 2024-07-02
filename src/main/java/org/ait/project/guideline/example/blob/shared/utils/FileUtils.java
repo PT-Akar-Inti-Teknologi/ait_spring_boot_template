@@ -1,11 +1,10 @@
 package org.ait.project.guideline.example.blob.shared.utils;
 
+import java.security.SecureRandom;
 import org.ait.project.guideline.example.blob.shared.enums.PlatformEnum;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.security.SecureRandom;
 
 public class FileUtils {
 
@@ -34,8 +33,8 @@ public class FileUtils {
   }
 
   public static String getBasePath(String string) {
-    if(string.startsWith("/")){
-      string = string.replaceFirst("/","");
+    if (string.startsWith("/")) {
+      string = string.replaceFirst("/", "");
     }
     if (!StringUtils.hasLength(string)) {
       return "";

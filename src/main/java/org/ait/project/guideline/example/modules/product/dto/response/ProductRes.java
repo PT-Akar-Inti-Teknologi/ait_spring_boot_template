@@ -7,15 +7,14 @@ import lombok.Data;
 @Data
 public class ProductRes {
 
-    @JsonProperty("id")
-    private String id;
+  @JsonProperty("id")
+  private String id;
 
-    @JsonProperty("name")
-    private String name;
+  @JsonProperty("name")
+  private String name;
 
-    @JsonProperty("quantity")
-    private Integer quantity;
+  @JsonProperty("quantity")
+  private Integer quantity;
 
- 
 
 }

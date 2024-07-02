@@ -1,6 +1,7 @@
 package org.ait.project.guideline.example.blob.modules.selector.config;
 
 import jakarta.annotation.PostConstruct;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ait.project.guideline.example.blob.config.GlobalConfig;
@@ -15,8 +16,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.List;
 
 @Slf4j
 @Configuration

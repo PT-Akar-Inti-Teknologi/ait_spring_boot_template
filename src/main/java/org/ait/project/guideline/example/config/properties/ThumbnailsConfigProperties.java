@@ -11,13 +11,13 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "thumbnail")
 public class ThumbnailsConfigProperties {
 
-    private int targetWidth;
+  private int targetWidth;
 
-    private int targetHeight;
+  private int targetHeight;
 
-    private String format;
+  private String format;
 
-    private int quality;
+  private int quality;
 
-    private String directory;
+  private String directory;
 }

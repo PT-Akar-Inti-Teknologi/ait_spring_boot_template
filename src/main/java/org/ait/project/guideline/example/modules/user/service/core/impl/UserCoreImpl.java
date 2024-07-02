@@ -1,7 +1,6 @@
 package org.ait.project.guideline.example.modules.user.service.core.impl;
 
 import lombok.RequiredArgsConstructor;
-
 import org.ait.project.guideline.example.modules.masterdata.dto.param.UserParam;
 import org.ait.project.guideline.example.modules.user.dto.response.UserRes;
 import org.ait.project.guideline.example.modules.user.service.adapter.query.UserQueryAdapter;
@@ -21,18 +20,19 @@ import org.springframework.stereotype.Service;
 public class UserCoreImpl implements UserCore {
 
 
-    private final ResponseHelper responseHelper;
-    
-    private final UserTransform userTransform;
-    
-    private final UserQueryAdapter userQueryAdapter;
+  private final ResponseHelper responseHelper;
 
-    @Override
-    public ResponseEntity<ResponseTemplate<ResponseCollection<UserRes>>> getUsers(Pageable pageable, UserParam userParam) {
-    	
-    	Page<UserRes> response =
-    			userQueryAdapter.getPage(pageable, userParam).map(userTransform::createUserResponse);
-    	return responseHelper.createResponseCollection(ResponseEnum.SUCCESS, response,
-    	        response.getContent());
-    }
+  private final UserTransform userTransform;
+
+  private final UserQueryAdapter userQueryAdapter;
+
+  @Override
+  public ResponseEntity<ResponseTemplate<ResponseCollection<UserRes>>> getUsers(Pageable pageable,
+                                                                                UserParam userParam) {
+
+    Page<UserRes> response =
+        userQueryAdapter.getPage(pageable, userParam).map(userTransform::createUserResponse);
+    return responseHelper.createResponseCollection(ResponseEnum.SUCCESS, response,
+        response.getContent());
+  }
 }

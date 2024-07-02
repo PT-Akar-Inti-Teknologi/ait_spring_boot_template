@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PaginationConfig {
-	@JsonProperty("page")
-	private int page;
+  @JsonProperty("page")
+  private int page;
 
-	@JsonProperty("size")
-	private int size;
+  @JsonProperty("size")
+  private int size;
 
-	@JsonProperty("total")
-	private long total;
+  @JsonProperty("total")
+  private long total;
 
-	@JsonProperty("total_pages")
-	private int totalPages;
+  @JsonProperty("total_pages")
+  private int totalPages;
 }
