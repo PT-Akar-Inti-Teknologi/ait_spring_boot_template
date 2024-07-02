@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +51,16 @@ public class AppVersionCoreImpl implements AppVersionCore {
 
 
         return responseHelper.createResponseDetail(ResponseEnum.SUCCESS, appVersionTransform.createResponseAppVersion(appVersion));
+    }
+
+    @Override
+    public ResponseEntity<ResponseTemplate<ResponseDetail<AppVersionDetailResponse>>> getDetail(BigInteger id) {
+        Optional<AppVersion> appVersion = appVersionQueryAdapter.findById(id);
+        if (appVersion.isEmpty()) {
+            throw new AppVersionNotFoundException();
+        }
+
+        return responseHelper.createResponseDetail(ResponseEnum.SUCCESS, appVersionTransform.createResponse(appVersion.get()));
     }
 
     @Override

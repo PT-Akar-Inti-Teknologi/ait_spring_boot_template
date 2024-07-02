@@ -13,8 +13,8 @@ import org.springframework.http.ResponseEntity;
 
 public interface AppVersionCore {
 
-  ResponseEntity<ResponseTemplate<ResponseDetail<AppVersionTypeResponse>>> getAppVersion(
-      String version, String platform);
+  ResponseEntity<ResponseTemplate<ResponseDetail<AppVersionTypeResponse>>> getAppVersion(String version, String platform);
+  ResponseEntity<ResponseTemplate<ResponseDetail<AppVersionDetailResponse>>> getDetail(BigInteger id);
 
   ResponseEntity<ResponseTemplate<ResponseCollection<AppVersionDetailResponse>>> getAllAppVersion(
       Pageable pageable, AppVersionParam appVersionParam);
@@ -23,6 +23,5 @@ public interface AppVersionCore {
       List<AppVersionDetailResponse> appVersionRequests);
 
   ResponseEntity<ResponseTemplate<ResponseDetail<Boolean>>> deleteAppVersion(List<BigInteger> ids);
-
 
 }
