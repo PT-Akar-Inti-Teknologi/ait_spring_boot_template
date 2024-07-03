@@ -16,10 +16,6 @@ public interface AppVersionQueryAdapter {
 
     Page<AppVersion> getPage(Pageable pageable, AppVersionParam appVersionParam);
 
-    List<AppVersion> saveAllVersion(List<AppVersion> appVersionList);
-
-    void deleteAppVersion(List<BigInteger> ids);
-
     AppVersion getLastVersion(String platform);
 
     List<AppVersion> getAllByPlatformAndType(String platform, TypeAppVersion typeAppVersion);

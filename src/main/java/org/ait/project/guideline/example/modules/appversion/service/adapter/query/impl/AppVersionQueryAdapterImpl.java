@@ -44,22 +44,6 @@ public class AppVersionQueryAdapterImpl implements AppVersionQueryAdapter {
     }
 
     @Override
-    public List<AppVersion> saveAllVersion(List<AppVersion> appVersionList) {
-        List<AppVersion> listResponse;
-        try {
-            listResponse = appVersionRepository.saveAllAndFlush(appVersionList);
-        }catch (DataIntegrityViolationException e){
-            throw new AppVersionDuplicateKeyValueException();
-        }
-        return listResponse;
-    }
-
-    @Override
-    public void deleteAppVersion(List<BigInteger> ids) {
-        appVersionRepository.deleteAllById(ids);
-    }
-
-    @Override
     public AppVersion getLastVersion(String platform) {
         List<ProjectionsVersion> versions = appVersionRepository.findVersionByPlatformIgnoreCase(platform);
         if(versions.isEmpty()){
