@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.math.BigInteger;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.ait.project.guideline.example.modules.appversion.dto.request.AppVersionDetailRequest;
 import org.ait.project.guideline.example.modules.appversion.dto.request.AppVersionRequest;
 import org.ait.project.guideline.example.modules.appversion.dto.response.AppVersionDetailResponse;
 import org.ait.project.guideline.example.modules.appversion.dto.response.AppVersionTypeResponse;
@@ -56,11 +57,19 @@ public class AppVersionController {
     return appVersionCore.getAllAppVersion(pageable, versionParam);
   }
 
-  @Operation(summary = "API to post App Version")
+  @Operation(summary = "API to Save App Version")
   @PostMapping("/save")
   public ResponseEntity<ResponseTemplate<ResponseCollection<AppVersionDetailResponse>>> saveAppVersions(
       @RequestBody AppVersionRequest request) {
     return appVersionCore.saveAppVersions(request.getAppVersions());
+  }
+
+  @Operation(summary = "API to Update App Version")
+  @PutMapping("/update/{id}")
+  public ResponseEntity<ResponseTemplate<ResponseDetail<AppVersionDetailResponse>>> saveAppVersions(
+          @PathVariable(name = "id") BigInteger id,
+          @RequestBody AppVersionDetailRequest request) {
+    return appVersionCore.updateAppVersions(id, request);
   }
 
   @Operation(summary = "API to delete App Version")

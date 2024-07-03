@@ -2,7 +2,6 @@ package org.ait.project.guideline.example.modules.appversion.service.adapter.que
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.ait.project.guideline.example.modules.appversion.exception.AppVersionDuplicateKeyValueException;
 import org.ait.project.guideline.example.modules.appversion.exception.AppVersionNotFoundException;
 import org.ait.project.guideline.example.modules.appversion.module.jpa.entity.AppVersion;
 import org.ait.project.guideline.example.modules.appversion.module.jpa.entity.ProjectionsVersion;
@@ -11,7 +10,6 @@ import org.ait.project.guideline.example.modules.appversion.service.adapter.quer
 import org.ait.project.guideline.example.modules.masterdata.dto.param.AppVersionParam;
 import org.ait.project.guideline.example.modules.masterdata.model.specification.AppVersionSpecification;
 import org.ait.project.guideline.example.shared.constant.enums.TypeAppVersion;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -41,22 +39,6 @@ public class AppVersionQueryAdapterImpl implements AppVersionQueryAdapter {
     public Page<AppVersion> getPage(Pageable pageable, AppVersionParam appVersionParam) {
         return appVersionRepository.findAll(appVersionSpecification.predicate(appVersionParam),
                 appVersionSpecification.defaultPageSort(pageable));
-    }
-
-    @Override
-    public List<AppVersion> saveAllVersion(List<AppVersion> appVersionList) {
-        List<AppVersion> listResponse;
-        try {
-            listResponse = appVersionRepository.saveAllAndFlush(appVersionList);
-        }catch (DataIntegrityViolationException e){
-            throw new AppVersionDuplicateKeyValueException();
-        }
-        return listResponse;
-    }
-
-    @Override
-    public void deleteAppVersion(List<BigInteger> ids) {
-        appVersionRepository.deleteAllById(ids);
     }
 
     @Override
