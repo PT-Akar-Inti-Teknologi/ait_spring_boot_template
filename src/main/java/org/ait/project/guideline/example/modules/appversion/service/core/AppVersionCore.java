@@ -2,6 +2,8 @@ package org.ait.project.guideline.example.modules.appversion.service.core;
 
 import java.math.BigInteger;
 import java.util.List;
+
+import org.ait.project.guideline.example.modules.appversion.dto.request.AppVersionDetailRequest;
 import org.ait.project.guideline.example.modules.appversion.dto.response.AppVersionDetailResponse;
 import org.ait.project.guideline.example.modules.appversion.dto.response.AppVersionTypeResponse;
 import org.ait.project.guideline.example.modules.masterdata.dto.param.AppVersionParam;
@@ -21,6 +23,9 @@ public interface AppVersionCore {
 
   ResponseEntity<ResponseTemplate<ResponseCollection<AppVersionDetailResponse>>> saveAppVersions(
       List<AppVersionDetailResponse> appVersionRequests);
+
+  ResponseEntity<ResponseTemplate<ResponseDetail<AppVersionDetailResponse>>> updateAppVersions(
+          BigInteger id, AppVersionDetailRequest request);
 
   ResponseEntity<ResponseTemplate<ResponseDetail<Boolean>>> deleteAppVersion(List<BigInteger> ids);
 
