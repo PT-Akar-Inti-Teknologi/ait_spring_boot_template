@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +41,13 @@ public class BannerController {
       @RequestParam(value = "title", required = false) String title,
       @RequestParam(value = "description", required = false) String description) {
     return bannerCore.upload(new BannerParam(file, title, description));
+  }
+
+  @Operation(summary = "Get Detail Banner")
+  @GetMapping("/{id}")
+  public ResponseEntity<ResponseTemplate<ResponseDetail<BannerRes>>> detailBanner(
+      @PathVariable("id") String id) {
+    return bannerCore.getDetailBanner(id);
   }
 
   @Operation(summary = "API Download Banner")

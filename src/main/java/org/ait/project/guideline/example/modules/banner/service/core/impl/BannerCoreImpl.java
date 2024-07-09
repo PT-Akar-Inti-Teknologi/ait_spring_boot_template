@@ -90,6 +90,13 @@ public class BannerCoreImpl implements BannerCore {
   }
 
   @Override
+  public ResponseEntity<ResponseTemplate<ResponseDetail<BannerRes>>> getDetailBanner(String id) {
+    Banner banner = bannerQueryAdapter.getById(id).orElseThrow(BannerNotFoundException::new);
+    return responseHelper.createResponseDetail(ResponseEnum.SUCCESS,
+        bannerMapper.convertToRes(banner));
+  }
+
+  @Override
   public ResponseEntity<ResponseTemplate<ResponseDetail<BannerRes>>> upload(BannerParam param) {
     validateUploadParam(param);
     String fileName = System.currentTimeMillis() + "_" + param.getFile().getOriginalFilename();

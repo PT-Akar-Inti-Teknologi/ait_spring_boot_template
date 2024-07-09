@@ -25,4 +25,5 @@ public interface BannerCore {
   ResponseEntity<ResponseTemplate<ResponseCollection<BannerRes>>> getAllBanner(Pageable pageable,
                                                                                BannerSpecParam bannerSpecParam);
 
+  ResponseEntity<ResponseTemplate<ResponseDetail<BannerRes>>> getDetailBanner(String id);
 }
