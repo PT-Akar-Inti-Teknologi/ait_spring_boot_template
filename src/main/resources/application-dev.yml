@@ -27,3 +27,6 @@ thumbnail:
   format: "JPG"
   quality: 1
   directory: /test
+
+domain:
+  url: https://ait-experiment.sandbait.work

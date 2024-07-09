@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import org.ait.project.guideline.example.blob.modules.storageengine.localstorage.service.StorageService;
+import org.ait.project.guideline.example.config.properties.DomainConfigProperties;
 import org.ait.project.guideline.example.config.properties.ThumbnailsConfigProperties;
 import org.ait.project.guideline.example.modules.banner.dto.param.BannerParam;
 import org.ait.project.guideline.example.modules.banner.dto.response.BannerRes;
@@ -50,6 +51,8 @@ public class BannerCoreImpl implements BannerCore {
   private final StorageService storageService;
 
   private final ThumbnailsConfigProperties thumbnailsProperties;
+
+  private final DomainConfigProperties domainConfigProperties;
 
   private void validateUploadParam(BannerParam bannerParam) {
     validateParamImage(bannerParam.getFile());
@@ -121,7 +124,8 @@ public class BannerCoreImpl implements BannerCore {
             thumbnailsProperties.getDirectory());
     Banner banner =
         bannerCommandAdapter.save(bannerMapper.convertToEntity(param, imageFile, thumbnailFile));
-
+    banner.setImageFile(domainConfigProperties.getUrl() + "/" + banner.getImageFile());
+    banner.setThumbnailFile(domainConfigProperties.getUrl() + "/" + banner.getThumbnailFile());
     return responseHelper.createResponseDetail(ResponseEnum.SUCCESS,
         bannerMapper.convertToRes(banner));
   }
@@ -158,7 +162,8 @@ public class BannerCoreImpl implements BannerCore {
     Banner updatedData = bannerCommandAdapter.save(
         bannerMapper.update(existingData, param, imageFile, thumbnailFile));
     deleteFileBanner(existingData);
-
+    updatedData.setImageFile(domainConfigProperties.getUrl() + "/" + updatedData.getImageFile());
+    updatedData.setThumbnailFile(domainConfigProperties.getUrl() + "/" + updatedData.getThumbnailFile());
     return responseHelper.createResponseDetail(ResponseEnum.SUCCESS,
         bannerMapper.convertToRes(updatedData));
   }
@@ -177,9 +182,15 @@ public class BannerCoreImpl implements BannerCore {
   public ResponseEntity<ResponseTemplate<ResponseCollection<BannerRes>>> getAllBanner(
       Pageable pageable, BannerSpecParam bannerSpecParam) {
     Page<BannerRes> appVersionRequests =
-        bannerQueryAdapter.getPage(pageable, bannerSpecParam).map(bannerMapper::convertToRes);
+        bannerQueryAdapter.getPage(pageable, bannerSpecParam).map(banner -> additional(bannerMapper.convertToRes(banner)));
     return responseHelper.createResponseCollection(ResponseEnum.SUCCESS, appVersionRequests,
         appVersionRequests.getContent());
+  }
+
+  private BannerRes additional(BannerRes response) {
+    response.setImageFile(domainConfigProperties.getUrl() + "/" + response.getImageFile());
+    response.setThumbnailFile(domainConfigProperties.getUrl() + "/" + response.getThumbnailFile());
+    return response;
   }
 
   private MultipartFile resizeImage(MultipartFile file) {
