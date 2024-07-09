@@ -4,8 +4,8 @@ WORKDIR /app
 
 COPY . .
 
-RUN  --mount=type=cache,target=/root/.m2  mvn clean compile
-RUN  --mount=type=cache,target=/root/.m2  mvn install -DskipTests
+RUN  mvn clean compile
+RUN  mvn install -DskipTests
 
 #deploy to java17
 FROM openjdk:17-alpine
