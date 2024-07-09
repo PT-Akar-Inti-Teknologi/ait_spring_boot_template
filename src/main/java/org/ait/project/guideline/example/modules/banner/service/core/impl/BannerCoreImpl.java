@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import org.ait.project.guideline.example.blob.modules.storageengine.localstorage.service.StorageService;
+import org.ait.project.guideline.example.config.properties.DomainConfigProperties;
 import org.ait.project.guideline.example.config.properties.ThumbnailsConfigProperties;
 import org.ait.project.guideline.example.modules.banner.dto.param.BannerParam;
 import org.ait.project.guideline.example.modules.banner.dto.response.BannerRes;
@@ -50,6 +51,8 @@ public class BannerCoreImpl implements BannerCore {
   private final StorageService storageService;
 
   private final ThumbnailsConfigProperties thumbnailsProperties;
+
+  private final DomainConfigProperties domainConfigProperties;
 
   private void validateUploadParam(BannerParam bannerParam) {
     validateParamImage(bannerParam.getFile());
@@ -121,7 +124,8 @@ public class BannerCoreImpl implements BannerCore {
             thumbnailsProperties.getDirectory());
     Banner banner =
         bannerCommandAdapter.save(bannerMapper.convertToEntity(param, imageFile, thumbnailFile));
-
+    banner.setImageFile(domainConfigProperties.getUrl() + "/" + banner.getImageFile());
+    banner.setThumbnailFile(domainConfigProperties.getUrl() + "/" + banner.getThumbnailFile());
     return responseHelper.createResponseDetail(ResponseEnum.SUCCESS,
         bannerMapper.convertToRes(banner));
   }
