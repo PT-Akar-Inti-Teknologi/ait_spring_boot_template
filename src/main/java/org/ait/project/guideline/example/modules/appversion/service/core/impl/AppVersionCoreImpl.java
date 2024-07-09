@@ -2,11 +2,13 @@ package org.ait.project.guideline.example.modules.appversion.service.core.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.ait.project.guideline.example.modules.appversion.dto.request.AppVersionDetailRequest;
 import org.ait.project.guideline.example.modules.appversion.dto.response.AppVersionDetailResponse;
 import org.ait.project.guideline.example.modules.appversion.dto.response.AppVersionTypeResponse;
 import org.ait.project.guideline.example.modules.appversion.exception.AppVersionNotFoundException;
 import org.ait.project.guideline.example.modules.appversion.module.jpa.entity.AppVersion;
 import org.ait.project.guideline.example.modules.appversion.service.adapter.query.AppVersionQueryAdapter;
+import org.ait.project.guideline.example.modules.appversion.service.adapter.query.command.AppVersionCommandAdapter;
 import org.ait.project.guideline.example.modules.appversion.service.core.AppVersionCore;
 import org.ait.project.guideline.example.modules.appversion.transform.AppVersionTransform;
 import org.ait.project.guideline.example.modules.masterdata.dto.param.AppVersionParam;
@@ -24,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +35,7 @@ public class AppVersionCoreImpl implements AppVersionCore {
 
     private final ResponseHelper responseHelper;
 
+    private final AppVersionCommandAdapter appVersionCommandAdapter;
     private final AppVersionQueryAdapter appVersionQueryAdapter;
 
     private final AppVersionTransform appVersionTransform;
@@ -53,6 +57,16 @@ public class AppVersionCoreImpl implements AppVersionCore {
     }
 
     @Override
+    public ResponseEntity<ResponseTemplate<ResponseDetail<AppVersionDetailResponse>>> getDetail(BigInteger id) {
+        Optional<AppVersion> appVersion = appVersionQueryAdapter.findById(id);
+        if (appVersion.isEmpty()) {
+            throw new AppVersionNotFoundException();
+        }
+
+        return responseHelper.createResponseDetail(ResponseEnum.SUCCESS, appVersionTransform.createResponse(appVersion.get()));
+    }
+
+    @Override
     public ResponseEntity<ResponseTemplate<ResponseCollection<AppVersionDetailResponse>>> getAllAppVersion(Pageable pageable, AppVersionParam appVersionParam) {
         Page<AppVersionDetailResponse> appVersionRequests = appVersionQueryAdapter.getPage(pageable, appVersionParam)
                 .map(appVersionTransform::createResponse);
@@ -62,13 +76,28 @@ public class AppVersionCoreImpl implements AppVersionCore {
     @Override
     @Transactional
     public ResponseEntity<ResponseTemplate<ResponseCollection<AppVersionDetailResponse>>> saveAppVersions(List<AppVersionDetailResponse> appVersionRequests) {
-        List<AppVersion> appVersionList = appVersionQueryAdapter.saveAllVersion(appVersionTransform.mapListRequestToAppVersion(appVersionRequests));
-        return responseHelper.createResponseCollection(ResponseEnum.SUCCESS, null, appVersionTransform.mapListAppVersionToResponse(appVersionList));
+        List<AppVersion> appVersionList = appVersionCommandAdapter
+                .saveAllVersion(appVersionTransform
+                        .mapListRequestToAppVersion(appVersionRequests));
+        return responseHelper.createResponseCollection(ResponseEnum.SUCCESS, null, appVersionTransform
+                .mapListAppVersionToResponse(appVersionList));
+    }
+
+    @Override
+    public ResponseEntity<ResponseTemplate<ResponseDetail<AppVersionDetailResponse>>> updateAppVersions(BigInteger id, AppVersionDetailRequest request) {
+        Optional<AppVersion> appVersion = appVersionQueryAdapter.findById(id);
+        if (appVersion.isEmpty()) {
+            throw new AppVersionNotFoundException();
+        }
+        return responseHelper.createResponseDetail(ResponseEnum.SUCCESS, appVersionTransform
+                .createResponse(appVersionCommandAdapter
+                        .update(appVersionTransform
+                                .toUpdateAppVersion(appVersion.get(), request))));
     }
 
     @Override
     public ResponseEntity<ResponseTemplate<ResponseDetail<Boolean>>> deleteAppVersion(List<BigInteger> ids) {
-            appVersionQueryAdapter.deleteAppVersion(ids);
+        appVersionCommandAdapter.deleteAppVersion(ids);
         return responseHelper.createResponseDetail(ResponseEnum.SUCCESS, true);
     }
 }
