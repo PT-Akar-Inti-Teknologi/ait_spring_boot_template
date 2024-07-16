@@ -9,15 +9,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import org.ait.project.guideline.example.blob.modules.storageengine.localstorage.service.StorageService;
+import org.ait.project.guideline.example.config.properties.DomainConfigProperties;
 import org.ait.project.guideline.example.config.properties.ThumbnailsConfigProperties;
 import org.ait.project.guideline.example.modules.banner.dto.param.BannerParam;
 import org.ait.project.guideline.example.modules.banner.dto.response.BannerRes;
-import org.ait.project.guideline.example.modules.banner.exception.BannerFileEmptyException;
-import org.ait.project.guideline.example.modules.banner.exception.BannerNotFoundException;
-import org.ait.project.guideline.example.modules.banner.exception.DescriptionEmptyException;
-import org.ait.project.guideline.example.modules.banner.exception.FileNotImageException;
-import org.ait.project.guideline.example.modules.banner.exception.TitleEmptyException;
-import org.ait.project.guideline.example.modules.banner.exception.TitleLargerThanException;
+import org.ait.project.guideline.example.modules.banner.exception.*;
 import org.ait.project.guideline.example.modules.banner.model.jpa.entity.Banner;
 import org.ait.project.guideline.example.modules.banner.service.adapter.command.BannerCommandAdapter;
 import org.ait.project.guideline.example.modules.banner.service.adapter.query.BannerQueryAdapter;
@@ -56,10 +52,14 @@ public class BannerCoreImpl implements BannerCore {
 
   private final ThumbnailsConfigProperties thumbnailsProperties;
 
+  private final DomainConfigProperties domainConfigProperties;
+
   private void validateUploadParam(BannerParam bannerParam) {
+    validateParamImage(bannerParam.getFile());
     validateTitle(bannerParam.getTitle());
     validateDescription(bannerParam.getDescription());
-    validateParamImage(bannerParam.getFile());
+    validateDeeplink(bannerParam.getDeeplink());
+    validateIndex(bannerParam.getIndex());
   }
 
   private void validateDescription(String description) {
@@ -78,6 +78,17 @@ public class BannerCoreImpl implements BannerCore {
     }
   }
 
+  private void validateDeeplink(String deeplink) {
+    if (deeplink == null || deeplink.isEmpty()) {
+      throw new DeeplinkEmptyException();
+    }
+  }
+
+  private void validateIndex(Integer index) {
+    if (index == null) {
+      throw new IndexEmptyException();
+    }
+  }
 
   private void validateParamImage(MultipartFile file) {
     if (file == null || file.isEmpty()) {
@@ -86,6 +97,19 @@ public class BannerCoreImpl implements BannerCore {
       if (!Objects.requireNonNull(file.getContentType()).startsWith("image/")) {
         throw new FileNotImageException();
       }
+    }
+
+    checkContentFile(file);
+  }
+
+  private void checkContentFile(MultipartFile file) {
+    try {
+      BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
+      if (bufferedImage == null) {
+        throw new FileContentNotImageException();
+      }
+    } catch (IOException e) {
+      throw new BannerFileEmptyException();
     }
   }
 
@@ -107,7 +131,8 @@ public class BannerCoreImpl implements BannerCore {
             thumbnailsProperties.getDirectory());
     Banner banner =
         bannerCommandAdapter.save(bannerMapper.convertToEntity(param, imageFile, thumbnailFile));
-
+    banner.setImageFile(domainConfigProperties.getUrl() + "/" + banner.getImageFile());
+    banner.setThumbnailFile(domainConfigProperties.getUrl() + "/" + banner.getThumbnailFile());
     return responseHelper.createResponseDetail(ResponseEnum.SUCCESS,
         bannerMapper.convertToRes(banner));
   }
@@ -144,7 +169,8 @@ public class BannerCoreImpl implements BannerCore {
     Banner updatedData = bannerCommandAdapter.save(
         bannerMapper.update(existingData, param, imageFile, thumbnailFile));
     deleteFileBanner(existingData);
-
+    updatedData.setImageFile(domainConfigProperties.getUrl() + "/" + updatedData.getImageFile());
+    updatedData.setThumbnailFile(domainConfigProperties.getUrl() + "/" + updatedData.getThumbnailFile());
     return responseHelper.createResponseDetail(ResponseEnum.SUCCESS,
         bannerMapper.convertToRes(updatedData));
   }
@@ -163,9 +189,15 @@ public class BannerCoreImpl implements BannerCore {
   public ResponseEntity<ResponseTemplate<ResponseCollection<BannerRes>>> getAllBanner(
       Pageable pageable, BannerSpecParam bannerSpecParam) {
     Page<BannerRes> appVersionRequests =
-        bannerQueryAdapter.getPage(pageable, bannerSpecParam).map(bannerMapper::convertToRes);
+        bannerQueryAdapter.getPage(pageable, bannerSpecParam).map(banner -> additional(bannerMapper.convertToRes(banner)));
     return responseHelper.createResponseCollection(ResponseEnum.SUCCESS, appVersionRequests,
         appVersionRequests.getContent());
+  }
+
+  private BannerRes additional(BannerRes response) {
+    response.setImageFile(domainConfigProperties.getUrl() + "/" + response.getImageFile());
+    response.setThumbnailFile(domainConfigProperties.getUrl() + "/" + response.getThumbnailFile());
+    return response;
   }
 
   private MultipartFile resizeImage(MultipartFile file) {

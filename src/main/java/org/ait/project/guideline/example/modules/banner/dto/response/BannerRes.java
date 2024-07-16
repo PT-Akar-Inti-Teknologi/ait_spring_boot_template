@@ -28,4 +28,10 @@ public class BannerRes {
   @JsonProperty("updated_at")
   private LocalDateTime updatedAt;
 
+  @JsonProperty("deeplink")
+  private String deeplink;
+
+  @JsonProperty("index")
+  private Integer index;
+
 }

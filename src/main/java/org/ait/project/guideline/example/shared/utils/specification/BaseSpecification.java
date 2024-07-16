@@ -66,20 +66,20 @@ public abstract class BaseSpecification {
   }
 
   public PageRequest buildPageRequest(Pageable pageable) {
-    return SpecificationUtils.buildPageRequest(replaceSort(pageable, null));
+    return SpecificationUtils.buildPageRequest(replaceSort(pageable, null, null));
   }
 
-  public PageRequest buildPageRequest(Pageable pageable, String attribute) {
-    return SpecificationUtils.buildPageRequest(replaceSort(pageable, attribute));
+  public PageRequest buildPageRequest(Pageable pageable, String attribute, Sort.Direction direction) {
+    return SpecificationUtils.buildPageRequest(replaceSort(pageable, attribute, direction));
   }
 
-  private Pageable replaceSort(Pageable pageable, String attribute) {
+  private Pageable replaceSort(Pageable pageable, String attribute, Sort.Direction direction) {
     Sort sort = pageable.getSort();
     if (sort.isSorted()) {
       Sort newSort = Sort.by(sort.get().map(this::updateSortProperty).toList());
       return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), newSort);
     } else if (Objects.nonNull(attribute)) {
-      Sort newSort = Sort.by(Sort.Direction.DESC, attribute);
+      Sort newSort = Sort.by(direction, attribute);
       return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), newSort);
     }
     return pageable;

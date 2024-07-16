@@ -6,6 +6,9 @@ import java.util.List;
 import org.ait.project.guideline.example.modules.banner.model.jpa.entity.Banner;
 import org.ait.project.guideline.example.modules.masterdata.dto.param.BannerSpecParam;
 import org.ait.project.guideline.example.shared.utils.specification.BaseSpecification;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
@@ -24,5 +27,9 @@ public class BannerSpecification extends BaseSpecification {
 
       return builder.and(predicates.toArray(new Predicate[] {}));
     };
+  }
+
+  public PageRequest defaultPageSort(Pageable pageable) {
+    return buildPageRequest(pageable, "index", Sort.Direction.ASC);
   }
 }

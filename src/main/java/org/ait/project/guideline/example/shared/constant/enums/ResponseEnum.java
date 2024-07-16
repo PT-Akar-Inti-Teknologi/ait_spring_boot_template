@@ -17,6 +17,9 @@ public enum ResponseEnum {
   TITLE_EMPTY("PMRK-0017", "tittle.cannot.be.empty", HttpStatus.BAD_REQUEST),
   TITLE_LARGER_THAN("PMRK-0018", "tittle.larger.than", HttpStatus.BAD_REQUEST),
   DESCRIPTION_EMPTY("PMRK-0019", "description.cannot.be.empty", HttpStatus.BAD_REQUEST),
+  DEEPLINK_EMPTY("PMRK-0020", "deeplink.cannot.be.empty", HttpStatus.BAD_REQUEST),
+  INDEX_EMPTY("PMRK-0021", "index.cannot.be.empty", HttpStatus.BAD_REQUEST),
+  FILE_CONTENT_NOT_IMAGE("PMRK-0022", "file.content.not.image", HttpStatus.BAD_REQUEST),
   INVALID_PARAM("PMRK-0009", "invalid.param", HttpStatus.BAD_REQUEST),
   INTERNAL_SERVER_ERROR("PMRK-9999", "internal.server.error", HttpStatus.INTERNAL_SERVER_ERROR),
 
