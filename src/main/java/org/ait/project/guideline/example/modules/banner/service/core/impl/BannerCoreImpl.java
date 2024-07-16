@@ -3,6 +3,7 @@ package org.ait.project.guideline.example.modules.banner.service.core.impl;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +13,18 @@ import org.ait.project.guideline.example.blob.modules.storageengine.localstorage
 import org.ait.project.guideline.example.config.properties.DomainConfigProperties;
 import org.ait.project.guideline.example.config.properties.ThumbnailsConfigProperties;
 import org.ait.project.guideline.example.modules.banner.dto.param.BannerParam;
+import org.ait.project.guideline.example.modules.banner.dto.request.BannerSortReq;
 import org.ait.project.guideline.example.modules.banner.dto.response.BannerRes;
-import org.ait.project.guideline.example.modules.banner.exception.*;
+import org.ait.project.guideline.example.modules.banner.exception.BanerSizeEmptyException;
+import org.ait.project.guideline.example.modules.banner.exception.BanerSizeNotValidException;
+import org.ait.project.guideline.example.modules.banner.exception.BannerFileEmptyException;
+import org.ait.project.guideline.example.modules.banner.exception.BannerNotFoundException;
+import org.ait.project.guideline.example.modules.banner.exception.DeeplinkEmptyException;
+import org.ait.project.guideline.example.modules.banner.exception.DescriptionEmptyException;
+import org.ait.project.guideline.example.modules.banner.exception.FileContentNotImageException;
+import org.ait.project.guideline.example.modules.banner.exception.FileNotImageException;
+import org.ait.project.guideline.example.modules.banner.exception.TitleEmptyException;
+import org.ait.project.guideline.example.modules.banner.exception.TitleLargerThanException;
 import org.ait.project.guideline.example.modules.banner.model.jpa.entity.Banner;
 import org.ait.project.guideline.example.modules.banner.service.adapter.command.BannerCommandAdapter;
 import org.ait.project.guideline.example.modules.banner.service.adapter.query.BannerQueryAdapter;
@@ -59,7 +70,6 @@ public class BannerCoreImpl implements BannerCore {
     validateTitle(bannerParam.getTitle());
     validateDescription(bannerParam.getDescription());
     validateDeeplink(bannerParam.getDeeplink());
-    validateIndex(bannerParam.getIndex());
   }
 
   private void validateDescription(String description) {
@@ -81,12 +91,6 @@ public class BannerCoreImpl implements BannerCore {
   private void validateDeeplink(String deeplink) {
     if (deeplink == null || deeplink.isEmpty()) {
       throw new DeeplinkEmptyException();
-    }
-  }
-
-  private void validateIndex(Integer index) {
-    if (index == null) {
-      throw new IndexEmptyException();
     }
   }
 
@@ -170,7 +174,8 @@ public class BannerCoreImpl implements BannerCore {
         bannerMapper.update(existingData, param, imageFile, thumbnailFile));
     deleteFileBanner(existingData);
     updatedData.setImageFile(domainConfigProperties.getUrl() + "/" + updatedData.getImageFile());
-    updatedData.setThumbnailFile(domainConfigProperties.getUrl() + "/" + updatedData.getThumbnailFile());
+    updatedData.setThumbnailFile(
+        domainConfigProperties.getUrl() + "/" + updatedData.getThumbnailFile());
     return responseHelper.createResponseDetail(ResponseEnum.SUCCESS,
         bannerMapper.convertToRes(updatedData));
   }
@@ -188,10 +193,19 @@ public class BannerCoreImpl implements BannerCore {
   @Override
   public ResponseEntity<ResponseTemplate<ResponseCollection<BannerRes>>> getAllBanner(
       Pageable pageable, BannerSpecParam bannerSpecParam) {
-    Page<BannerRes> appVersionRequests =
-        bannerQueryAdapter.getPage(pageable, bannerSpecParam).map(banner -> additional(bannerMapper.convertToRes(banner)));
-    return responseHelper.createResponseCollection(ResponseEnum.SUCCESS, appVersionRequests,
-        appVersionRequests.getContent());
+    Page<BannerRes> bannerResPage =
+        bannerQueryAdapter.getPage(pageable, bannerSpecParam)
+            .map(banner -> additional(bannerMapper.convertToRes(banner)));
+    return responseHelper.createResponseCollection(ResponseEnum.SUCCESS, bannerResPage,
+        bannerResPage.getContent());
+  }
+
+  @Override
+  public ResponseEntity<ResponseTemplate<ResponseCollection<BannerRes>>> getAllActiveBanner() {
+    List<BannerRes> bannerResList =
+        bannerQueryAdapter.getAllActiveBanner().stream().map(bannerMapper::convertToRes).toList();
+    return responseHelper.createResponseCollection(ResponseEnum.SUCCESS, null,
+        bannerResList);
   }
 
   private BannerRes additional(BannerRes response) {
@@ -220,6 +234,19 @@ public class BannerCoreImpl implements BannerCore {
       log.error("Failed to resize image", e);
     }
     return multipartImage;
+  }
+
+  @Override
+  public ResponseEntity<ResponseTemplate<ResponseDetail<String>>> sortingBanner(
+      List<BannerSortReq> bannerSortReqs) {
+    if (bannerSortReqs == null) {
+      throw new BanerSizeEmptyException();
+    }
+    if (bannerQueryAdapter.getCountBanner() != bannerSortReqs.size()) {
+      throw new BanerSizeNotValidException();
+    }
+    bannerCommandAdapter.resortingData(bannerSortReqs);
+    return responseHelper.createResponseDetail(ResponseEnum.SUCCESS, "Success");
   }
 
   private void deleteFileBanner(Banner existingData) {

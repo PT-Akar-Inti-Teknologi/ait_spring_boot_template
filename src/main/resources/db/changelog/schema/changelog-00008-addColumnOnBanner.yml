@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: addColumnOnBannerTable
+      author: ait
+      changes:
+        - addColumn:
+            schemaName: ait
+            tableName: banner
+            columns:
+              - column:
+                  name: is_active
+                  type: boolean

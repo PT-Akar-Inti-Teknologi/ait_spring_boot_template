@@ -2,9 +2,11 @@ package org.ait.project.guideline.example.modules.banner.interfaces.rest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ait.project.guideline.example.modules.banner.dto.param.BannerParam;
+import org.ait.project.guideline.example.modules.banner.dto.request.BannerSortReq;
 import org.ait.project.guideline.example.modules.banner.dto.response.BannerRes;
 import org.ait.project.guideline.example.modules.banner.service.core.BannerCore;
 import org.ait.project.guideline.example.modules.masterdata.dto.param.BannerSpecParam;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,10 +42,10 @@ public class BannerController {
   public ResponseEntity<ResponseTemplate<ResponseDetail<BannerRes>>> upload(
       @RequestParam(value = "file", required = false) MultipartFile file,
       @RequestParam(value = "title", required = false) String title,
-      @RequestParam(value = "description", required = false) String description,
+      @RequestParam(value = "is_active", required = false) Boolean isActive,
       @RequestParam(value = "deeplink", required = false) String deeplink,
-      @RequestParam(value = "index", required = false) Integer index) {
-    return bannerCore.upload(new BannerParam(file, title, description, deeplink, index));
+      @RequestParam(value = "description", required = false) String description) {
+    return bannerCore.upload(new BannerParam(file, title, description,deeplink,isActive));
   }
 
   @Operation(summary = "Get Detail Banner")
@@ -70,10 +73,10 @@ public class BannerController {
       @RequestParam("id") String id,
       @RequestParam(value = "file", required = false) MultipartFile file,
       @RequestParam(value = "title", required = false) String title,
-      @RequestParam(value = "description", required = false) String description,
+      @RequestParam(value = "is_active", required = false) Boolean isActive,
       @RequestParam(value = "deeplink", required = false) String deeplink,
-      @RequestParam(value = "index", required = false) Integer index) {
-    return bannerCore.update(id, new BannerParam(file, title, description, deeplink, index));
+      @RequestParam(value = "description", required = false) String description) {
+    return bannerCore.update(id, new BannerParam(file, title, description,deeplink,isActive));
   }
 
   @Operation(summary = "API Delete Banner")
@@ -85,8 +88,21 @@ public class BannerController {
 
   @Operation(summary = "API to get All Banner")
   @GetMapping("/all")
-  public ResponseEntity<ResponseTemplate<ResponseCollection<BannerRes>>> getAllVersion(
+  public ResponseEntity<ResponseTemplate<ResponseCollection<BannerRes>>> getAllBanner(
       Pageable pageable, BannerSpecParam versionParam) {
     return bannerCore.getAllBanner(pageable, versionParam);
+  }
+
+  @Operation(summary = "API to get All Banner")
+  @GetMapping("/active")
+  public ResponseEntity<ResponseTemplate<ResponseCollection<BannerRes>>> getAllActiveBanner() {
+    return bannerCore.getAllActiveBanner();
+  }
+
+  @Operation(summary = "API to get All Banner")
+  @PutMapping("/order")
+  public ResponseEntity<ResponseTemplate<ResponseDetail<String>>> sortingBanner(
+      @RequestBody List<BannerSortReq> bannerSortReqs){
+    return bannerCore.sortingBanner(bannerSortReqs);
   }
 }

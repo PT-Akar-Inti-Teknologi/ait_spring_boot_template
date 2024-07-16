@@ -4,7 +4,14 @@ server:
   servlet:
     context-path: /api
 
+
+
 spring:
+  jpa:
+    properties:
+      hibernate:
+        order_by:
+          default_null_ordering: last
   servlet:
     multipart:
       max-file-size: 50MB
@@ -12,7 +19,7 @@ spring:
   #profile active
   #example: using application-dev.yml => active: dev,using application-prod.yml => active: prod
   application:
-     name: example
+    name: example
   profiles:
     active: dev
   jackson:

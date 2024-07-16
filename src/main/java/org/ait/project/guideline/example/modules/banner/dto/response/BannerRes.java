@@ -16,6 +16,12 @@ public class BannerRes {
   @JsonProperty("description")
   private String description;
 
+  @JsonProperty("index")
+  private Integer index;
+
+  @JsonProperty("deeplink")
+  private String deeplink;
+
   @JsonProperty("image_file")
   private String imageFile;
 
@@ -28,10 +34,7 @@ public class BannerRes {
   @JsonProperty("updated_at")
   private LocalDateTime updatedAt;
 
-  @JsonProperty("deeplink")
-  private String deeplink;
-
-  @JsonProperty("index")
-  private Integer index;
+  @JsonProperty("is_active")
+  private Boolean isActive;
 
 }

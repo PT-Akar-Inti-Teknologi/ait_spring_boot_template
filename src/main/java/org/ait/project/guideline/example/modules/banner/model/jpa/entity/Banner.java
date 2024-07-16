@@ -39,6 +39,15 @@ public class Banner {
   @Column(name = "thumbnail_file")
   private String thumbnailFile;
 
+  @Column(name = "index")
+  private Integer index;
+
+  @Column(name = "deeplink")
+  private String deeplink;
+
+  @Column(name = "is_active")
+  private Boolean isActive;
+
   @CreationTimestamp
   @Column(name = "created_at")
   private LocalDateTime createdAt;
@@ -46,11 +55,5 @@ public class Banner {
   @UpdateTimestamp
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
-
-  @Column(name = "deeplink")
-  private String deeplink;
-
-  @Column(name = "index")
-  private Integer index;
 
 }

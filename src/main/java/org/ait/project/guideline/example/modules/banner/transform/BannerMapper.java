@@ -17,7 +17,7 @@ public interface BannerMapper {
   @Mapping(target = "imageFile", source = "imageFile")
   @Mapping(target = "thumbnailFile", source = "thumbnailFile")
   @Mapping(target = "deeplink", source = "param.deeplink")
-  @Mapping(target = "index", source = "param.index")
+  @Mapping(target = "isActive", source = "param.isActive")
   Banner convertToEntity(BannerParam param, String imageFile, String thumbnailFile);
 
   @Mapping(target = "title", source = "param.title")
@@ -25,7 +25,7 @@ public interface BannerMapper {
   @Mapping(target = "imageFile", source = "imageFile")
   @Mapping(target = "thumbnailFile", source = "thumbnailFile")
   @Mapping(target = "deeplink", source = "param.deeplink")
-  @Mapping(target = "index", source = "param.index")
+  @Mapping(target = "isActive", source = "param.isActive")
   Banner update(@MappingTarget Banner banner, BannerParam param, String imageFile,
                 String thumbnailFile);
 

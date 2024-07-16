@@ -1,5 +1,6 @@
 package org.ait.project.guideline.example.modules.banner.service.adapter.query.impl;
 
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.ait.project.guideline.example.modules.banner.model.jpa.entity.Banner;
@@ -30,4 +31,13 @@ public class BannerQueryAdapterImpl implements BannerQueryAdapter {
         bannerSpecification.defaultPageSort(pageable));
   }
 
+  @Override
+  public List<Banner> getAllActiveBanner() {
+    return bannerRepository.findByIsActiveTrueOrderByIndexDesc();
+  }
+
+  @Override
+  public Long getCountBanner() {
+    return bannerRepository.count();
+  }
 }
