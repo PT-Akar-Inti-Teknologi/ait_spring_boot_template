@@ -157,6 +157,7 @@ public class BannerCoreImpl implements BannerCore {
     return responseHelper.createResponseOctet(banner.getThumbnailFile(), arrayResource);
   }
 
+
   @Override
   @Transactional
   public ResponseEntity<ResponseTemplate<ResponseDetail<BannerRes>>> update(String id,
