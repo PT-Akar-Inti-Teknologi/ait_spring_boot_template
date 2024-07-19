@@ -14,15 +14,18 @@ public class BannerParam {
 
   private String deeplink;
 
+  private Integer index;
+
   private Boolean isActive;
 
   public BannerParam(MultipartFile file, String title, String description, String deeplink,
-                     Boolean isActive) {
+                     Boolean isActive,Integer index) {
     this.file = file;
     this.title = title;
     this.description = description;
     this.deeplink = deeplink;
     this.isActive = isActive;
+    this.index = index;
   }
 
 }

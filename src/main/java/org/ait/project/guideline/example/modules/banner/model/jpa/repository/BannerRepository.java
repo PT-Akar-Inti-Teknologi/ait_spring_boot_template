@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BannerRepository
     extends JpaRepository<Banner, String>, JpaSpecificationExecutor<Banner> {
-  List<Banner> findByIsActiveTrueOrderByIndexDesc();
+  List<Banner> findByIsActiveTrueOrderByIndexAsc();
 }

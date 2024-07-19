@@ -33,7 +33,7 @@ public class BannerQueryAdapterImpl implements BannerQueryAdapter {
 
   @Override
   public List<Banner> getAllActiveBanner() {
-    return bannerRepository.findByIsActiveTrueOrderByIndexDesc();
+    return bannerRepository.findByIsActiveTrueOrderByIndexAsc();
   }
 
   @Override

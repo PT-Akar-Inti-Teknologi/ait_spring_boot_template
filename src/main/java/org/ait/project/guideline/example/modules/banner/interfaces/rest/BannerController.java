@@ -43,9 +43,10 @@ public class BannerController {
       @RequestParam(value = "file", required = false) MultipartFile file,
       @RequestParam(value = "title", required = false) String title,
       @RequestParam(value = "is_active", required = false) Boolean isActive,
+      @RequestParam(value = "index", required = false) Integer index,
       @RequestParam(value = "deeplink", required = false) String deeplink,
       @RequestParam(value = "description", required = false) String description) {
-    return bannerCore.upload(new BannerParam(file, title, description,deeplink,isActive));
+    return bannerCore.upload(new BannerParam(file, title, description,deeplink,isActive,index));
   }
 
   @Operation(summary = "Get Detail Banner")
@@ -75,8 +76,9 @@ public class BannerController {
       @RequestParam(value = "title", required = false) String title,
       @RequestParam(value = "is_active", required = false) Boolean isActive,
       @RequestParam(value = "deeplink", required = false) String deeplink,
+      @RequestParam(value = "index", required = false) Integer index,
       @RequestParam(value = "description", required = false) String description) {
-    return bannerCore.update(id, new BannerParam(file, title, description,deeplink,isActive));
+    return bannerCore.update(id, new BannerParam(file, title, description,deeplink,isActive,index));
   }
 
   @Operation(summary = "API Delete Banner")
