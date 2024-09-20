@@ -243,9 +243,6 @@ public class BannerCoreImpl implements BannerCore {
     if (bannerSortReqs == null) {
       throw new BanerSizeEmptyException();
     }
-    if (bannerQueryAdapter.getCountBanner() != bannerSortReqs.size()) {
-      throw new BanerSizeNotValidException();
-    }
     bannerCommandAdapter.resortingData(bannerSortReqs);
     return responseHelper.createResponseDetail(ResponseEnum.SUCCESS, "Success");
   }
