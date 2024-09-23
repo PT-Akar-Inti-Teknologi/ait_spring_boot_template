@@ -125,6 +125,8 @@ public class BannerCoreImpl implements BannerCore {
   @Override
   public ResponseEntity<ResponseTemplate<ResponseDetail<BannerRes>>> getDetailBanner(String id) {
     Banner banner = bannerQueryAdapter.getById(id).orElseThrow(BannerNotFoundException::new);
+    banner.setImageFile(urlBuilderUtils.createUrlDownloadImage(banner.getImageFile()));
+    banner.setThumbnailFile(urlBuilderUtils.createUrlDownloadImage(banner.getThumbnailFile()));
     return responseHelper.createResponseDetail(ResponseEnum.SUCCESS,
         bannerMapper.convertToRes(banner));
   }
