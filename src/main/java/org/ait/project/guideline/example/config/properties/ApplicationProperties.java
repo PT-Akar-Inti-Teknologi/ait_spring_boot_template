@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ApplicationProperties {
 
-  private final RestClientProperties restClient;
+  private final ThumbnailsConfigProperties thumbnailsProperties;
+  private final ImagesConfigProperties imagesConfigProperties;
 
 }

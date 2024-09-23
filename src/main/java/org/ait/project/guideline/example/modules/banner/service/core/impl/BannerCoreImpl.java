@@ -10,13 +10,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import org.ait.project.guideline.example.blob.modules.storageengine.localstorage.service.StorageService;
-import org.ait.project.guideline.example.config.properties.DomainConfigProperties;
-import org.ait.project.guideline.example.config.properties.ThumbnailsConfigProperties;
+import org.ait.project.guideline.example.config.properties.ApplicationProperties;
 import org.ait.project.guideline.example.modules.banner.dto.param.BannerParam;
 import org.ait.project.guideline.example.modules.banner.dto.request.BannerSortReq;
 import org.ait.project.guideline.example.modules.banner.dto.response.BannerRes;
 import org.ait.project.guideline.example.modules.banner.exception.BanerSizeEmptyException;
-import org.ait.project.guideline.example.modules.banner.exception.BanerSizeNotValidException;
 import org.ait.project.guideline.example.modules.banner.exception.BanerSizeOverException;
 import org.ait.project.guideline.example.modules.banner.exception.BannerFileEmptyException;
 import org.ait.project.guideline.example.modules.banner.exception.BannerNotFoundException;
@@ -63,7 +61,7 @@ public class BannerCoreImpl implements BannerCore {
 
   private final StorageService storageService;
 
-  private final ThumbnailsConfigProperties thumbnailsProperties;
+  private final ApplicationProperties applicationProperties;
 
   private final UrlBuilderUtils urlBuilderUtils;
 
@@ -100,7 +98,9 @@ public class BannerCoreImpl implements BannerCore {
     if (file == null || file.isEmpty()) {
       throw new BannerFileEmptyException();
     } else {
-      if (file.getSize() > (3 * 1024 * 1024)) {
+      if (file.getSize() >
+          (applicationProperties.getImagesConfigProperties().getMaxSizeInMegaByte() * 1024 *
+              1024)) {
         throw new BanerSizeOverException();
       }
       if (!Objects.requireNonNull(file.getContentType()).startsWith("image/")) {
@@ -133,11 +133,11 @@ public class BannerCoreImpl implements BannerCore {
   public ResponseEntity<ResponseTemplate<ResponseDetail<BannerRes>>> upload(BannerParam param) {
     validateUploadParam(param);
     String fileName = System.currentTimeMillis() + "_" + param.getFile().getOriginalFilename();
-    String imageFile =
-        storageService.uploadFile(fileName, param.getFile(), thumbnailsProperties.getDirectory());
+    String imageFile = storageService.uploadFile(fileName, param.getFile(),
+        applicationProperties.getThumbnailsProperties().getDirectory());
     String thumbnailFile =
         storageService.uploadFile("Thumbnail_" + fileName, resizeImage(param.getFile()),
-            thumbnailsProperties.getDirectory());
+            applicationProperties.getThumbnailsProperties().getDirectory());
     Banner banner =
         bannerCommandAdapter.save(bannerMapper.convertToEntity(param, imageFile, thumbnailFile));
     banner.setImageFile(urlBuilderUtils.createUrlDownloadImage(banner.getImageFile()));
@@ -149,16 +149,16 @@ public class BannerCoreImpl implements BannerCore {
   @Override
   public ResponseEntity<Resource> download(String id) {
     Banner banner = bannerQueryAdapter.getById(id).orElseThrow(BannerNotFoundException::new);
-    ByteArrayResource arrayResource =
-        storageService.downloadFile(banner.getImageFile(), thumbnailsProperties.getDirectory());
+    ByteArrayResource arrayResource = storageService.downloadFile(banner.getImageFile(),
+        applicationProperties.getThumbnailsProperties().getDirectory());
     return responseHelper.createResponseOctet(banner.getImageFile(), arrayResource);
   }
 
   @Override
   public ResponseEntity<Resource> downloadThumbnail(String id) {
     Banner banner = bannerQueryAdapter.getById(id).orElseThrow(BannerNotFoundException::new);
-    ByteArrayResource arrayResource =
-        storageService.downloadFile(banner.getThumbnailFile(), thumbnailsProperties.getDirectory());
+    ByteArrayResource arrayResource = storageService.downloadFile(banner.getThumbnailFile(),
+        applicationProperties.getThumbnailsProperties().getDirectory());
     return responseHelper.createResponseOctet(banner.getThumbnailFile(), arrayResource);
   }
 
@@ -170,18 +170,19 @@ public class BannerCoreImpl implements BannerCore {
     validateUploadParam(param);
     Banner existingData = bannerQueryAdapter.getById(id).orElseThrow(BannerNotFoundException::new);
     String fileName = System.currentTimeMillis() + "_" + param.getFile().getOriginalFilename();
-    String imageFile =
-        storageService.uploadFile(fileName, param.getFile(), thumbnailsProperties.getDirectory());
+    String imageFile = storageService.uploadFile(fileName, param.getFile(),
+        applicationProperties.getThumbnailsProperties().getDirectory());
     String thumbnailFile =
         storageService.uploadFile("Thumbnail_" + fileName, resizeImage(param.getFile()),
-            thumbnailsProperties.getDirectory());
+            applicationProperties.getThumbnailsProperties().getDirectory());
 
     Banner updatedData = bannerCommandAdapter.save(
         bannerMapper.update(existingData, param, imageFile, thumbnailFile));
     deleteFileBanner(existingData);
 
     updatedData.setImageFile(urlBuilderUtils.createUrlDownloadImage(updatedData.getImageFile()));
-    updatedData.setThumbnailFile(urlBuilderUtils.createUrlDownloadImage(updatedData.getThumbnailFile()));
+    updatedData.setThumbnailFile(
+        urlBuilderUtils.createUrlDownloadImage(updatedData.getThumbnailFile()));
     return responseHelper.createResponseDetail(ResponseEnum.SUCCESS,
         bannerMapper.convertToRes(updatedData));
   }
@@ -199,9 +200,8 @@ public class BannerCoreImpl implements BannerCore {
   @Override
   public ResponseEntity<ResponseTemplate<ResponseCollection<BannerRes>>> getAllBanner(
       Pageable pageable, BannerSpecParam bannerSpecParam) {
-    Page<BannerRes> bannerResPage =
-        bannerQueryAdapter.getPage(pageable, bannerSpecParam)
-            .map(banner -> additional(bannerMapper.convertToRes(banner)));
+    Page<BannerRes> bannerResPage = bannerQueryAdapter.getPage(pageable, bannerSpecParam)
+        .map(banner -> additional(bannerMapper.convertToRes(banner)));
     return responseHelper.createResponseCollection(ResponseEnum.SUCCESS, bannerResPage,
         bannerResPage.getContent());
   }
@@ -210,8 +210,7 @@ public class BannerCoreImpl implements BannerCore {
   public ResponseEntity<ResponseTemplate<ResponseCollection<BannerRes>>> getAllActiveBanner() {
     List<BannerRes> bannerResList =
         bannerQueryAdapter.getAllActiveBanner().stream().map(bannerMapper::convertToRes).toList();
-    return responseHelper.createResponseCollection(ResponseEnum.SUCCESS, null,
-        bannerResList);
+    return responseHelper.createResponseCollection(ResponseEnum.SUCCESS, null, bannerResList);
   }
 
   private BannerRes additional(BannerRes response) {
@@ -228,9 +227,11 @@ public class BannerCoreImpl implements BannerCore {
       originalImage = ImageIO.read(file.getInputStream());
       ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
       Thumbnails.of(originalImage)
-          .size(thumbnailsProperties.getTargetHeight(), thumbnailsProperties.getTargetHeight())
-          .outputFormat(thumbnailsProperties.getFormat())
-          .outputQuality(thumbnailsProperties.getQuality()).toOutputStream(outputStream);
+          .size(applicationProperties.getThumbnailsProperties().getTargetHeight(),
+              applicationProperties.getThumbnailsProperties().getTargetHeight())
+          .outputFormat(applicationProperties.getThumbnailsProperties().getFormat())
+          .outputQuality(applicationProperties.getThumbnailsProperties().getQuality())
+          .toOutputStream(outputStream);
 
       multipartImage =
           new MultipartImage(outputStream.toByteArray(), file.getName() + "-thumbnails",
@@ -253,7 +254,9 @@ public class BannerCoreImpl implements BannerCore {
   }
 
   private void deleteFileBanner(Banner existingData) {
-    storageService.deleteFile(existingData.getImageFile(), thumbnailsProperties.getDirectory());
-    storageService.deleteFile(existingData.getThumbnailFile(), thumbnailsProperties.getDirectory());
+    storageService.deleteFile(existingData.getImageFile(),
+        applicationProperties.getThumbnailsProperties().getDirectory());
+    storageService.deleteFile(existingData.getThumbnailFile(),
+        applicationProperties.getThumbnailsProperties().getDirectory());
   }
 }

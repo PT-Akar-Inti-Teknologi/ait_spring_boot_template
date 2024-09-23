@@ -30,3 +30,6 @@ thumbnail:
 
 domain:
   url: https://ait-experiment.sandbait.work/api
+
+image:
+  max-size-in-mega-byte: 3
