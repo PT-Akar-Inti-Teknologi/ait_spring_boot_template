@@ -18,3 +18,7 @@ springdoc:
     enabled: false
   swagger-ui:
     enabled: false
+
+
+domain:
+  url: https://ait-experiment.sandbait.work/api

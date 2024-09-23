@@ -17,6 +17,7 @@ import org.ait.project.guideline.example.modules.banner.dto.request.BannerSortRe
 import org.ait.project.guideline.example.modules.banner.dto.response.BannerRes;
 import org.ait.project.guideline.example.modules.banner.exception.BanerSizeEmptyException;
 import org.ait.project.guideline.example.modules.banner.exception.BanerSizeNotValidException;
+import org.ait.project.guideline.example.modules.banner.exception.BanerSizeOverException;
 import org.ait.project.guideline.example.modules.banner.exception.BannerFileEmptyException;
 import org.ait.project.guideline.example.modules.banner.exception.BannerNotFoundException;
 import org.ait.project.guideline.example.modules.banner.exception.DeeplinkEmptyException;
@@ -36,6 +37,7 @@ import org.ait.project.guideline.example.shared.dto.template.MultipartImage;
 import org.ait.project.guideline.example.shared.dto.template.ResponseCollection;
 import org.ait.project.guideline.example.shared.dto.template.ResponseDetail;
 import org.ait.project.guideline.example.shared.dto.template.ResponseTemplate;
+import org.ait.project.guideline.example.shared.utils.UrlBuilderUtils;
 import org.ait.project.guideline.example.shared.utils.response.ResponseHelper;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -63,7 +65,7 @@ public class BannerCoreImpl implements BannerCore {
 
   private final ThumbnailsConfigProperties thumbnailsProperties;
 
-  private final DomainConfigProperties domainConfigProperties;
+  private final UrlBuilderUtils urlBuilderUtils;
 
   private void validateUploadParam(BannerParam bannerParam) {
     validateParamImage(bannerParam.getFile());
@@ -98,6 +100,9 @@ public class BannerCoreImpl implements BannerCore {
     if (file == null || file.isEmpty()) {
       throw new BannerFileEmptyException();
     } else {
+      if (file.getSize() > (3 * 1024 * 1024)) {
+        throw new BanerSizeOverException();
+      }
       if (!Objects.requireNonNull(file.getContentType()).startsWith("image/")) {
         throw new FileNotImageException();
       }
@@ -135,8 +140,8 @@ public class BannerCoreImpl implements BannerCore {
             thumbnailsProperties.getDirectory());
     Banner banner =
         bannerCommandAdapter.save(bannerMapper.convertToEntity(param, imageFile, thumbnailFile));
-    banner.setImageFile(domainConfigProperties.getUrl() + "/" + banner.getImageFile());
-    banner.setThumbnailFile(domainConfigProperties.getUrl() + "/" + banner.getThumbnailFile());
+    banner.setImageFile(urlBuilderUtils.createUrlDownloadImage(banner.getImageFile()));
+    banner.setThumbnailFile(urlBuilderUtils.createUrlDownloadImage(banner.getThumbnailFile()));
     return responseHelper.createResponseDetail(ResponseEnum.SUCCESS,
         bannerMapper.convertToRes(banner));
   }
@@ -174,9 +179,9 @@ public class BannerCoreImpl implements BannerCore {
     Banner updatedData = bannerCommandAdapter.save(
         bannerMapper.update(existingData, param, imageFile, thumbnailFile));
     deleteFileBanner(existingData);
-    updatedData.setImageFile(domainConfigProperties.getUrl() + "/" + updatedData.getImageFile());
-    updatedData.setThumbnailFile(
-        domainConfigProperties.getUrl() + "/" + updatedData.getThumbnailFile());
+
+    updatedData.setImageFile(urlBuilderUtils.createUrlDownloadImage(updatedData.getImageFile()));
+    updatedData.setThumbnailFile(urlBuilderUtils.createUrlDownloadImage(updatedData.getThumbnailFile()));
     return responseHelper.createResponseDetail(ResponseEnum.SUCCESS,
         bannerMapper.convertToRes(updatedData));
   }
@@ -210,8 +215,8 @@ public class BannerCoreImpl implements BannerCore {
   }
 
   private BannerRes additional(BannerRes response) {
-    response.setImageFile(domainConfigProperties.getUrl() + "/" + response.getImageFile());
-    response.setThumbnailFile(domainConfigProperties.getUrl() + "/" + response.getThumbnailFile());
+    response.setImageFile(urlBuilderUtils.createUrlDownloadImage(response.getImageFile()));
+    response.setThumbnailFile(urlBuilderUtils.createUrlDownloadImage(response.getThumbnailFile()));
     return response;
   }
 

@@ -22,12 +22,14 @@ public enum ResponseEnum {
   FILE_CONTENT_NOT_IMAGE("PMRK-0022", "file.content.not.image", HttpStatus.BAD_REQUEST),
   BANNER_SIZE_NOT_VALID("PMRK-0023", "banner.size.not.valid", HttpStatus.BAD_REQUEST),
   BANNER_SIZE_EMPTY("PMRK-0025", "banner.size.empty", HttpStatus.BAD_REQUEST),
+  BANNER_SIZE_OVER("PMRK-0025", "banner.size.over", HttpStatus.BAD_REQUEST),
   INVALID_PARAM("PMRK-0009", "invalid.param", HttpStatus.BAD_REQUEST),
   INTERNAL_SERVER_ERROR("PMRK-9999", "internal.server.error", HttpStatus.INTERNAL_SERVER_ERROR),
 
   //App-Version
   APP_VERSION_NOT_FOUND("APPV-0002", "app-version.not.found", HttpStatus.NOT_FOUND),
-  APP_VERSION_DUPLICATE_KEY("APPV-0003", "app-version.duplicate.key", HttpStatus.CONFLICT),;
+  APP_VERSION_DUPLICATE_KEY("APPV-0003", "app-version.duplicate.key", HttpStatus.CONFLICT),
+  ;
 
 
   private String responseCode;
