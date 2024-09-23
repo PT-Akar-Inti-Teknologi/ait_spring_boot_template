@@ -65,8 +65,8 @@ public class BannerCoreImpl implements BannerCore {
 
   private final UrlBuilderUtils urlBuilderUtils;
 
-  private void validateUploadParam(BannerParam bannerParam) {
-    validateParamImage(bannerParam.getFile());
+  private void validateUploadParam(BannerParam bannerParam,boolean isUpdate) {
+    validateParamImage(bannerParam.getFile(),isUpdate);
     validateTitle(bannerParam.getTitle());
     validateDescription(bannerParam.getDescription());
     validateDeeplink(bannerParam.getDeeplink());
@@ -94,21 +94,23 @@ public class BannerCoreImpl implements BannerCore {
     }
   }
 
-  private void validateParamImage(MultipartFile file) {
-    if (file == null || file.isEmpty()) {
-      throw new BannerFileEmptyException();
-    } else {
-      if (file.getSize() >
-          (applicationProperties.getImagesConfigProperties().getMaxSizeInMegaByte() * 1024 *
-              1024)) {
-        throw new BanerSizeOverException();
-      }
-      if (!Objects.requireNonNull(file.getContentType()).startsWith("image/")) {
-        throw new FileNotImageException();
-      }
-    }
+  private void validateParamImage(MultipartFile file, boolean isUpdate) {
 
-    checkContentFile(file);
+      if ((file == null || file.isEmpty()) && !isUpdate) {
+        throw new BannerFileEmptyException();
+      } else {
+        if(!(file == null || file.isEmpty())){
+          if (file.getSize() >
+              (applicationProperties.getImagesConfigProperties().getMaxSizeInMegaByte() * 1024 *
+                  1024)) {
+            throw new BanerSizeOverException();
+          }
+          if (!Objects.requireNonNull(file.getContentType()).startsWith("image/")) {
+            throw new FileNotImageException();
+          }
+          checkContentFile(file);
+        }
+      }
   }
 
   private void checkContentFile(MultipartFile file) {
@@ -133,7 +135,7 @@ public class BannerCoreImpl implements BannerCore {
 
   @Override
   public ResponseEntity<ResponseTemplate<ResponseDetail<BannerRes>>> upload(BannerParam param) {
-    validateUploadParam(param);
+    validateUploadParam(param,false);
     String fileName = System.currentTimeMillis() + "_" + param.getFile().getOriginalFilename();
     String imageFile = storageService.uploadFile(fileName, param.getFile(),
         applicationProperties.getThumbnailsProperties().getDirectory());
@@ -169,18 +171,22 @@ public class BannerCoreImpl implements BannerCore {
   @Transactional
   public ResponseEntity<ResponseTemplate<ResponseDetail<BannerRes>>> update(String id,
                                                                             BannerParam param) {
-    validateUploadParam(param);
+    validateUploadParam(param,true);
     Banner existingData = bannerQueryAdapter.getById(id).orElseThrow(BannerNotFoundException::new);
-    String fileName = System.currentTimeMillis() + "_" + param.getFile().getOriginalFilename();
-    String imageFile = storageService.uploadFile(fileName, param.getFile(),
-        applicationProperties.getThumbnailsProperties().getDirectory());
-    String thumbnailFile =
-        storageService.uploadFile("Thumbnail_" + fileName, resizeImage(param.getFile()),
-            applicationProperties.getThumbnailsProperties().getDirectory());
+    String imageFile = existingData.getImageFile();
+    String thumbnailFile = existingData.getThumbnailFile();
+    if(param.getFile() != null && !param.getFile().isEmpty()){
+      String fileName = System.currentTimeMillis() + "_" + param.getFile().getOriginalFilename();
+      imageFile = storageService.uploadFile(fileName, param.getFile(),
+          applicationProperties.getThumbnailsProperties().getDirectory());
+      thumbnailFile =
+          storageService.uploadFile("Thumbnail_" + fileName, resizeImage(param.getFile()),
+              applicationProperties.getThumbnailsProperties().getDirectory());
+      deleteFileBanner(existingData);
+    }
 
     Banner updatedData = bannerCommandAdapter.save(
         bannerMapper.update(existingData, param, imageFile, thumbnailFile));
-    deleteFileBanner(existingData);
 
     updatedData.setImageFile(urlBuilderUtils.createUrlDownloadImage(updatedData.getImageFile()));
     updatedData.setThumbnailFile(
