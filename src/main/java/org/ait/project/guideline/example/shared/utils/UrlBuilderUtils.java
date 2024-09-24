@@ -11,10 +11,10 @@ public class UrlBuilderUtils {
   private final DomainConfigProperties domainConfigProperties;
 
   public String createUrlDownloadImage(String imageId){
-    return domainConfigProperties.getUrl() + "/download?id=" + imageId;
+    return domainConfigProperties.getUrl() + "/banner/download?id=" + imageId;
   }
   public String createUrlDownloadImageThumbnail(String imageId){
-    return domainConfigProperties.getUrl() + "/download-thumbnail?id=" + imageId;
+    return domainConfigProperties.getUrl() + "/banner/download-thumbnail?id=" + imageId;
   }
 
 }

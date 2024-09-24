@@ -316,8 +316,8 @@ public class BannerCoreImpl implements BannerCore {
    * @return the BannerRes with the added URLs
    */
   private BannerRes additional(BannerRes response) {
-    response.setImageFile(urlBuilderUtils.createUrlDownloadImage(response.getImageFile()));
-    response.setThumbnailFile(urlBuilderUtils.createUrlDownloadImageThumbnail(response.getThumbnailFile()));
+    response.setImageFile(urlBuilderUtils.createUrlDownloadImage(response.getId()));
+    response.setThumbnailFile(urlBuilderUtils.createUrlDownloadImageThumbnail(response.getId()));
     return response;
   }
 
