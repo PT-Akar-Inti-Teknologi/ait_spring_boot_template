@@ -15,5 +15,5 @@ public class RoleRes {
     @JsonProperty("roleName")
     private String name;
 
-    private List<PermissionRes> permission;
+    private List<PermissionRes> permissions;
 }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.ait.project.guideline.example.modules.role.service.adapter.query.RoleQueryAdapter;
 import org.ait.project.guideline.example.modules.user.dto.request.UserReq;
 import org.ait.project.guideline.example.modules.user.dto.response.UserRes;
+import org.ait.project.guideline.example.modules.user.exception.UserNotFoundException;
 import org.ait.project.guideline.example.modules.user.model.jpa.entity.UserAit;
 import org.ait.project.guideline.example.modules.user.service.adapter.command.UserCommandAdapter;
 import org.ait.project.guideline.example.modules.user.service.adapter.query.UserQueryAdapter;
@@ -49,6 +50,13 @@ public class UserCoreImpl implements UserCore {
     public ResponseEntity<ResponseTemplate<ResponseCollection<UserRes>>> getUsers() {
         return responseHelper.createResponseCollection(ResponseEnum.SUCCESS, Page.empty(),
                 userTransform.createUserResponseList(userQueryAdapter.findAllUser()));
+    }
+
+    @Override
+    public ResponseEntity<ResponseTemplate<ResponseDetail<UserRes>>> getDetailUser(Integer id) {
+        UserAit user = userQueryAdapter.findUserById(id).orElseThrow(UserNotFoundException::new);
+        return responseHelper.createResponseDetail(ResponseEnum.SUCCESS,
+                userTransform.createUserResponse(user));
     }
 
     @Override

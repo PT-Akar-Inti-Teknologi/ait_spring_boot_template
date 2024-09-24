@@ -1,9 +1,26 @@
 #Profile: dev
 spring:
+  # postgresql
   datasource:
     url: jdbc:postgresql://localhost:5432/test_database
     username: postgres
     password: postgres
+  # redis
+  data:
+    redis:
+      database: 0
+      host: localhost
+      port: 30709
+      password: AIT121218@atria
+      timeout: 60000
+
+jwt:
+  secret: e445f2cb350652a2a2d782587e05305700a1fefeba75a44dcb5063ae66c629d7078f2f29a7c8e918839e811bb2729f46b2844923afa465ab4240db30d6e005e3
+  access-token-expiration-time: 1800000
+  refresh-token-expiration-time: 3600000
+
+sessions:
+  online-session-in-seconds: 300
 
 restclient:
   url:

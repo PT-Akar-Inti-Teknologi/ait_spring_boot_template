@@ -22,12 +22,16 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 public class UserAit {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_ait_seq")
+    @SequenceGenerator(name = "user_ait_seq", sequenceName = "user_ait_seq", allocationSize = 1)
     private Integer id;
 
     private String name;
 
     private String email;
+
+    private String username;
+    private String password;
 
     private BigDecimal balance;
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })

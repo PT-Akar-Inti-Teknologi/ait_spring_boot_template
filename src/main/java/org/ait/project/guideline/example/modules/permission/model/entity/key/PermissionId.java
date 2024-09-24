@@ -1,8 +1,6 @@
 package org.ait.project.guideline.example.modules.permission.model.entity.key;
 
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import org.ait.project.guideline.example.modules.role.model.entity.Role;
 
@@ -18,8 +16,9 @@ public class PermissionId implements Serializable {
     private static final long serialVersionUID = -2363081794972428850L;
 
     private Integer menuId;
-    @JoinColumn(name = "role_id")
+
     @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id", updatable = false, insertable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Role role;
 
 }

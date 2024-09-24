@@ -18,7 +18,7 @@ public interface RoleTransform {
     Role mappingToRole(RoleReq roleReq);
 
     @Named("createRoleRes")
-    @Mapping(target = "permission", source = "permissionList", qualifiedByName = "createPermResList")
+    @Mapping(target = "permissions", source = "permissionList", qualifiedByName = "createPermResList")
     RoleRes createRoleRes(Role role);
 
     @Named("createRoleResList")

@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-master-menu
+      author: ait
+      changes:
+        - loadUpdateData:
+            file: classpath:/db/changelog/seeder/data/initial-master-menu.csv
+            primaryKey: id
+            separator: ';'
+            tableName: menu
+            columns:
+              - column:
+                  name: id
+                  type: integer
+              - column:
+                  name: name
+                  type: string
+              - column:
+                  name: code
+                  type: string

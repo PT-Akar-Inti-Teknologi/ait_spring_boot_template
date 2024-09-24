@@ -1,5 +1,7 @@
 package org.ait.project.guideline.example.modules.user.transform;
 
+import org.ait.project.guideline.example.modules.permission.dto.response.LoginRes;
+import org.ait.project.guideline.example.modules.role.transform.RoleTransform;
 import org.ait.project.guideline.example.modules.user.dto.request.UserReq;
 import org.ait.project.guideline.example.modules.user.dto.response.UserRes;
 import org.ait.project.guideline.example.modules.user.model.jpa.entity.UserAit;
@@ -11,10 +13,14 @@ import org.mapstruct.Named;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = RoleTransform.class)
 public interface UserTransform {
 
+    @Named("createLoginResponse")
+    LoginRes createLoginResponse(String accessToken, String refreshToken, String tokenType, Long expiresIn, Integer id, String name);
+
     @Named("createUserResponse")
+    @Mapping(target = "roles", source = "roles", qualifiedByName = "createRoleResList")
     UserRes createUserResponse(UserAit userAit);
 
     @IterableMapping(qualifiedByName = "createUserResponse")
@@ -22,6 +28,7 @@ public interface UserTransform {
     List<UserRes> createUserResponseList(List<UserAit> userAits);
 
     @Named("mappingUserAit")
+    @Mapping(target = "balance", source = "amount")
     UserAit mappingUserAitFromUserReq(UserReq userReq);
 
     @Mapping(target = "id", ignore = true)
