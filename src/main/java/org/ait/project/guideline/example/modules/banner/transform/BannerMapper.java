@@ -12,6 +12,7 @@ public interface BannerMapper {
 
   BannerRes convertToRes(Banner banner);
 
+
   @Mapping(target = "title", source = "param.title")
   @Mapping(target = "description", source = "param.description")
   @Mapping(target = "imageFile", source = "imageFile")
