@@ -19,4 +19,6 @@ jobs:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CONFIG.MAX_MODEL_TOKENS : "200000"
+          CONFIG.MODEL: "gpt-4o-mini"
+          CONFIG.MODEL_TURBO: "gpt-4o-mini"
           
