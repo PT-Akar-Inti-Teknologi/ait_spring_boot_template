@@ -7,6 +7,7 @@ link guideline [Link](https://pt-akar-inti-teknologi.github.io/techstack/java)
 
 ## `Specification:`
 
+
 Standard | Recommended 
 ---|--- 
 Java | Recommended using java 17
