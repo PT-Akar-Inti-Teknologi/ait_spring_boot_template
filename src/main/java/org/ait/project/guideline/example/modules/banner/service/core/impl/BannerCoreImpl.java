@@ -199,10 +199,8 @@ public class BannerCoreImpl implements BannerCore {
             applicationProperties.getThumbnailsProperties().getDirectory());
     Banner banner =
         bannerCommandAdapter.save(bannerMapper.convertToEntity(param, imageFile, thumbnailFile));
-    banner.setImageFile(urlBuilderUtils.createUrlDownloadImage(banner.getImageFile()));
-    banner.setThumbnailFile(urlBuilderUtils.createUrlDownloadImage(banner.getThumbnailFile()));
     return responseHelper.createResponseDetail(ResponseEnum.SUCCESS,
-        bannerMapper.convertToRes(banner));
+        additional(bannerMapper.convertToRes(banner)));
   }
 
   /**
@@ -266,12 +264,8 @@ public class BannerCoreImpl implements BannerCore {
 
     Banner updatedData = bannerCommandAdapter.save(
         bannerMapper.update(existingData, param, imageFile, thumbnailFile));
-
-    updatedData.setImageFile(urlBuilderUtils.createUrlDownloadImage(updatedData.getImageFile()));
-    updatedData.setThumbnailFile(
-        urlBuilderUtils.createUrlDownloadImage(updatedData.getThumbnailFile()));
     return responseHelper.createResponseDetail(ResponseEnum.SUCCESS,
-        bannerMapper.convertToRes(updatedData));
+        additional(bannerMapper.convertToRes(updatedData)));
   }
 
   /**
@@ -312,7 +306,7 @@ public class BannerCoreImpl implements BannerCore {
   @Override
   public ResponseEntity<ResponseTemplate<ResponseCollection<BannerRes>>> getAllActiveBanner() {
     List<BannerRes> bannerResList =
-        bannerQueryAdapter.getAllActiveBanner().stream().map(bannerMapper::convertToRes).toList();
+        bannerQueryAdapter.getAllActiveBanner().stream().map(banner -> additional(bannerMapper.convertToRes(banner))).toList();
     return responseHelper.createResponseCollection(ResponseEnum.SUCCESS, null, bannerResList);
   }
 
@@ -323,7 +317,7 @@ public class BannerCoreImpl implements BannerCore {
    */
   private BannerRes additional(BannerRes response) {
     response.setImageFile(urlBuilderUtils.createUrlDownloadImage(response.getImageFile()));
-    response.setThumbnailFile(urlBuilderUtils.createUrlDownloadImage(response.getThumbnailFile()));
+    response.setThumbnailFile(urlBuilderUtils.createUrlDownloadImageThumbnail(response.getThumbnailFile()));
     return response;
   }
 
